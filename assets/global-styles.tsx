@@ -1,0 +1,22 @@
+import { StyleSheet } from "react-native";
+
+const globalStyles = StyleSheet.create({
+  container: {
+    padding: 14,
+    paddingTop: 5,
+  },
+  rowBetween: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  transparentButton: {
+    borderRadius: 25,
+    backgroundColor: "rgba(255,255,255,0.2)",
+    padding: 5,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
+
+export default globalStyles;

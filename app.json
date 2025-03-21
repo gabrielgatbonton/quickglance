@@ -9,13 +9,18 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.melmatx.QuickGlance",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.melmatx.QuickGlance"
     },
     "web": {
       "bundler": "metro",
@@ -32,10 +37,36 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Satoshi-Variable.ttf"
+          ]
+        }
+      ],
+      [
+        "expo-asset",
+        {
+          "assets": [
+            "./assets/images/services",
+            "./assets/images/categories",
+            "./assets/images"
+          ]
+        }
       ]
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "17d7dbad-d66c-4f27-bc14-2ff6ef68ed78"
+      }
     }
   }
 }
