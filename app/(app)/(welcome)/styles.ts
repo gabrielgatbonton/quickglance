@@ -15,8 +15,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingTop: "20%",
-    paddingHorizontal: 20,
-    rowGap: 15,
+    paddingHorizontal: 40,
+    rowGap: 10,
   },
   headerText: {
     fontSize: 35,
@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     color: Colors.SECONDARY,
     fontSize: 16,
     textAlign: "center",
+    lineHeight: 20,
   },
   headerImage: {
     height: 65,
@@ -49,19 +50,30 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   inputContainer: {
-    paddingTop: "5%",
+    paddingTop: "6%",
     paddingHorizontal: 20,
     rowGap: 14,
   },
   input: {
     backgroundColor: Colors.TERTIARY,
-    padding: 14,
+    paddingVertical: 16,
+    paddingHorizontal: 14,
     borderRadius: 13,
   },
   hint: {
     color: Colors.SECONDARY,
     fontSize: 12,
     textAlign: "center",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    rowGap: 15,
+  },
+  loadingText: {
+    fontSize: 16,
+    fontWeight: "500",
   },
 });
 
