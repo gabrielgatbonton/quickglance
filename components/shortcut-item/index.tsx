@@ -4,7 +4,7 @@ import { SymbolView } from "expo-symbols";
 import { Pressable, Text, useWindowDimensions, View } from "react-native";
 import styles from "./styles";
 import globalStyles from "@/assets/global-styles";
-import { Shortcut } from "@/utils/types";
+import { Shortcut } from "@/constants/types";
 import ContextMenu from "react-native-context-menu-view";
 
 export default function ShortcutItem({ item }: { item: Shortcut }) {
