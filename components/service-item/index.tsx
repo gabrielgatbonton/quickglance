@@ -8,7 +8,7 @@ import {
 import { BlurView } from "expo-blur";
 import pressedOpacity from "@/utils/pressedOpacity";
 import styles from "./styles";
-import { Service } from "@/utils/types";
+import { Service } from "@/constants/types";
 import { router } from "expo-router";
 
 export default function ServiceItem({ item }: { item: Service }) {
