@@ -1,7 +1,10 @@
 import { FlatList, Image, ScrollView, Text, View } from "react-native";
 import styles from "./styles";
-import { WelcomeData } from "@/utils/types";
+import { WelcomeData } from "@/constants/types";
 import WelcomeItem from "@/components/welcome-item";
+import { router } from "expo-router";
+import CustomButton from "@/components/custom-button";
+import FooterBottom from "@/components/footer-bottom";
 
 const WELCOME_DATA: WelcomeData[] = [
   {
@@ -30,7 +33,7 @@ export default function Welcome() {
       <ScrollView>
         <View style={styles.headerContainer}>
           <Image
-            source={require("@/assets/images/quickglance-logo.png")}
+            source={{ uri: "quickglance-logo" }}
             style={styles.headerImage}
             resizeMode="contain"
           />
@@ -40,10 +43,21 @@ export default function Welcome() {
         <FlatList
           data={WELCOME_DATA}
           renderItem={({ item }) => <WelcomeItem item={item} />}
+          keyExtractor={(item) => item.label}
           contentContainerStyle={styles.contentContainer}
           scrollEnabled={false}
         />
       </ScrollView>
+
+      <View style={styles.footerContainer}>
+        <View style={styles.buttonContainer}>
+          <CustomButton
+            title={"Continue"}
+            onPress={() => router.push("/sign-up")}
+          />
+        </View>
+        <FooterBottom />
+      </View>
     </View>
   );
 }
