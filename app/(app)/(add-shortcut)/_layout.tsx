@@ -33,7 +33,11 @@ export default function AddShortcutLayout() {
       />
       <Stack.Screen
         name="edit-details"
-        options={{ title: "Edit Details", presentation: "card" }}
+        options={{
+          title: "Edit Details",
+          presentation: "card",
+          headerBackTitle: "Back",
+        }}
       />
     </Stack>
   );
