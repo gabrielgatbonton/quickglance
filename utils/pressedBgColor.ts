@@ -9,5 +9,5 @@ export default function pressedBgColor({
   pressed,
   backgroundColor = DEFAULT_BG_COLOR,
 }: PressedBgColorProps) {
-  return { backgroundColor: pressed ? backgroundColor : undefined };
+  return pressed ? { backgroundColor } : {};
 }
