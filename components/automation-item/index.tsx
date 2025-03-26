@@ -2,7 +2,7 @@ import { Pressable, Text, View } from "react-native";
 import { BlurView } from "expo-blur";
 import pressedOpacity from "@/utils/pressedOpacity";
 import styles from "./styles";
-import { Automation } from "@/utils/types";
+import { Automation } from "@/constants/types";
 import ContextMenu from "react-native-context-menu-view";
 import { SymbolView } from "expo-symbols";
 
