@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   contentContainer: {
+    flex: 1,
     padding: 10,
     justifyContent: "space-between",
     borderRadius: 18,
