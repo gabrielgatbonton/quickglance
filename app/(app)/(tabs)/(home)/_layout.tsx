@@ -9,8 +9,6 @@ export default function HomeLayout() {
           title: "QuickGlance",
           headerLargeTitle: true,
           headerLargeTitleShadowVisible: false,
-          headerTransparent: true,
-          headerBlurEffect: "regular",
         }}
       />
     </Stack>
