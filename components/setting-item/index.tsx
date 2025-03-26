@@ -1,4 +1,4 @@
-import { SettingData } from "@/utils/types";
+import { SettingData } from "@/constants/types";
 import { Pressable, Switch, Text } from "react-native";
 import styles from "./styles";
 import { useState } from "react";
