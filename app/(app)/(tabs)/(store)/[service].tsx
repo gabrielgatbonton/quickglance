@@ -3,7 +3,7 @@ import { Alert, FlatList, Pressable, ScrollView } from "react-native";
 import styles from "./styles";
 import { useLayoutEffect } from "react";
 import { useLocalSearchParams, useNavigation } from "expo-router";
-import { SAMPLE_SERVICES } from "@/utils/sampleServices";
+import { SAMPLE_SERVICES } from "@/constants/sampleServices";
 import { Colors } from "@/assets/colors";
 import globalStyles from "@/assets/global-styles";
 import { SymbolView } from "expo-symbols";
@@ -17,7 +17,7 @@ export default function ServiceStore() {
   const search = useSearch();
 
   const currentService = SAMPLE_SERVICES.find(
-    (sampleService) => sampleService.id === parseInt(service),
+    (sampleService) => sampleService.id === service,
   );
 
   useLayoutEffect(() => {
@@ -67,6 +67,7 @@ export default function ServiceStore() {
             shortcut.description.toLowerCase().includes(search.toLowerCase()),
         )}
         renderItem={({ item }) => <StoreItem item={item} />}
+        keyExtractor={(item) => item.id}
         contentContainerStyle={styles.contentContainer}
         scrollEnabled={false}
       />
