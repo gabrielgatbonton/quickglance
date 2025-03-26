@@ -4,9 +4,9 @@ import { LinearGradient } from "expo-linear-gradient";
 import { SymbolView } from "expo-symbols";
 import styles from "./styles";
 import globalStyles from "@/assets/global-styles";
-import { Shortcut } from "@/utils/types";
+import { Shortcut } from "@/constants/types";
 import ContextMenu from "react-native-context-menu-view";
-import { SAMPLE_SERVICES } from "@/utils/sampleServices";
+import { SAMPLE_SERVICES } from "@/constants/sampleServices";
 
 export default function StoreItem({ item }: { item: Shortcut }) {
   const owner =
