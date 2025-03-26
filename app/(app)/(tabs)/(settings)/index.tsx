@@ -1,13 +1,23 @@
 import globalStyles from "@/assets/global-styles";
 import SettingHeader from "@/components/setting-header";
 import SettingItem from "@/components/setting-item";
-import { Setting } from "@/utils/types";
+import { Setting } from "@/constants/types";
 import { Alert, ScrollView, SectionList } from "react-native";
 import styles from "./styles";
 import { router } from "expo-router";
 import LineSeparator from "@/components/line-separator";
+import { useRef } from "react";
+import { useScrollToTop } from "@react-navigation/native";
+import { HEADER_HEIGHT } from "@/constants/navigation";
 
 export default function Settings() {
+  const scrollViewRef = useRef<ScrollView>(null);
+  useScrollToTop(
+    useRef({
+      scrollToTop: () => scrollViewRef.current?.scrollTo({ y: -HEADER_HEIGHT }),
+    }),
+  );
+
   const SETTINGS_DATA: Setting[] = [
     {
       title: "Cloud Sync",
@@ -24,20 +34,6 @@ export default function Settings() {
           label: "Uploaded Shortcuts",
           type: "list",
           action: () => router.push("/uploaded-shortcuts"),
-        },
-        {
-          label: "Change public name for gallery",
-          type: "link",
-          action: () =>
-            Alert.prompt(
-              "Change public name",
-              "This will be used to identify your shortcuts",
-              (text) =>
-                Alert.alert(
-                  "Public name changed",
-                  `Successfully changed your name to "${text}"`,
-                ),
-            ),
         },
         {
           label: "Remove all uploaded shortcuts",
@@ -66,7 +62,7 @@ export default function Settings() {
       title: "About",
       data: [
         {
-          label: "What's QuickGlance?",
+          label: "Show Onboarding",
           type: "link",
           action: () => router.push("/(welcome)"),
         },
@@ -81,6 +77,8 @@ export default function Settings() {
     <ScrollView
       contentInsetAdjustmentBehavior="automatic"
       contentContainerStyle={globalStyles.container}
+      scrollToOverflowEnabled
+      ref={scrollViewRef}
     >
       <SectionList
         sections={SETTINGS_DATA}
