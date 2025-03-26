@@ -6,7 +6,9 @@ import { useEffect } from "react";
 
 export default function TabLayout() {
   useEffect(() => {
-    router.push("/(welcome)");
+    setTimeout(() => {
+      router.push("/(welcome)");
+    });
   }, []);
 
   return (
