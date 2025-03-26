@@ -1,11 +1,10 @@
-import { SAMPLE_SHORTCUTS } from "@/utils/sampleShortcuts";
-import { ReactNode } from "react";
+import { SAMPLE_SHORTCUTS } from "@/constants/sampleShortcuts";
 import { FlatList } from "react-native";
 import StoreItem from "../store-item";
 import Animated, { FadeIn } from "react-native-reanimated";
-import { STORE_KEYS } from "@/utils/storeKeys";
+import { STORE_KEYS } from "@/constants/storeKeys";
 import styles from "./styles";
-import { SAMPLE_SERVICES } from "@/utils/sampleServices";
+import { SAMPLE_SERVICES } from "@/constants/sampleServices";
 import ServiceItem from "../service-item";
 
 type StoreContentProps = {
@@ -14,8 +13,8 @@ type StoreContentProps = {
 };
 
 export default function StoreContent({ storeKey, search }: StoreContentProps) {
-  const stores: Record<string, ReactNode> = {
-    [STORE_KEYS.USER_CREATED]: (
+  if (storeKey === STORE_KEYS.USER_CREATED) {
+    return (
       <Animated.View key={storeKey} entering={FadeIn.duration(250)}>
         <FlatList
           data={SAMPLE_SHORTCUTS.filter(
@@ -24,12 +23,16 @@ export default function StoreContent({ storeKey, search }: StoreContentProps) {
               shortcut.description.toLowerCase().includes(search.toLowerCase()),
           )}
           renderItem={({ item }) => <StoreItem item={item} />}
+          keyExtractor={(item) => item.id}
           contentContainerStyle={styles.contentContainer}
           scrollEnabled={false}
         />
       </Animated.View>
-    ),
-    [STORE_KEYS.SERVICES]: (
+    );
+  }
+
+  if (storeKey === STORE_KEYS.SERVICES) {
+    return (
       <Animated.View key={storeKey} entering={FadeIn.duration(250)}>
         <FlatList
           data={SAMPLE_SERVICES.filter((shortcut) =>
@@ -42,8 +45,8 @@ export default function StoreContent({ storeKey, search }: StoreContentProps) {
           scrollEnabled={false}
         />
       </Animated.View>
-    ),
-  };
+    );
+  }
 
-  return stores[storeKey];
+  return null;
 }
