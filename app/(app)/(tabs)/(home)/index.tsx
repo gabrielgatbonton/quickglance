@@ -1,20 +1,24 @@
 import { Colors } from "@/assets/colors";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import {
   Button,
   FlatList,
+  Pressable,
   ScrollView,
   useWindowDimensions,
 } from "react-native";
 import ShortcutItem from "@/components/shortcut-item";
 import styles from "./styles";
 import globalStyles from "@/assets/global-styles";
-import { SAMPLE_SHORTCUTS } from "@/utils/sampleShortcuts";
+import { SAMPLE_SHORTCUTS } from "@/constants/sampleShortcuts";
 import { usePagerView } from "react-native-pager-view";
 import { PageControlView } from "@candlefinance/page-control";
 import OnboardingView from "@/components/onboarding-view";
 import SelfieView from "@/components/selfie-view";
 import useSearch from "@/hooks/useSearch";
+import { router, useNavigation } from "expo-router";
+import { SymbolView } from "expo-symbols";
+import pressedOpacity from "@/utils/pressedOpacity";
 
 const SHORTCUTS_PER_SCREEN = 6;
 
@@ -23,6 +27,7 @@ export default function Home() {
 
   const { AnimatedPagerView, activePage, setPage, ...rest } = usePagerView();
   const { height } = useWindowDimensions();
+  const navigation = useNavigation();
   const search = useSearch();
 
   const filteredShortcuts = SAMPLE_SHORTCUTS.filter((shortcut) =>
@@ -33,10 +38,28 @@ export default function Home() {
   );
   const shortcutsHeight = height * 0.42;
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Pressable
+          style={({ pressed }) => pressedOpacity({ pressed })}
+          onPress={() => router.push("/(reorder-shortcuts)")}
+        >
+          <SymbolView
+            name="circle.grid.3x3.circle"
+            size={30}
+            tintColor={Colors.PRIMARY}
+          />
+        </Pressable>
+      ),
+    });
+  }, [navigation]);
+
   return (
     <ScrollView
       contentInsetAdjustmentBehavior="automatic"
       contentContainerStyle={globalStyles.container}
+      scrollEnabled={false}
     >
       <AnimatedPagerView
         {...rest}
@@ -53,6 +76,7 @@ export default function Home() {
               (index + 1) * SHORTCUTS_PER_SCREEN,
             )}
             renderItem={({ item }) => <ShortcutItem item={item} />}
+            keyExtractor={(item) => item.id}
             columnWrapperStyle={styles.columnWrapper}
             contentContainerStyle={styles.contentContainer}
             numColumns={2}
