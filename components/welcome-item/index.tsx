@@ -1,5 +1,5 @@
 import { Colors } from "@/assets/colors";
-import { WelcomeData } from "@/utils/types";
+import { WelcomeData } from "@/constants/types";
 import { SymbolView } from "expo-symbols";
 import { Text, View } from "react-native";
 import styles from "./styles";
