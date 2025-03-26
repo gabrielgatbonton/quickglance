@@ -9,5 +9,5 @@ export default function pressedOpacity({
   pressed,
   opacity = DEFAULT_OPACITY,
 }: PressedOpacityProps) {
-  return { opacity: pressed ? opacity : undefined };
+  return pressed ? { opacity } : {};
 }
