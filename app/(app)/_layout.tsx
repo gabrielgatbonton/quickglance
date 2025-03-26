@@ -18,6 +18,13 @@ export default function RootLayout() {
           presentation: "modal",
         }}
       />
+      <Stack.Screen
+        name="(reorder-shortcuts)"
+        options={{
+          title: "Reorder Shortcuts",
+          presentation: "modal",
+        }}
+      />
     </Stack>
   );
 }
