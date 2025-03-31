@@ -43,7 +43,7 @@ export default function Home() {
       headerRight: () => (
         <Pressable
           style={({ pressed }) => pressedOpacity({ pressed })}
-          onPress={() => router.push("/(reorder-shortcuts)")}
+          onPress={() => router.push("/(modal)/(reorder-shortcuts)")}
         >
           <SymbolView
             name="circle.grid.3x3.circle"
