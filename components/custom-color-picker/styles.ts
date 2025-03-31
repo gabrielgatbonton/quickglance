@@ -60,11 +60,14 @@ const styles = StyleSheet.create({
     color: Colors.SECONDARY,
     fontSize: 16,
   },
-  swatchesContainer: {
-    paddingTop: 20,
+  swatchesScrollContainer: {
     marginTop: 20,
     borderTopWidth: 1,
     borderColor: "lightgray",
+  },
+  swatchesContainer: {
+    paddingTop: 20,
+    paddingBottom: 5,
     alignItems: "center",
     flexWrap: "nowrap",
     gap: 10,
@@ -79,8 +82,10 @@ const styles = StyleSheet.create({
     marginVertical: 0,
   },
   buttonContainer: {
+    flexDirection: "row",
     alignSelf: "center",
     padding: 30,
+    columnGap: 20,
   },
 });
 
