@@ -1,3 +1,4 @@
+import { AddShortcutState } from "@/stores/useAddShortcutStore";
 import { SFSymbol } from "expo-symbols";
 import { ImageRequireSource, SwitchProps, TextInputProps } from "react-native";
 
@@ -6,6 +7,30 @@ export type WelcomeData = {
   description: string;
   icon: SFSymbol;
 };
+
+export type User = {
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  email: string;
+};
+
+export type UserPassword = {
+  password: string;
+  password_confirmation: string;
+};
+
+export type UserErrors =
+  | {
+      [K in keyof User]?: string[];
+    }
+  | null;
+
+export type UserPasswordErrors =
+  | {
+      [K in keyof UserPassword]?: string[];
+    }
+  | null;
 
 export type Shortcut = {
   id: string;
@@ -20,7 +45,8 @@ export type Shortcut = {
 
 export type ActionInput = {
   name: string;
-  type: "text" | "number";
+  value?: string;
+  placeholder?: string;
 };
 
 export type Action = {
@@ -55,7 +81,7 @@ export type Automation = {
 };
 
 export type EditDetailData = {
-  id: string;
+  key: keyof AddShortcutState["details"];
   label: string;
   type: "input" | "switch";
   placeholder?: string;
@@ -67,6 +93,7 @@ export type SettingData = {
   label: string;
   type: "list" | "hint" | "link" | "switch";
   action?: () => void;
+  hidden?: boolean;
 };
 
 export type Setting = {
