@@ -10,12 +10,14 @@ import pressedOpacity from "@/utils/pressedOpacity";
 type AddActionItemProps = {
   item: Action;
   index: number;
+  onActionEdit?: (action: Action) => void;
   onActionDelete?: (action: Action) => void;
 };
 
 export default function AddActionItem({
   item,
   index,
+  onActionEdit,
   onActionDelete,
 }: AddActionItemProps) {
   const { height } = useWindowDimensions();
@@ -38,15 +40,37 @@ export default function AddActionItem({
           <View style={globalStyles.rowBetween}>
             <SymbolView name={item.icon} size={30} tintColor="white" />
 
-            <Pressable
-              style={({ pressed }) => [
-                globalStyles.transparentButton,
-                pressedOpacity({ pressed }),
-              ]}
-              onPress={() => onActionDelete?.(item)}
+            <View
+              style={{
+                columnGap: 10,
+                flexDirection: "row",
+                alignItems: "center",
+              }}
             >
-              <SymbolView name="xmark" size={10} tintColor="white" />
-            </Pressable>
+              {onActionDelete && (
+                <Pressable
+                  style={({ pressed }) => [
+                    globalStyles.transparentButton,
+                    pressedOpacity({ pressed }),
+                  ]}
+                  onPress={() => onActionDelete(item)}
+                >
+                  <SymbolView name="xmark" size={15} tintColor="white" />
+                </Pressable>
+              )}
+
+              {onActionEdit && (
+                <Pressable
+                  style={({ pressed }) => [
+                    globalStyles.transparentButton,
+                    pressedOpacity({ pressed }),
+                  ]}
+                  onPress={() => onActionEdit(item)}
+                >
+                  <SymbolView name="pencil" size={15} tintColor="white" />
+                </Pressable>
+              )}
+            </View>
           </View>
 
           <Text style={styles.label}>{item.name}</Text>
