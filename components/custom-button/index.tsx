@@ -28,20 +28,20 @@ export default function CustomButton({
   ...buttonProps
 }: CustomButtonProps) {
   return (
-    <Pressable
-      onPress={onPress}
-      disabled={disabled}
-      style={({ pressed }) => [
-        pressedOpacity({ pressed }),
-        disabled && { opacity: 0.5 },
-      ]}
-      {...buttonProps}
-    >
-      <View
-        style={[styles.container, { backgroundColor: color }, containerStyle]}
+    <View style={containerStyle}>
+      <Pressable
+        onPress={onPress}
+        disabled={disabled}
+        style={({ pressed }) => [
+          pressedOpacity({ pressed }),
+          disabled && { opacity: 0.5 },
+        ]}
+        {...buttonProps}
       >
-        <Text style={[styles.title, textStyle]}>{title}</Text>
-      </View>
-    </Pressable>
+        <View style={[styles.container, { backgroundColor: color }]}>
+          <Text style={[styles.title, textStyle]}>{title}</Text>
+        </View>
+      </Pressable>
+    </View>
   );
 }
