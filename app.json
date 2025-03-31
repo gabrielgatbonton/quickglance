@@ -55,7 +55,8 @@
             "./assets/images"
           ]
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true
@@ -67,6 +68,7 @@
       "eas": {
         "projectId": "17d7dbad-d66c-4f27-bc14-2ff6ef68ed78"
       }
-    }
+    },
+    "owner": "melmatx"
   }
 }
