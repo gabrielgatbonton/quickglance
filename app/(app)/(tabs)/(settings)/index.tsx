@@ -9,6 +9,8 @@ import LineSeparator from "@/components/line-separator";
 import { useRef } from "react";
 import { useScrollToTop } from "@react-navigation/native";
 import { HEADER_HEIGHT } from "@/constants/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { getUser } from "@/services/apiService";
 
 export default function Settings() {
   const scrollViewRef = useRef<ScrollView>(null);
@@ -17,6 +19,11 @@ export default function Settings() {
       scrollToTop: () => scrollViewRef.current?.scrollTo({ y: -HEADER_HEIGHT }),
     }),
   );
+
+  const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: getUser,
+  });
 
   const SETTINGS_DATA: Setting[] = [
     {
@@ -59,12 +66,35 @@ export default function Settings() {
       ],
     },
     {
+      title: "Account",
+      data: [
+        {
+          label: user
+            ? `Name: ${user.firstName} ${user.lastName}`
+            : "You're not logged in.",
+          type: "hint",
+        },
+        {
+          label: "Edit Profile",
+          type: "link",
+          action: () => router.push("/(modal)/(edit-profile)"),
+          hidden: !user,
+        },
+        {
+          label: "Change Password",
+          type: "link",
+          action: () => router.push("/(modal)/(change-password)"),
+          hidden: !user,
+        },
+      ],
+    },
+    {
       title: "About",
       data: [
         {
           label: "Show Onboarding",
           type: "link",
-          action: () => router.push("/(welcome)"),
+          action: () => router.push("/(modal)/(welcome)"),
         },
         { label: "Privacy Policy", type: "link" },
         { label: "Help Center", type: "link" },
@@ -81,7 +111,10 @@ export default function Settings() {
       ref={scrollViewRef}
     >
       <SectionList
-        sections={SETTINGS_DATA}
+        sections={SETTINGS_DATA.map((section) => ({
+          ...section,
+          data: section.data.filter((item) => !item.hidden),
+        }))}
         renderItem={({ item }) => <SettingItem item={item} />}
         renderSectionHeader={({ section: { title } }) => (
           <SettingHeader title={title} />
