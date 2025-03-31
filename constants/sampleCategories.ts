@@ -15,7 +15,6 @@ export const SAMPLE_CATEGORIES: Category[] = [
         inputs: [
           {
             name: "Phone Number",
-            type: "text",
           },
         ],
       },
@@ -35,7 +34,6 @@ export const SAMPLE_CATEGORIES: Category[] = [
         inputs: [
           {
             name: "App Name",
-            type: "text",
           },
         ],
       },
@@ -48,11 +46,9 @@ export const SAMPLE_CATEGORIES: Category[] = [
         inputs: [
           {
             name: "Recipient",
-            type: "text",
           },
           {
             name: "Message",
-            type: "text",
           },
         ],
       },
