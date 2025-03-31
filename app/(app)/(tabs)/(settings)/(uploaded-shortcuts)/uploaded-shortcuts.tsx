@@ -19,7 +19,6 @@ export default function UploadedShortcuts() {
           shortcut.name.toLowerCase().includes(search.toLowerCase()),
         )}
         renderItem={({ item }) => <UploadedShortcutItem item={item} />}
-        keyExtractor={(item) => item.id}
         contentContainerStyle={styles.contentContainer}
         ItemSeparatorComponent={() => <LineSeparator leading={20} />}
         scrollEnabled={false}
