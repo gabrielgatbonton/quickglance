@@ -35,7 +35,7 @@ export default function SelfieCamera() {
         <SymbolView
           name="exclamationmark.triangle.fill"
           size={60}
-          tintColor={"red"}
+          tintColor="red"
         />
       </Pressable>
     );
