@@ -1,8 +1,9 @@
 import { Colors } from "@/assets/colors";
 import { WelcomeData } from "@/constants/types";
 import { SymbolView } from "expo-symbols";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import styles from "./styles";
+import CustomText from "../custom-text";
 
 export default function WelcomeItem({ item }: { item: WelcomeData }) {
   return (
@@ -12,8 +13,8 @@ export default function WelcomeItem({ item }: { item: WelcomeData }) {
       </View>
 
       <View style={styles.contentContainer}>
-        <Text style={styles.label}>{item.label}</Text>
-        <Text style={styles.description}>{item.description}</Text>
+        <CustomText style={styles.label}>{item.label}</CustomText>
+        <CustomText style={styles.description}>{item.description}</CustomText>
       </View>
     </View>
   );

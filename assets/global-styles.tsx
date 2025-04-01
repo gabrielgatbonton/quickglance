@@ -17,6 +17,16 @@ const globalStyles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  input: {
+    backgroundColor: "white",
+    paddingVertical: 16,
+    paddingHorizontal: 14,
+    borderRadius: 13,
+  },
+  inputError: {
+    borderColor: "red",
+    borderWidth: 1,
+  },
 });
 
 export default globalStyles;

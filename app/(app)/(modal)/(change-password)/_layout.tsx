@@ -1,20 +1,35 @@
 import { Colors } from "@/assets/colors";
+import { DEFAULT_FONT_FAMILY } from "@/components/custom-text/styles";
+import pressedOpacity from "@/utils/pressedOpacity";
 import { router, Stack } from "expo-router";
-import { Button } from "react-native";
+import { SymbolView } from "expo-symbols";
+import { Pressable } from "react-native";
 
 export default function ChangePasswordLayout() {
   return (
-    <Stack>
+    <Stack
+      screenOptions={{
+        headerTransparent: true,
+        headerBlurEffect: "prominent",
+        headerTitleStyle: { fontFamily: DEFAULT_FONT_FAMILY },
+      }}
+    >
       <Stack.Screen
         name="index"
         options={{
           title: "Change Password",
           headerLeft: () => (
-            <Button
-              title="Cancel"
+            <Pressable
+              style={({ pressed }) => pressedOpacity({ pressed })}
               onPress={() => router.back()}
-              color={Colors.PRIMARY}
-            />
+            >
+              <SymbolView
+                name="xmark"
+                size={21}
+                tintColor={Colors.PRIMARY}
+                weight="semibold"
+              />
+            </Pressable>
           ),
         }}
       />

@@ -11,6 +11,7 @@ import { useScrollToTop } from "@react-navigation/native";
 import { HEADER_HEIGHT } from "@/constants/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getUser } from "@/services/apiService";
+import useAuthStore from "@/stores/useAuthStore";
 
 export default function Settings() {
   const scrollViewRef = useRef<ScrollView>(null);
@@ -24,6 +25,8 @@ export default function Settings() {
     queryKey: ["user"],
     queryFn: getUser,
   });
+
+  const handleLogout = useAuthStore((state) => state.handleLogout);
 
   const SETTINGS_DATA: Setting[] = [
     {
@@ -84,6 +87,23 @@ export default function Settings() {
           label: "Change Password",
           type: "link",
           action: () => router.push("/(modal)/(change-password)"),
+          hidden: !user,
+        },
+        {
+          label: "Log Out",
+          type: "destructive",
+          action: () =>
+            Alert.alert("Log Out", "Are you sure you want to log out?", [
+              {
+                text: "Log Out",
+                style: "destructive",
+                onPress: () => {
+                  handleLogout();
+                  Alert.alert("Logged Out", "Successfully logged out");
+                },
+              },
+              { text: "Cancel", style: "cancel" },
+            ]),
           hidden: !user,
         },
       ],

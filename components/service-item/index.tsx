@@ -1,7 +1,6 @@
 import {
   ImageBackground,
   Pressable,
-  Text,
   useWindowDimensions,
   View,
 } from "react-native";
@@ -10,6 +9,7 @@ import pressedOpacity from "@/utils/pressedOpacity";
 import styles from "./styles";
 import { Service } from "@/constants/types";
 import { router } from "expo-router";
+import CustomText from "../custom-text";
 
 export default function ServiceItem({ item }: { item: Service }) {
   const { width, height } = useWindowDimensions();
@@ -35,7 +35,7 @@ export default function ServiceItem({ item }: { item: Service }) {
         <View style={styles.darkFilter} />
 
         <BlurView intensity={50} tint="dark" style={styles.blurContainer}>
-          <Text style={styles.name}>{item.name}</Text>
+          <CustomText style={styles.name}>{item.name}</CustomText>
         </BlurView>
       </ImageBackground>
     </Pressable>

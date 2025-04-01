@@ -3,12 +3,13 @@ import { SAMPLE_SHORTCUTS } from "@/constants/sampleShortcuts";
 import { Shortcut } from "@/constants/types";
 import { router, useNavigation } from "expo-router";
 import { useCallback, useLayoutEffect, useState } from "react";
-import { Button, useWindowDimensions, View } from "react-native";
+import { useWindowDimensions, View } from "react-native";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import Sortable from "react-native-sortables";
 import { SortableGridRenderItemInfo } from "react-native-sortables/dist/typescript/types";
 import styles from "./styles";
 import ReorderShortcutItem from "@/components/reorder-shortcut-item";
+import CustomLink from "@/components/custom-link";
 
 export default function ReorderShortcuts() {
   const [shortcuts, setShortcuts] = useState<Shortcut[]>(SAMPLE_SHORTCUTS);
@@ -30,7 +31,7 @@ export default function ReorderShortcuts() {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Button
+        <CustomLink
           title="Done"
           onPress={() => {
             router.back();
@@ -44,7 +45,12 @@ export default function ReorderShortcuts() {
 
   return (
     <View style={styles.container}>
-      <Animated.ScrollView style={styles.shortcutsGrid} ref={scrollViewRef}>
+      <Animated.ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        scrollToOverflowEnabled
+        style={styles.shortcutsGrid}
+        ref={scrollViewRef}
+      >
         <Sortable.Grid
           data={shortcuts}
           onDragEnd={({ data }) => setShortcuts(data)}

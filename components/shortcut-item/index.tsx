@@ -1,11 +1,12 @@
 import pressedOpacity from "@/utils/pressedOpacity";
 import { LinearGradient } from "expo-linear-gradient";
 import { SymbolView } from "expo-symbols";
-import { Pressable, Text, useWindowDimensions, View } from "react-native";
+import { Pressable, useWindowDimensions, View } from "react-native";
 import styles from "./styles";
 import globalStyles from "@/assets/global-styles";
 import { Shortcut } from "@/constants/types";
 import ContextMenu from "react-native-context-menu-view";
+import CustomText from "../custom-text";
 
 export default function ShortcutItem({ item }: { item: Shortcut }) {
   const { width, height } = useWindowDimensions();
@@ -56,7 +57,7 @@ export default function ShortcutItem({ item }: { item: Shortcut }) {
             </Pressable>
           </View>
 
-          <Text style={styles.label}>{item.name}</Text>
+          <CustomText style={styles.label}>{item.name}</CustomText>
         </LinearGradient>
       </ContextMenu>
     </Pressable>

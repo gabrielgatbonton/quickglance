@@ -1,7 +1,6 @@
 import {
   NativeSyntheticEvent,
   Platform,
-  Text,
   TextInput,
   TextInputFocusEventData,
   TextInputProps,
@@ -10,6 +9,7 @@ import {
 import { forwardRef, useCallback, useEffect } from "react";
 import { useBottomSheetInternal } from "@gorhom/bottom-sheet";
 import styles from "../custom-text-input/styles";
+import CustomText from "../custom-text";
 
 export type CustomTextInputProps = TextInputProps & {
   label: string;
@@ -61,7 +61,7 @@ export default forwardRef<TextInput, CustomTextInputProps>(
     return (
       <View style={styles.container}>
         <View style={styles.labelContainer}>
-          <Text style={styles.label}>{label}</Text>
+          <CustomText style={styles.label}>{label}</CustomText>
         </View>
 
         <View style={styles.inputContainer}>

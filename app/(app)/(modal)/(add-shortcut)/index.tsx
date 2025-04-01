@@ -1,4 +1,4 @@
-import { Alert, Pressable, Text, View } from "react-native";
+import { Alert, Pressable, View } from "react-native";
 import { useCallback, useRef, useState } from "react";
 import BottomSheet, {
   BottomSheetFlatList,
@@ -27,6 +27,7 @@ import useAddShortcutStore, {
   AddShortcutActions,
   AddShortcutState,
 } from "@/stores/useAddShortcutStore";
+import CustomText from "@/components/custom-text";
 
 export default function AddShortcut() {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
@@ -153,9 +154,9 @@ export default function AddShortcut() {
           </Animated.ScrollView>
         ) : (
           <View style={styles.noShortcutsContainer}>
-            <Text style={styles.dropText}>
+            <CustomText style={styles.dropText}>
               Add a shortcut by tapping on them!
-            </Text>
+            </CustomText>
           </View>
         )}
       </View>
@@ -181,7 +182,7 @@ export default function AddShortcut() {
                 size={40}
               />
             </Pressable>
-            <Text style={styles.sheetHeaderTitle}>Add Inputs</Text>
+            <CustomText style={styles.sheetHeaderTitle}>Add Inputs</CustomText>
             <Pressable style={({ pressed }) => pressedOpacity({ pressed })}>
               <SymbolView
                 name="arrow.right.circle"
@@ -258,7 +259,9 @@ export default function AddShortcut() {
                 size={40}
               />
             </Pressable>
-            <Text style={styles.sheetHeaderTitle}>Action Preview</Text>
+            <CustomText style={styles.sheetHeaderTitle}>
+              Action Preview
+            </CustomText>
             <Pressable style={({ pressed }) => pressedOpacity({ pressed })}>
               <SymbolView
                 name="arrow.right.circle"
@@ -279,9 +282,9 @@ export default function AddShortcut() {
                 size={80}
                 tintColor={selectedAction.gradientStart}
               />
-              <Text style={styles.actionPreviewText}>
+              <CustomText style={styles.actionPreviewText}>
                 {selectedAction.name}
-              </Text>
+              </CustomText>
             </Animated.View>
 
             <CustomButton
@@ -309,7 +312,9 @@ export default function AddShortcut() {
                 size={40}
               />
             </Pressable>
-            <Text style={styles.sheetHeaderTitle}>Select an action</Text>
+            <CustomText style={styles.sheetHeaderTitle}>
+              Select an action
+            </CustomText>
             <Pressable disabled>
               <SymbolView
                 name="arrow.right.circle"
@@ -348,7 +353,9 @@ export default function AddShortcut() {
           ref={bottomSheetRef}
         >
           <BottomSheetView style={styles.sheetHeaderContainer}>
-            <Text style={styles.sheetHeaderTitle}>Select a category</Text>
+            <CustomText style={styles.sheetHeaderTitle}>
+              Select a category
+            </CustomText>
           </BottomSheetView>
 
           <BottomSheetFlatList

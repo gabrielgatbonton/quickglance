@@ -2,18 +2,13 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
-    rowGap: 20,
+    rowGap: 25,
     padding: 20,
   },
-  input: {
-    backgroundColor: "white",
-    paddingVertical: 16,
-    paddingHorizontal: 14,
-    borderRadius: 13,
-  },
-  inputError: {
-    borderColor: "red",
-    borderWidth: 1,
+  headerText: {
+    fontSize: 21,
+    fontWeight: "500",
+    textAlign: "center",
   },
 });
 

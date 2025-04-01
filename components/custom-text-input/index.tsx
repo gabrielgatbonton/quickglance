@@ -1,5 +1,6 @@
-import { Text, TextInput, TextInputProps, View } from "react-native";
+import { TextInput, TextInputProps, View } from "react-native";
 import styles from "./styles";
+import CustomText from "../custom-text";
 
 export type CustomTextInputProps = TextInputProps & {
   label: string;
@@ -12,7 +13,7 @@ export default function CustomTextInput({
   return (
     <View style={styles.container}>
       <View style={styles.labelContainer}>
-        <Text style={styles.label}>{label}</Text>
+        <CustomText style={styles.label}>{label}</CustomText>
       </View>
 
       <View style={styles.inputContainer}>

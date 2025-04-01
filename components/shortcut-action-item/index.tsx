@@ -1,10 +1,11 @@
 import { Action } from "@/constants/types";
 import { LinearGradient } from "expo-linear-gradient";
 import { SymbolView } from "expo-symbols";
-import { Pressable, Text, useWindowDimensions, View } from "react-native";
+import { Pressable, useWindowDimensions, View } from "react-native";
 import styles from "./styles";
 import pressedOpacity from "@/utils/pressedOpacity";
 import globalStyles from "@/assets/global-styles";
+import CustomText from "../custom-text";
 
 type ShortcutActionItemProps = {
   item: Action;
@@ -49,7 +50,7 @@ export default function ShortcutActionItem({
           </Pressable>
         </View>
 
-        <Text style={styles.label}>{item.name}</Text>
+        <CustomText style={styles.label}>{item.name}</CustomText>
       </LinearGradient>
     </Pressable>
   );

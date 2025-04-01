@@ -1,6 +1,6 @@
 import CustomColorPicker from "@/components/custom-color-picker";
 import { useLayoutEffect, useState } from "react";
-import { Button, FlatList, Text, View } from "react-native";
+import { FlatList, View } from "react-native";
 import styles from "./styles";
 import LineSeparator from "@/components/line-separator";
 import { EditDetailData } from "@/constants/types";
@@ -13,6 +13,8 @@ import useAddShortcutStore, {
   AddShortcutState,
 } from "@/stores/useAddShortcutStore";
 import { useShallow } from "zustand/react/shallow";
+import CustomText from "@/components/custom-text";
+import CustomLink from "@/components/custom-link";
 
 const DETAILS_DATA: EditDetailData[] = [
   { key: "name", label: "Name", placeholder: "Enter Name", type: "input" },
@@ -58,7 +60,7 @@ export default function EditDetails() {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Button
+        <CustomLink
           title="Save"
           onPress={() => {
             console.log({ actions, details });
@@ -98,10 +100,10 @@ export default function EditDetails() {
       </View>
 
       <View style={styles.hintContainer}>
-        <Text style={styles.hint}>
+        <CustomText style={styles.hint}>
           Note: By uploading to the shortcut gallery, you agree to share your
           works with others.
-        </Text>
+        </CustomText>
       </View>
 
       <View style={styles.gradientsContainer}>
@@ -129,7 +131,7 @@ export default function EditDetails() {
         />
       </View>
 
-      <Button
+      <CustomLink
         title="SF Symbols List"
         onPress={() => WebBrowser.openBrowserAsync(SF_SYMBOLS_LIST_URL)}
       />

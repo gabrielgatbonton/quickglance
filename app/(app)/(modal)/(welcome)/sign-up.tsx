@@ -1,8 +1,7 @@
-import { Button, Pressable, Text, TextInput, View } from "react-native";
+import { TextInput, View } from "react-native";
 import styles from "./styles";
 import { SymbolView } from "expo-symbols";
 import { Colors } from "@/assets/colors";
-import pressedOpacity from "@/utils/pressedOpacity";
 import { router } from "expo-router";
 import CustomButton from "@/components/custom-button";
 import FooterBottom from "@/components/footer-bottom";
@@ -13,6 +12,9 @@ import useSignUpStore, {
 import { useShallow } from "zustand/react/shallow";
 import InputErrorView from "@/components/input-error-view";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
+import globalStyles from "@/assets/global-styles";
+import CustomText from "@/components/custom-text";
+import CustomLink from "@/components/custom-link";
 
 export default function SignUp() {
   const { userInfo, setUserInfo, isSignIn, toggleSignIn, errors } =
@@ -31,20 +33,6 @@ export default function SignUp() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.backContainer}>
-        <Pressable
-          style={({ pressed }) => pressedOpacity({ pressed })}
-          onPress={() => router.back()}
-        >
-          <SymbolView
-            name="chevron.backward"
-            size={25}
-            tintColor={Colors.PRIMARY}
-            weight="semibold"
-          />
-        </Pressable>
-      </View>
-
       <KeyboardAwareScrollView>
         <View style={[styles.headerContainer, { paddingTop: "15%" }]}>
           <SymbolView
@@ -52,11 +40,11 @@ export default function SignUp() {
             style={styles.headerImage}
             tintColor={Colors.PRIMARY}
           />
-          <Text style={styles.headerText}>Your Account</Text>
-          <Text style={styles.subHeaderText}>
+          <CustomText style={styles.headerText}>Your Account</CustomText>
+          <CustomText style={styles.subHeaderText}>
             {isSignIn ? "Sign in with" : "Create"} an account to save your
             shortcuts and access a library of shortcuts made for PWDs
-          </Text>
+          </CustomText>
         </View>
 
         <View style={styles.inputContainer}>
@@ -67,7 +55,10 @@ export default function SignUp() {
                 onChangeText={(text) => setUserInfo({ firstName: text })}
                 placeholder="First Name"
                 selectionColor={Colors.PRIMARY}
-                style={[styles.input, errors?.firstName && styles.inputError]}
+                style={[
+                  globalStyles.input,
+                  errors?.firstName && globalStyles.inputError,
+                ]}
                 autoCapitalize="words"
               />
               <InputErrorView errors={errors?.firstName} />
@@ -77,7 +68,10 @@ export default function SignUp() {
                 onChangeText={(text) => setUserInfo({ middleName: text })}
                 placeholder="Middle Name (Optional)"
                 selectionColor={Colors.PRIMARY}
-                style={[styles.input, errors?.middleName && styles.inputError]}
+                style={[
+                  globalStyles.input,
+                  errors?.middleName && globalStyles.inputError,
+                ]}
                 autoCapitalize="words"
               />
               <InputErrorView errors={errors?.middleName} />
@@ -87,7 +81,10 @@ export default function SignUp() {
                 onChangeText={(text) => setUserInfo({ lastName: text })}
                 placeholder="Last Name"
                 selectionColor={Colors.PRIMARY}
-                style={[styles.input, errors?.lastName && styles.inputError]}
+                style={[
+                  globalStyles.input,
+                  errors?.lastName && globalStyles.inputError,
+                ]}
                 autoCapitalize="words"
               />
               <InputErrorView errors={errors?.lastName} />
@@ -98,7 +95,10 @@ export default function SignUp() {
             onChangeText={(text) => setUserInfo({ email: text })}
             placeholder="Email address"
             selectionColor={Colors.PRIMARY}
-            style={[styles.input, errors?.email && styles.inputError]}
+            style={[
+              globalStyles.input,
+              errors?.email && globalStyles.inputError,
+            ]}
             autoCapitalize="none"
           />
           <InputErrorView errors={errors?.email} />
@@ -108,7 +108,10 @@ export default function SignUp() {
             onChangeText={(text) => setUserInfo({ password: text })}
             placeholder="Password"
             selectionColor={Colors.PRIMARY}
-            style={[styles.input, errors?.password && styles.inputError]}
+            style={[
+              globalStyles.input,
+              errors?.password && globalStyles.inputError,
+            ]}
             secureTextEntry
           />
           <InputErrorView errors={errors?.password} />
@@ -123,8 +126,8 @@ export default function SignUp() {
                 placeholder="Confirm Password"
                 selectionColor={Colors.PRIMARY}
                 style={[
-                  styles.input,
-                  errors?.password_confirmation && styles.inputError,
+                  globalStyles.input,
+                  errors?.password_confirmation && globalStyles.inputError,
                 ]}
                 secureTextEntry
               />
@@ -132,7 +135,7 @@ export default function SignUp() {
             </>
           )}
 
-          <Button
+          <CustomLink
             title={
               isSignIn ? "Don't have an account?" : "Already have an account?"
             }

@@ -1,10 +1,11 @@
-import { FlatList, Image, ScrollView, Text, View } from "react-native";
+import { FlatList, Image, ScrollView, View } from "react-native";
 import styles from "./styles";
 import { WelcomeData } from "@/constants/types";
 import WelcomeItem from "@/components/welcome-item";
 import { router } from "expo-router";
 import CustomButton from "@/components/custom-button";
 import FooterBottom from "@/components/footer-bottom";
+import CustomText from "@/components/custom-text";
 
 const WELCOME_DATA: WelcomeData[] = [
   {
@@ -37,7 +38,9 @@ export default function Welcome() {
             style={styles.headerImage}
             resizeMode="contain"
           />
-          <Text style={styles.headerText}>Welcome to QuickGlance</Text>
+          <CustomText style={styles.headerText}>
+            Welcome to QuickGlance
+          </CustomText>
         </View>
 
         <FlatList

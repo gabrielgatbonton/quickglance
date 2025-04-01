@@ -1,7 +1,6 @@
 import { Colors } from "@/assets/colors";
 import { useLayoutEffect, useState } from "react";
 import {
-  Button,
   FlatList,
   Pressable,
   ScrollView,
@@ -19,6 +18,7 @@ import useSearch from "@/hooks/useSearch";
 import { router, useNavigation } from "expo-router";
 import { SymbolView } from "expo-symbols";
 import pressedOpacity from "@/utils/pressedOpacity";
+import CustomLink from "@/components/custom-link";
 
 const SHORTCUTS_PER_SCREEN = 6;
 
@@ -100,7 +100,7 @@ export default function Home() {
       {isStarted ? (
         <>
           <SelfieView />
-          <Button
+          <CustomLink
             title="Cancel"
             onPress={() => setIsStarted(false)}
             color={Colors.PRIMARY}

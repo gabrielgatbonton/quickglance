@@ -1,9 +1,10 @@
 import { Colors } from "@/assets/colors";
 import pressedOpacity from "@/utils/pressedOpacity";
 import { SymbolView } from "expo-symbols";
-import { Pressable, Text, useWindowDimensions, View } from "react-native";
+import { Pressable, useWindowDimensions, View } from "react-native";
 import styles from "./styles";
 import Animated, { ZoomIn } from "react-native-reanimated";
+import CustomText from "../custom-text";
 
 type OnboardingViewProps = {
   onStartedChange: (isStarted: boolean) => void;
@@ -23,9 +24,9 @@ export default function OnboardingView({
       entering={ZoomIn.duration(200)}
       style={[styles.container, { height: onboardingHeight }]}
     >
-      <Text style={{ color: Colors.SECONDARY }}>
+      <CustomText style={{ color: Colors.SECONDARY }}>
         Do any of the following to start:
-      </Text>
+      </CustomText>
 
       <View style={styles.iconContainer}>
         <SymbolView
@@ -34,7 +35,7 @@ export default function OnboardingView({
           size={ONBOARDING_ICON_SIZE}
         />
 
-        <Text style={{ color: Colors.SECONDARY }}>or</Text>
+        <CustomText style={{ color: Colors.SECONDARY }}>or</CustomText>
 
         <Pressable
           style={({ pressed }) => pressedOpacity({ pressed })}

@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingTop: "10%",
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
     rowGap: 25,
   },
   footerContainer: {
@@ -52,16 +52,6 @@ const styles = StyleSheet.create({
     paddingTop: "6%",
     paddingHorizontal: 20,
     rowGap: 14,
-  },
-  input: {
-    backgroundColor: Colors.TERTIARY,
-    paddingVertical: 16,
-    paddingHorizontal: 14,
-    borderRadius: 13,
-  },
-  inputError: {
-    borderColor: "red",
-    borderWidth: 1,
   },
   hint: {
     color: Colors.SECONDARY,

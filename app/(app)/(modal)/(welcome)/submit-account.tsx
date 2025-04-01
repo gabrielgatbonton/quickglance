@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { ActivityIndicator, Alert, Text, View } from "react-native";
+import { ActivityIndicator, Alert, View } from "react-native";
 import styles from "./styles";
 import { useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
@@ -10,6 +10,7 @@ import useSignUpStore, {
 } from "@/stores/useSignUpStore";
 import { useShallow } from "zustand/react/shallow";
 import useAuthStore from "@/stores/useAuthStore";
+import CustomText from "@/components/custom-text";
 
 export default function SubmitAccount() {
   const { userInfo, isSignIn, setErrors, resetAll } = useSignUpStore<
@@ -66,7 +67,9 @@ export default function SubmitAccount() {
     <View style={styles.container}>
       <View style={styles.loadingContainer}>
         <ActivityIndicator />
-        <Text style={styles.loadingText}>Submitting account...</Text>
+        <CustomText style={styles.loadingText}>
+          Submitting account...
+        </CustomText>
       </View>
     </View>
   );

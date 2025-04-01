@@ -1,10 +1,11 @@
 import { SettingData } from "@/constants/types";
-import { Pressable, Switch, Text } from "react-native";
+import { Pressable, Switch } from "react-native";
 import styles from "./styles";
 import { useState } from "react";
 import { Colors } from "@/assets/colors";
 import pressedOpacity from "@/utils/pressedOpacity";
 import { SymbolView } from "expo-symbols";
+import CustomText from "../custom-text";
 
 export default function SettingItem({ item }: { item: SettingData }) {
   const [isEnabled, setIsEnabled] = useState(false);
@@ -19,19 +20,22 @@ export default function SettingItem({ item }: { item: SettingData }) {
     <Pressable
       style={({ pressed }) => [
         styles.container,
-        (item.type === "link" || item.type === "list") &&
+        (item.type === "link" ||
+          item.type === "list" ||
+          item.type === "destructive") &&
           pressedOpacity({ pressed }),
       ]}
       onPress={handlePress}
     >
-      <Text
+      <CustomText
         style={[
-          item.type === "hint" && { color: "gray" },
           item.type === "link" && { color: Colors.PRIMARY },
+          item.type === "hint" && { color: "gray" },
+          item.type === "destructive" && { color: "red" },
         ]}
       >
         {item.label}
-      </Text>
+      </CustomText>
 
       {item.type === "switch" ? (
         <Switch

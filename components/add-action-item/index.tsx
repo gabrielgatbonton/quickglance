@@ -1,11 +1,12 @@
 import { Action } from "@/constants/types";
-import { Pressable, Text, useWindowDimensions, View } from "react-native";
+import { Pressable, useWindowDimensions, View } from "react-native";
 import Animated, { ZoomIn } from "react-native-reanimated";
 import styles from "./styles";
 import { LinearGradient } from "expo-linear-gradient";
 import { SymbolView } from "expo-symbols";
 import globalStyles from "@/assets/global-styles";
 import pressedOpacity from "@/utils/pressedOpacity";
+import CustomText from "../custom-text";
 
 type AddActionItemProps = {
   item: Action;
@@ -26,7 +27,7 @@ export default function AddActionItem({
   return (
     <View style={[{ height: itemHeight }, styles.container]}>
       <View style={styles.indexContainer}>
-        <Text style={styles.indexText}>{index + 1}</Text>
+        <CustomText style={styles.indexText}>{index + 1}</CustomText>
       </View>
 
       <Animated.View
@@ -73,7 +74,7 @@ export default function AddActionItem({
             </View>
           </View>
 
-          <Text style={styles.label}>{item.name}</Text>
+          <CustomText style={styles.label}>{item.name}</CustomText>
         </LinearGradient>
       </Animated.View>
     </View>

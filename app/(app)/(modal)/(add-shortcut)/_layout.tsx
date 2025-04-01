@@ -1,8 +1,9 @@
 import { Colors } from "@/assets/colors";
+import CustomLink from "@/components/custom-link";
+import { DEFAULT_FONT_FAMILY } from "@/components/custom-text/styles";
 import useAddShortcutStore from "@/stores/useAddShortcutStore";
 import { router, Stack } from "expo-router";
 import { useEffect } from "react";
-import { Button } from "react-native";
 
 export default function AddShortcutLayout() {
   const resetAll = useAddShortcutStore((state) => state.resetAll);
@@ -18,7 +19,8 @@ export default function AddShortcutLayout() {
     <Stack
       screenOptions={{
         headerTintColor: Colors.PRIMARY,
-        headerTitleStyle: { color: "black" },
+        headerTitleStyle: { color: "black", fontFamily: DEFAULT_FONT_FAMILY },
+        headerBackTitleStyle: { fontFamily: DEFAULT_FONT_FAMILY },
       }}
     >
       <Stack.Screen
@@ -26,14 +28,14 @@ export default function AddShortcutLayout() {
         options={{
           title: "Add Shortcut",
           headerLeft: () => (
-            <Button
+            <CustomLink
               title="Cancel"
               onPress={() => router.back()}
               color={Colors.PRIMARY}
             />
           ),
           headerRight: () => (
-            <Button
+            <CustomLink
               title="Next"
               onPress={() => router.push("/edit-details")}
               color={Colors.PRIMARY}

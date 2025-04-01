@@ -1,12 +1,13 @@
 import { Colors } from "@/assets/colors";
-import { router, useNavigation } from "expo-router";
-import { useLayoutEffect, useReducer, useState } from "react";
-import { Button, TextInput } from "react-native";
+import { useReducer, useState } from "react";
+import { TextInput } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import styles from "./styles";
 import InputErrorView from "@/components/input-error-view";
 import { UserPassword, UserPasswordErrors } from "@/constants/types";
 import reducerSetter from "@/utils/reducerSetter";
+import globalStyles from "@/assets/global-styles";
+import CustomButton from "@/components/custom-button";
 
 const initialState: UserPassword = {
   password: "",
@@ -20,23 +21,6 @@ export default function ChangePassword() {
   );
   const [errors, setErrors] = useState<UserPasswordErrors>(null);
 
-  const navigation = useNavigation();
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <Button
-          title="Save"
-          onPress={() => {
-            router.back();
-            console.log("Password saved!", userPassword);
-          }}
-          color={Colors.PRIMARY}
-        />
-      ),
-    });
-  }, [navigation, userPassword]);
-
   return (
     <KeyboardAwareScrollView
       contentContainerStyle={styles.container}
@@ -47,7 +31,10 @@ export default function ChangePassword() {
         onChangeText={(text) => setUserPassword({ password: text })}
         placeholder="Password"
         selectionColor={Colors.PRIMARY}
-        style={[styles.input, errors?.password && styles.inputError]}
+        style={[
+          globalStyles.input,
+          errors?.password && globalStyles.inputError,
+        ]}
         secureTextEntry
       />
       <InputErrorView errors={errors?.password} />
@@ -60,12 +47,17 @@ export default function ChangePassword() {
         placeholder="Confirm Password"
         selectionColor={Colors.PRIMARY}
         style={[
-          styles.input,
-          errors?.password_confirmation && styles.inputError,
+          globalStyles.input,
+          errors?.password_confirmation && globalStyles.inputError,
         ]}
         secureTextEntry
       />
       <InputErrorView errors={errors?.password_confirmation} />
+
+      <CustomButton
+        title="Save"
+        onPress={() => console.log("Password saved!", { userPassword })}
+      />
     </KeyboardAwareScrollView>
   );
 }

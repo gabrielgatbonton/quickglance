@@ -1,5 +1,5 @@
 import pressedOpacity from "@/utils/pressedOpacity";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { SymbolView } from "expo-symbols";
 import styles from "./styles";
@@ -7,6 +7,7 @@ import globalStyles from "@/assets/global-styles";
 import { Shortcut } from "@/constants/types";
 import ContextMenu from "react-native-context-menu-view";
 import { SAMPLE_SERVICES } from "@/constants/sampleServices";
+import CustomText from "../custom-text";
 
 export default function StoreItem({ item }: { item: Shortcut }) {
   const owner =
@@ -62,10 +63,10 @@ export default function StoreItem({ item }: { item: Shortcut }) {
           </View>
 
           <View style={styles.detailsContainer}>
-            <Text style={styles.name}>{item.name}</Text>
-            <Text style={styles.description} numberOfLines={3}>
+            <CustomText style={styles.name}>{item.name}</CustomText>
+            <CustomText style={styles.description} numberOfLines={3}>
               {item.description}
-            </Text>
+            </CustomText>
           </View>
         </LinearGradient>
       </ContextMenu>

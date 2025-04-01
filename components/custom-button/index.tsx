@@ -3,13 +3,13 @@ import {
   Pressable,
   PressableProps,
   StyleProp,
-  Text,
   TextStyle,
   View,
   ViewStyle,
 } from "react-native";
 import styles from "./styles";
 import { Colors } from "@/assets/colors";
+import CustomText from "../custom-text";
 
 type CustomButtonProps = PressableProps & {
   title: string;
@@ -39,7 +39,7 @@ export default function CustomButton({
         {...buttonProps}
       >
         <View style={[styles.container, { backgroundColor: color }]}>
-          <Text style={[styles.title, textStyle]}>{title}</Text>
+          <CustomText style={[styles.title, textStyle]}>{title}</CustomText>
         </View>
       </Pressable>
     </View>

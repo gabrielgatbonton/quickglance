@@ -91,7 +91,7 @@ export type EditDetailData = {
 
 export type SettingData = {
   label: string;
-  type: "list" | "hint" | "link" | "switch";
+  type: "list" | "hint" | "link" | "switch" | "destructive";
   action?: () => void;
   hidden?: boolean;
 };

@@ -1,5 +1,6 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import styles from "./styles";
+import CustomText from "../custom-text";
 
 type InputErrorViewProps = {
   errors: string[] | undefined;
@@ -13,9 +14,9 @@ export default function InputErrorView({ errors }: InputErrorViewProps) {
   return (
     <View style={styles.errorContainer}>
       {errors.map((error, index) => (
-        <Text key={index} style={styles.errorText}>
+        <CustomText key={index} style={styles.errorText}>
           {error}
-        </Text>
+        </CustomText>
       ))}
     </View>
   );

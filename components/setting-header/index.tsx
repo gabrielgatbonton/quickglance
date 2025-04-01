@@ -1,5 +1,6 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import styles from "./styles";
+import CustomText from "../custom-text";
 
 type SettingHeaderProps = {
   title: string;
@@ -8,7 +9,7 @@ type SettingHeaderProps = {
 export default function SettingHeader({ title }: SettingHeaderProps) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
+      <CustomText style={styles.title}>{title}</CustomText>
     </View>
   );
 }

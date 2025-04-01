@@ -1,5 +1,6 @@
-import { Switch, SwitchProps, Text, View } from "react-native";
+import { Switch, SwitchProps, View } from "react-native";
 import styles from "./styles";
+import CustomText from "../custom-text";
 
 export type CustomSwitchProps = SwitchProps & {
   label: string;
@@ -12,7 +13,7 @@ export default function CustomSwitch({
   return (
     <View style={styles.container}>
       <View style={styles.labelContainer}>
-        <Text style={styles.label}>{label}</Text>
+        <CustomText style={styles.label}>{label}</CustomText>
       </View>
 
       <View style={styles.switchContainer}>
