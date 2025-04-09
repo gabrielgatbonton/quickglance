@@ -10,6 +10,16 @@ export const SAMPLE_SHORTCUTS: Shortcut[] = [
     gradientStart: "#FF2D55",
     gradientEnd: "#991B33",
     userName: "Mel Mathew Palana",
+    steps: [
+      {
+        id: "1",
+        actionId: "call_emergency_services",
+        inputs: {
+          phoneNumber: "911",
+          message: "Need immediate assistance!",
+        },
+      },
+    ],
   },
   {
     id: "2",
@@ -20,6 +30,16 @@ export const SAMPLE_SHORTCUTS: Shortcut[] = [
     gradientStart: "#19CCDF",
     gradientEnd: "#0E6F79",
     userName: "Sarah Johnson",
+    steps: [
+      {
+        id: "2",
+        actionId: "navigate_to_doctor",
+        inputs: {
+          location: "Nearest doctor",
+          mode: "driving",
+        },
+      },
+    ],
   },
   {
     id: "3",
@@ -30,6 +50,17 @@ export const SAMPLE_SHORTCUTS: Shortcut[] = [
     gradientStart: "#E5BC09",
     gradientEnd: "#7F6805",
     userName: "Robert Chen",
+    steps: [
+      {
+        id: "3",
+        actionId: "medication_reminder",
+        inputs: {
+          medicationName: "Aspirin",
+          dosage: "500mg",
+          time: "08:00 AM",
+        },
+      },
+    ],
   },
   {
     id: "4",
@@ -40,6 +71,16 @@ export const SAMPLE_SHORTCUTS: Shortcut[] = [
     gradientStart: "#0EABEF",
     gradientEnd: "#086289",
     userName: "Emily Martinez",
+    steps: [
+      {
+        id: "4",
+        actionId: "voice_to_text_message",
+        inputs: {
+          message: "Hello, how are you?",
+          recipient: "John Doe",
+        },
+      },
+    ],
   },
   {
     id: "5",
@@ -50,6 +91,16 @@ export const SAMPLE_SHORTCUTS: Shortcut[] = [
     gradientStart: "#19CCDF",
     gradientEnd: "#0E6F79",
     userName: "James Wilson",
+    steps: [
+      {
+        id: "5",
+        actionId: "order_groceries",
+        inputs: {
+          items: ["Milk", "Bread", "Eggs"],
+          deliveryAddress: "123 Main St, Cityville",
+        },
+      },
+    ],
   },
   {
     id: "6",
@@ -60,5 +111,15 @@ export const SAMPLE_SHORTCUTS: Shortcut[] = [
     gradientStart: "#37DF19",
     gradientEnd: "#1E790E",
     userName: "Maria Garcia",
+    steps: [
+      {
+        id: "6",
+        actionId: "call_transportation",
+        inputs: {
+          pickupLocation: "Current location",
+          destination: "Airport",
+        },
+      },
+    ],
   },
 ];
