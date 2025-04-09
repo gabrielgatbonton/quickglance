@@ -1,5 +1,6 @@
-import { Action, User } from "@/constants/types";
+import { Action, User, UserPassword } from "@/constants/types";
 import QuickGlanceAPI from "./QuickGlanceAPI";
+import useAuthStore from "@/stores/useAuthStore";
 
 type RegisterParams = {
   firstName: string;
@@ -38,10 +39,33 @@ type SearchParams = {
 
 /* Auth */
 export const getUser = async (): Promise<User> => {
-  const {
-    data: { user },
-  } = await QuickGlanceAPI.get("/auth/user");
-  return user;
+  try {
+    const {
+      data: { user },
+    } = await QuickGlanceAPI.get("/auth/user");
+
+    return {
+      id: user.id,
+      firstName: user.first_name,
+      middleName: user.middle_name,
+      lastName: user.last_name,
+      email: user.email,
+    };
+  } catch (error) {
+    console.log("Error fetching user", error);
+
+    // If token is present, handle logout
+    if (useAuthStore.getState().token) {
+      useAuthStore.getState().handleLogout();
+    }
+    throw error;
+  }
+};
+export const updateUser = async (
+  id: string,
+  params: Partial<User> | UserPassword,
+) => {
+  return await QuickGlanceAPI.put(`/auth/update/${id}`, params);
 };
 export const register = async (params: RegisterParams) => {
   return await QuickGlanceAPI.post("/auth/register", params);
