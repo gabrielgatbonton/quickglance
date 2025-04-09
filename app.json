@@ -50,8 +50,8 @@
         "expo-asset",
         {
           "assets": [
-            "./assets/images/services",
             "./assets/images/categories",
+            "./assets/images/services",
             "./assets/images"
           ]
         }
