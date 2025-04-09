@@ -9,6 +9,7 @@ export type WelcomeData = {
 };
 
 export type User = {
+  id?: string;
   firstName: string;
   middleName: string;
   lastName: string;
@@ -32,6 +33,12 @@ export type UserPasswordErrors =
     }
   | null;
 
+export type ShortcutStep = {
+  id: string;
+  actionId: string;
+  inputs: Record<string, any>;
+};
+
 export type Shortcut = {
   id: string;
   name: string;
@@ -40,13 +47,29 @@ export type Shortcut = {
   gradientStart: string;
   gradientEnd: string;
   userName?: string;
+  steps: ShortcutStep[];
   serviceId?: string;
 };
 
 export type ActionInput = {
   name: string;
-  value?: string;
+  value?: any;
+  type?:
+    | "text"
+    | "number"
+    | "select"
+    | "slider"
+    | "file"
+    | "action"
+    | "datetime";
   placeholder?: string;
+  multiline?: boolean;
+  default?: any;
+  min?: number;
+  max?: number;
+  options?: string[];
+  fileTypes?: string[];
+  required?: boolean;
 };
 
 export type Action = {
