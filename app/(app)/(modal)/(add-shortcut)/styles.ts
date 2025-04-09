@@ -58,11 +58,14 @@ const styles = StyleSheet.create({
   sheetHeaderTitle: {
     fontWeight: "500",
     fontSize: 18,
+    width: "35%",
+    textAlign: "center",
   },
   contentContainer: {
     columnGap: 15,
     rowGap: 15,
     paddingHorizontal: 15,
+    paddingBottom: 50,
   },
   columnWrapper: {
     columnGap: 10,
