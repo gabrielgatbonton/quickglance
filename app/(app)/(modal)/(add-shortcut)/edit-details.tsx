@@ -62,6 +62,7 @@ export default function EditDetails() {
       headerRight: () => (
         <CustomLink
           title="Save"
+          bold
           onPress={() => {
             console.log({ actions, details });
             router.dismissAll();

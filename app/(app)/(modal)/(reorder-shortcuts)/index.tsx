@@ -33,6 +33,7 @@ export default function ReorderShortcuts() {
       headerRight: () => (
         <CustomLink
           title="Done"
+          bold
           onPress={() => {
             router.back();
             console.log("Shortcuts saved!");
