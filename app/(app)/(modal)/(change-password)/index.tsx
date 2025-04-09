@@ -1,6 +1,6 @@
 import { Colors } from "@/assets/colors";
 import { useReducer, useState } from "react";
-import { TextInput } from "react-native";
+import { ActivityIndicator, Alert, TextInput } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import styles from "./styles";
 import InputErrorView from "@/components/input-error-view";
@@ -8,6 +8,9 @@ import { UserPassword, UserPasswordErrors } from "@/constants/types";
 import reducerSetter from "@/utils/reducerSetter";
 import globalStyles from "@/assets/global-styles";
 import CustomButton from "@/components/custom-button";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getUser, updateUser } from "@/services/apiService";
+import { router } from "expo-router";
 
 const initialState: UserPassword = {
   password: "",
@@ -20,6 +23,28 @@ export default function ChangePassword() {
     initialState,
   );
   const [errors, setErrors] = useState<UserPasswordErrors>(null);
+
+  const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: getUser,
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["changePassword"],
+    mutationFn: (data: UserPassword) => updateUser(user?.id!, data),
+    onSuccess: async ({ data }) => {
+      console.log({ data });
+
+      Alert.alert("Success", "Password changed successfully");
+      router.back();
+    },
+    onError: ({ response }: any) => {
+      console.log({ error: response });
+
+      Alert.alert("Please try again", response?.data.message);
+      setErrors(response?.data.errors);
+    },
+  });
 
   return (
     <KeyboardAwareScrollView
@@ -54,10 +79,11 @@ export default function ChangePassword() {
       />
       <InputErrorView errors={errors?.password_confirmation} />
 
-      <CustomButton
-        title="Save"
-        onPress={() => console.log("Password saved!", { userPassword })}
-      />
+      {isPending ? (
+        <ActivityIndicator />
+      ) : (
+        <CustomButton title="Save" onPress={() => mutate(userPassword)} />
+      )}
     </KeyboardAwareScrollView>
   );
 }
