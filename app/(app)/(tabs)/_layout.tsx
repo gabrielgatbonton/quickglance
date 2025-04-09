@@ -1,7 +1,6 @@
 import { Colors } from "@/assets/colors";
 import AddShortcutButton from "@/components/add-shortcut-button";
 import useAuthStore, { AuthStoreState } from "@/stores/useAuthStore";
-import { useMutationState } from "@tanstack/react-query";
 import { router, Tabs } from "expo-router";
 import { SymbolView } from "expo-symbols";
 import { useEffect } from "react";
@@ -18,25 +17,16 @@ export default function TabLayout() {
     })),
   );
 
-  const [status] = useMutationState({
-    filters: { mutationKey: ["submitAccount"] },
-    select: (mutation) => mutation.state.status,
-  });
-
   // Redirect to welcome screen if no token
   useEffect(() => {
-    if (!isTokenLoaded) {
-      return;
-    }
-
-    if (!token) {
+    if (isTokenLoaded && !token) {
       router.push("/(modal)/(welcome)");
     }
   }, [isTokenLoaded, token]);
 
   return (
     <>
-      {status === "success" && <Confetti isInfinite={false} />}
+      {token && <Confetti isInfinite={false} />}
 
       <Tabs
         screenOptions={{
@@ -54,6 +44,7 @@ export default function TabLayout() {
               <SymbolView name="house.fill" tintColor={color} />
             ),
           }}
+          redirect={!token}
         />
         <Tabs.Screen
           name="(store)"
@@ -66,12 +57,14 @@ export default function TabLayout() {
               />
             ),
           }}
+          redirect={!token}
         />
         <Tabs.Screen
           name="add-shortcut-index"
           options={{
             tabBarButton: (props) => <AddShortcutButton {...props} />,
           }}
+          redirect={!token}
         />
         <Tabs.Screen
           name="(automation)"
@@ -81,6 +74,7 @@ export default function TabLayout() {
               <SymbolView name="timer" tintColor={color} />
             ),
           }}
+          redirect={!token}
         />
         <Tabs.Screen
           name="(settings)"
@@ -90,6 +84,7 @@ export default function TabLayout() {
               <SymbolView name="gear" tintColor={color} />
             ),
           }}
+          redirect={!token}
         />
       </Tabs>
     </>
