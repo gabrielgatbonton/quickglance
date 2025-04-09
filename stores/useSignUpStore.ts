@@ -49,7 +49,8 @@ const useSignUpStore = create<SignUpState & SignUpActions>((set) => ({
     });
   },
   setErrors: (errors) => set(() => ({ errors })),
-  toggleSignIn: () => set((state) => ({ isSignIn: !state.isSignIn })),
+  toggleSignIn: () =>
+    set((state) => ({ isSignIn: !state.isSignIn, errors: null })),
   resetAll: () =>
     set(() => ({
       userInfo: initialUserInfoState,
