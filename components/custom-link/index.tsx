@@ -13,12 +13,14 @@ import styles from "./styles";
 
 type CustomLinkProps = PressableProps & {
   title: string;
+  bold?: boolean;
   color?: ColorValue;
   textProps?: TextProps;
 };
 
 export default function CustomLink({
   title,
+  bold = false,
   color = Colors.PRIMARY,
   disabled,
   textProps = {},
@@ -37,6 +39,7 @@ export default function CustomLink({
         style={[
           styles.link,
           { color },
+          bold && { fontWeight: "bold" },
           disabled && { opacity: 0.5 },
           textProps.style,
         ]}
