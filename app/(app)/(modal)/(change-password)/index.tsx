@@ -79,11 +79,12 @@ export default function ChangePassword() {
       />
       <InputErrorView errors={errors?.password_confirmation} />
 
-      {isPending ? (
-        <ActivityIndicator />
-      ) : (
-        <CustomButton title="Save" onPress={() => mutate(userPassword)} />
-      )}
+      <CustomButton
+        title="Save"
+        onPress={() => mutate(userPassword)}
+        disabled={isPending}
+      />
+      {isPending && <ActivityIndicator />}
     </KeyboardAwareScrollView>
   );
 }

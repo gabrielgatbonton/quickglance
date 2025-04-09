@@ -108,11 +108,12 @@ export default function EditProfile() {
       />
       <InputErrorView errors={errors?.email} />
 
-      {isPending ? (
-        <ActivityIndicator />
-      ) : (
-        <CustomButton title="Save" onPress={() => mutate(userInfo)} />
-      )}
+      <CustomButton
+        title="Save"
+        onPress={() => mutate(userInfo)}
+        disabled={isPending}
+      />
+      {isPending && <ActivityIndicator />}
     </KeyboardAwareScrollView>
   );
 }
