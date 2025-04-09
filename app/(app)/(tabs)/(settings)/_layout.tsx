@@ -17,7 +17,7 @@ export default function SettingsLayout() {
         }}
       />
       <Stack.Screen
-        name="(uploaded-shortcuts)/uploaded-shortcuts"
+        name="uploaded-shortcuts"
         options={{
           title: "Uploaded Shortcuts",
           headerTintColor: Colors.PRIMARY,
