@@ -4,7 +4,7 @@ import { SAMPLE_AUTOMATION } from "@/constants/sampleAutomation";
 import { FlatList, Pressable, ScrollView } from "react-native";
 import styles from "./styles";
 import { useLayoutEffect, useRef } from "react";
-import { useNavigation } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import { SymbolView } from "expo-symbols";
 import { Colors } from "@/assets/colors";
 import pressedOpacity from "@/utils/pressedOpacity";
@@ -24,7 +24,10 @@ export default function Automation() {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Pressable style={({ pressed }) => pressedOpacity({ pressed })}>
+        <Pressable
+          style={({ pressed }) => pressedOpacity({ pressed })}
+          onPress={() => router.navigate("/(modal)/(add-automation)")}
+        >
           <SymbolView
             name="plus.circle.fill"
             size={30}
