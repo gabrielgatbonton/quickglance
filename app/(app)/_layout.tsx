@@ -45,6 +45,12 @@ export default function RootLayout() {
         }}
       />
       <Stack.Screen
+        name="(modal)/(add-automation)"
+        options={{
+          presentation: "modal",
+        }}
+      />
+      <Stack.Screen
         name="(modal)/(edit-profile)"
         options={{
           presentation: "modal",
