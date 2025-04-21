@@ -13,10 +13,18 @@ export const SAMPLE_SHORTCUTS: Shortcut[] = [
     steps: [
       {
         id: "1",
-        actionId: "call_emergency_services",
+        actionId: "d1",
         inputs: {
           phoneNumber: "911",
           message: "Need immediate assistance!",
+        },
+      },
+      {
+        id: "2",
+        actionId: "d2",
+        inputs: {
+          recipient: "Mom",
+          message: "I need help!",
         },
       },
     ],
@@ -32,11 +40,16 @@ export const SAMPLE_SHORTCUTS: Shortcut[] = [
     userName: "Sarah Johnson",
     steps: [
       {
-        id: "2",
-        actionId: "navigate_to_doctor",
+        id: "3",
+        actionId: "l1",
+        inputs: {},
+      },
+      {
+        id: "4",
+        actionId: "l3",
         inputs: {
-          location: "Nearest doctor",
-          mode: "driving",
+          startLocation: "Current location",
+          endLocation: "Nearest hospital",
         },
       },
     ],
@@ -52,7 +65,7 @@ export const SAMPLE_SHORTCUTS: Shortcut[] = [
     userName: "Robert Chen",
     steps: [
       {
-        id: "3",
+        id: "5",
         actionId: "medication_reminder",
         inputs: {
           medicationName: "Aspirin",
@@ -73,7 +86,7 @@ export const SAMPLE_SHORTCUTS: Shortcut[] = [
     userName: "Emily Martinez",
     steps: [
       {
-        id: "4",
+        id: "6",
         actionId: "voice_to_text_message",
         inputs: {
           message: "Hello, how are you?",
@@ -93,7 +106,7 @@ export const SAMPLE_SHORTCUTS: Shortcut[] = [
     userName: "James Wilson",
     steps: [
       {
-        id: "5",
+        id: "7",
         actionId: "order_groceries",
         inputs: {
           items: ["Milk", "Bread", "Eggs"],
@@ -113,7 +126,7 @@ export const SAMPLE_SHORTCUTS: Shortcut[] = [
     userName: "Maria Garcia",
     steps: [
       {
-        id: "6",
+        id: "8",
         actionId: "call_transportation",
         inputs: {
           pickupLocation: "Current location",

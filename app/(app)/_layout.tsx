@@ -26,38 +26,59 @@ export default function RootLayout() {
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(tabs)" />
       <Stack.Screen
-        name="(modal)/(welcome)"
+        name="(modal)/welcome"
         options={{
           presentation: "modal",
           gestureEnabled: Boolean(token),
         }}
       />
       <Stack.Screen
-        name="(modal)/(add-shortcut)"
+        name="(modal)/add-shortcut"
+        options={{
+          presentation: "modal",
+          gestureEnabled: false,
+        }}
+      />
+      <Stack.Screen
+        name="(modal)/reorder-shortcuts"
         options={{
           presentation: "modal",
         }}
       />
       <Stack.Screen
-        name="(modal)/(reorder-shortcuts)"
+        name="(modal)/add-automation"
         options={{
           presentation: "modal",
         }}
       />
       <Stack.Screen
-        name="(modal)/(add-automation)"
+        name="(modal)/edit-profile"
         options={{
           presentation: "modal",
         }}
       />
       <Stack.Screen
-        name="(modal)/(edit-profile)"
+        name="(modal)/change-password"
         options={{
           presentation: "modal",
         }}
       />
       <Stack.Screen
-        name="(modal)/(change-password)"
+        name="(modal)/run-shortcut"
+        options={{
+          presentation: "modal",
+        }}
+      />
+      <Stack.Screen
+        name="(modal)/install-shortcut"
+        options={{
+          presentation: "modal",
+        }}
+      />
+
+      {/* Test screens */}
+      <Stack.Screen
+        name="(modal)/camera-test/index"
         options={{
           presentation: "modal",
         }}

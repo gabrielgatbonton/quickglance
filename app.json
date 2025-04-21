@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
@@ -52,11 +52,24 @@
           "assets": [
             "./assets/images/categories",
             "./assets/images/services",
-            "./assets/images"
+            "./assets/images/mesh_gradient.png",
+            "./assets/images/quickglance_logo.png"
           ]
         }
       ],
-      "expo-secure-store"
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "minSdkVersion": 26
+          },
+          "ios": {
+            "deploymentTarget": "15.1"
+          }
+        }
+      ],
+      "expo-secure-store",
+      "react-native-vision-camera"
     ],
     "experiments": {
       "typedRoutes": true

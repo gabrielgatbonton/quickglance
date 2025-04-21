@@ -9,7 +9,7 @@ export default function AddShortcutButton(props: PressableProps) {
     <Pressable
       {...props}
       style={({ pressed }) => [styles.container, pressedOpacity({ pressed })]}
-      onPress={() => router.navigate("/(modal)/(add-shortcut)")}
+      onPress={() => router.navigate("/(modal)/add-shortcut")}
     >
       <SymbolView name="plus" tintColor="white" />
     </Pressable>

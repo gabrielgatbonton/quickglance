@@ -5,15 +5,17 @@ import {
   setAPIHeaderToken,
 } from "@/services/QuickGlanceAPI";
 import { queryClient } from "@/app/_layout";
+import { User } from "@/constants/types";
 
 export type AuthStoreState = {
   isTokenLoaded: boolean;
   token: string | null;
+  user: User | null;
 };
 
 export type AuthStoreActions = {
   refreshAuth: () => void;
-  handleLogin: (token: string) => void;
+  handleLogin: (token: string, user?: User) => void;
   handleLogout: () => void;
 };
 
@@ -44,7 +46,7 @@ const useAuthStore = create<AuthStoreState & AuthStoreActions>((set) => ({
     // Set token loaded state to true
     set({ isTokenLoaded: true });
   },
-  handleLogin: async (token) => {
+  handleLogin: async (token, user) => {
     // Store token securely
     SecureStore.setItem(USER_TOKEN_KEY, token);
 
@@ -55,7 +57,7 @@ const useAuthStore = create<AuthStoreState & AuthStoreActions>((set) => ({
     await queryClient.resetQueries();
 
     // Update store state
-    set({ token });
+    set({ token, user });
   },
   handleLogout: async () => {
     // Remove token from secure storage

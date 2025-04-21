@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   },
   pickerContainer: {
     alignSelf: "center",
-    width: 300,
+    width: 350,
     backgroundColor: "white",
     padding: 20,
     borderRadius: 20,
@@ -20,8 +20,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.34,
     shadowRadius: 6.27,
-
-    elevation: 10,
   },
   panelStyle: {
     borderRadius: 16,
@@ -29,16 +27,14 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 12,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
+    shadowOpacity: 0.58,
+    shadowRadius: 16.0,
   },
   sliderStyle: {
     borderRadius: 20,
-    marginTop: 20,
+    marginTop: 25,
 
     shadowColor: "#000",
     shadowOffset: {
@@ -47,8 +43,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-
-    elevation: 5,
   },
   previewTxtContainer: {
     paddingTop: 20,
@@ -85,7 +79,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignSelf: "center",
     padding: 30,
-    columnGap: 20,
+    columnGap: 45,
   },
 });
 

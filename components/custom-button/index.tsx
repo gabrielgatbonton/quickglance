@@ -1,5 +1,6 @@
 import pressedOpacity from "@/utils/pressedOpacity";
 import {
+  ActivityIndicator,
   Pressable,
   PressableProps,
   StyleProp,
@@ -14,6 +15,7 @@ import CustomText from "../custom-text";
 type CustomButtonProps = PressableProps & {
   title: string;
   color?: string;
+  loading?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
 };
@@ -21,6 +23,7 @@ type CustomButtonProps = PressableProps & {
 export default function CustomButton({
   title,
   color = Colors.PRIMARY,
+  loading = false,
   onPress,
   disabled,
   containerStyle = {},
@@ -28,20 +31,25 @@ export default function CustomButton({
   ...buttonProps
 }: CustomButtonProps) {
   return (
-    <View style={containerStyle}>
-      <Pressable
-        onPress={onPress}
-        disabled={disabled}
-        style={({ pressed }) => [
-          pressedOpacity({ pressed }),
-          disabled && { opacity: 0.5 },
-        ]}
-        {...buttonProps}
+    <Pressable
+      {...buttonProps}
+      onPress={onPress}
+      disabled={disabled}
+      style={({ pressed }) => [
+        pressedOpacity({ pressed }),
+        disabled && { opacity: 0.5 },
+        buttonProps?.style as StyleProp<ViewStyle>,
+      ]}
+    >
+      <View
+        style={[styles.container, containerStyle, { backgroundColor: color }]}
       >
-        <View style={[styles.container, { backgroundColor: color }]}>
+        {loading ? (
+          <ActivityIndicator color="white" />
+        ) : (
           <CustomText style={[styles.title, textStyle]}>{title}</CustomText>
-        </View>
-      </Pressable>
-    </View>
+        )}
+      </View>
+    </Pressable>
   );
 }

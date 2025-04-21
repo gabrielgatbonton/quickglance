@@ -1,11 +1,12 @@
 import { create } from "zustand";
-import { Action, ActionInput } from "@/constants/types";
+import { Action } from "@/constants/types";
+import { SFSymbol } from "expo-symbols";
 
 export type AddShortcutState = {
   details: {
     name: string;
     description: string;
-    icon: string;
+    icon: SFSymbol;
     isUpload: boolean;
     gradientStart: string;
     gradientEnd: string;
@@ -15,17 +16,16 @@ export type AddShortcutState = {
 
 export type AddShortcutActions = {
   setDetails: (details: Partial<AddShortcutState["details"]>) => void;
-  addOrUpdateAction: (action: Action, inputs?: ActionInput[]) => void;
-  removeAction: (id: string) => void;
-  resetActions: (actions: Action[]) => void;
-  resetDetails: (details: AddShortcutState["details"]) => void;
+  setActions: (actions: Action[]) => void;
+  addOrUpdateAction: (action: Action) => void;
+  removeAction: (key: string) => void;
   resetAll: () => void;
 };
 
 const initialDetailState: AddShortcutState["details"] = {
   name: "",
   description: "",
-  icon: "",
+  icon: "" as SFSymbol,
   isUpload: false,
   gradientStart: "",
   gradientEnd: "",
@@ -37,38 +37,37 @@ const useAddShortcutStore = create<AddShortcutState & AddShortcutActions>(
     actions: [],
     setDetails: (details) =>
       set((state) => ({ details: { ...state.details, ...details } })),
-    addOrUpdateAction: (action, inputs) =>
+    setActions: (actions) => set({ actions }),
+    addOrUpdateAction: (action) =>
       set((state) => {
         const existingIndex = state.actions.findIndex(
-          (existingAction) => existingAction.id === action.id,
+          (existingAction) => existingAction.key === action.key,
         );
 
         // If action doesn't exist, add it to the array
         if (existingIndex === -1) {
           return {
-            actions: [...state.actions, { ...action, inputs }],
+            actions: [...state.actions, action],
           };
         }
 
         // Otherwise update the existing action
         return {
           actions: state.actions.map((existingAction) => {
-            if (existingAction.id === action.id) {
-              return { ...action, inputs };
+            if (existingAction.key === action.key) {
+              return action;
             }
 
             return existingAction;
           }),
         };
       }),
-    removeAction: (id: string) =>
+    removeAction: (key: string) =>
       set((state) => ({
         actions: state.actions.filter(
-          (existingAction) => existingAction.id !== id,
+          (existingAction) => existingAction.key !== key,
         ),
       })),
-    resetActions: (actions) => set({ actions }),
-    resetDetails: (details) => set({ details }),
     resetAll: () => set({ details: initialDetailState, actions: [] }),
   }),
 );

@@ -1,6 +1,7 @@
 import { Action, User, UserPassword } from "@/constants/types";
 import QuickGlanceAPI from "./QuickGlanceAPI";
 import useAuthStore from "@/stores/useAuthStore";
+import { Alert } from "react-native";
 
 type RegisterParams = {
   firstName: string;
@@ -51,8 +52,16 @@ export const getUser = async (): Promise<User> => {
       lastName: user.last_name,
       email: user.email,
     };
-  } catch (error) {
+  } catch (error: any) {
     console.log("Error fetching user", error);
+
+    // Handle session expiration
+    if (error.response?.status === 401) {
+      Alert.alert(
+        "Session Expired",
+        "Your session has expired. Please log in again.",
+      );
+    }
 
     // If token is present, handle logout
     if (useAuthStore.getState().token) {

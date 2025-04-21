@@ -1,26 +1,49 @@
-import pressedOpacity from "@/utils/pressedOpacity";
 import { SymbolView } from "expo-symbols";
-import { Pressable } from "react-native";
-import SelfieCamera from "../selfie-camera";
+import SelfieCamera, { SelfieCameraProps } from "../selfie-camera";
 import styles from "./styles";
-import Animated, { FadeIn } from "react-native-reanimated";
+import { TurnDirection } from "@/constants/types";
+import { View } from "react-native";
+import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 
-export default function SelfieView() {
+type SelfieViewProps = SelfieCameraProps & {
+  isVisible: boolean;
+  turnDirection?: TurnDirection;
+};
+
+export default function SelfieView({
+  isVisible,
+  turnDirection,
+  ...props
+}: SelfieViewProps) {
   return (
-    <Animated.View entering={FadeIn.duration(300)} style={styles.container}>
-      <Pressable style={({ pressed }) => pressedOpacity({ pressed })}>
-        <SymbolView
-          name="arrow.backward.circle"
-          size={60}
-          tintColor="lightgray"
-        />
-      </Pressable>
+    <View style={isVisible && styles.container}>
+      {isVisible && (
+        <Animated.View
+          entering={FadeIn.duration(250)}
+          exiting={FadeOut.duration(300)}
+        >
+          <SymbolView
+            name="arrow.backward.circle"
+            size={60}
+            tintColor={turnDirection === "left" ? "gray" : "lightgray"}
+          />
+        </Animated.View>
+      )}
 
-      <SelfieCamera />
+      <SelfieCamera isVisible={isVisible} {...props} />
 
-      <Pressable style={({ pressed }) => pressedOpacity({ pressed })}>
-        <SymbolView name="arrow.right.circle" size={60} tintColor="lightgray" />
-      </Pressable>
-    </Animated.View>
+      {isVisible && (
+        <Animated.View
+          entering={FadeIn.duration(250)}
+          exiting={FadeOut.duration(300)}
+        >
+          <SymbolView
+            name="arrow.right.circle"
+            size={60}
+            tintColor={turnDirection === "right" ? "gray" : "lightgray"}
+          />
+        </Animated.View>
+      )}
+    </View>
   );
 }

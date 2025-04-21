@@ -1,6 +1,6 @@
 import { Action } from "@/constants/types";
 import { Pressable, useWindowDimensions, View } from "react-native";
-import Animated, { ZoomIn } from "react-native-reanimated";
+import Animated, { Easing, ZoomIn, ZoomOut } from "react-native-reanimated";
 import styles from "./styles";
 import { LinearGradient } from "expo-linear-gradient";
 import { SymbolView } from "expo-symbols";
@@ -11,14 +11,12 @@ import CustomText from "../custom-text";
 type AddActionItemProps = {
   item: Action;
   index: number;
-  onActionEdit?: (action: Action) => void;
   onActionDelete?: (action: Action) => void;
 };
 
 export default function AddActionItem({
   item,
   index,
-  onActionEdit,
   onActionDelete,
 }: AddActionItemProps) {
   const { height } = useWindowDimensions();
@@ -31,7 +29,8 @@ export default function AddActionItem({
       </View>
 
       <Animated.View
-        entering={ZoomIn.duration(150)}
+        entering={ZoomIn.duration(150).easing(Easing.out(Easing.exp))}
+        exiting={ZoomOut.duration(500).easing(Easing.out(Easing.exp))}
         style={styles.animatedContainer}
       >
         <LinearGradient
@@ -57,18 +56,6 @@ export default function AddActionItem({
                   onPress={() => onActionDelete(item)}
                 >
                   <SymbolView name="xmark" size={15} tintColor="white" />
-                </Pressable>
-              )}
-
-              {onActionEdit && (
-                <Pressable
-                  style={({ pressed }) => [
-                    globalStyles.transparentButton,
-                    pressedOpacity({ pressed }),
-                  ]}
-                  onPress={() => onActionEdit(item)}
-                >
-                  <SymbolView name="pencil" size={15} tintColor="white" />
                 </Pressable>
               )}
             </View>

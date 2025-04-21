@@ -6,12 +6,12 @@ export default function TabIndex() {
   const token = useAuthStore((state) => state.token);
 
   if (token) {
-    return <Redirect href="/(home)" />;
+    return <Redirect href="/home" />;
   }
 
   return (
     <ImageBackground
-      source={{ uri: "mesh-gradient" }}
+      source={{ uri: "mesh_gradient" }}
       style={styles.container}
     />
   );
@@ -20,6 +20,8 @@ export default function TabIndex() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   logo: {
     aspectRatio: 1,

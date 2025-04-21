@@ -1,3 +1,4 @@
+import { Colors } from "@/assets/colors";
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
@@ -7,7 +8,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   errorText: {
-    color: "red",
+    color: Colors.ERROR,
   },
 });
 

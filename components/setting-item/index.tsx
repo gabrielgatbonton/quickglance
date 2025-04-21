@@ -31,7 +31,7 @@ export default function SettingItem({ item }: { item: SettingData }) {
         style={[
           item.type === "link" && { color: Colors.PRIMARY },
           item.type === "hint" && { color: "gray" },
-          item.type === "destructive" && { color: "red" },
+          item.type === "destructive" && { color: Colors.ERROR },
         ]}
       >
         {item.label}

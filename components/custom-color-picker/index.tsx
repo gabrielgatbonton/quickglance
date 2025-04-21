@@ -1,4 +1,9 @@
-import Animated, { useSharedValue, ZoomIn } from "react-native-reanimated";
+import Animated, {
+  Easing,
+  FadeIn,
+  useSharedValue,
+  ZoomIn,
+} from "react-native-reanimated";
 import ColorPicker, {
   Panel1,
   Swatches,
@@ -10,10 +15,10 @@ import styles from "./styles";
 import { Modal, Pressable, ScrollView, View } from "react-native";
 import { BlurView } from "expo-blur";
 import pressedOpacity from "@/utils/pressedOpacity";
-import { Colors } from "@/assets/colors";
 import { SymbolView } from "expo-symbols";
 import CustomButton from "../custom-button";
 import { useEffect } from "react";
+import { Colors } from "@/assets/colors";
 
 type CustomColorPickerProps = {
   label: string;
@@ -78,12 +83,12 @@ export default function CustomColorPicker({
       <Modal
         onRequestClose={() => onVisibilityChange(false)}
         visible={isVisible}
-        animationType="fade"
+        animationType="slide"
         transparent
       >
-        <BlurView intensity={85} style={styles.container}>
+        <BlurView intensity={60} style={styles.container}>
           <Animated.View
-            entering={ZoomIn.duration(200)}
+            entering={ZoomIn.duration(200).easing(Easing.out(Easing.quad))}
             style={styles.pickerContainer}
           >
             <ColorPicker
@@ -113,7 +118,10 @@ export default function CustomColorPicker({
             </ColorPicker>
           </Animated.View>
 
-          <View style={styles.buttonContainer}>
+          <Animated.View
+            entering={FadeIn.delay(200)}
+            style={styles.buttonContainer}
+          >
             <Pressable
               style={({ pressed }) => pressedOpacity({ pressed })}
               onPress={() => onVisibilityChange(false)}
@@ -122,6 +130,7 @@ export default function CustomColorPicker({
                 name="xmark.circle"
                 size={50}
                 tintColor={Colors.SECONDARY}
+                weight="light"
               />
             </Pressable>
 
@@ -135,10 +144,11 @@ export default function CustomColorPicker({
               <SymbolView
                 name="checkmark.circle"
                 size={50}
-                tintColor={Colors.SECONDARY}
+                tintColor={Colors.PRIMARY}
+                weight="regular"
               />
             </Pressable>
-          </View>
+          </Animated.View>
         </BlurView>
       </Modal>
     </>

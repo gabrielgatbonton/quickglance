@@ -8,6 +8,7 @@ import { Shortcut } from "@/constants/types";
 import ContextMenu from "react-native-context-menu-view";
 import { SAMPLE_SERVICES } from "@/constants/sampleServices";
 import CustomText from "../custom-text";
+import { router } from "expo-router";
 
 export default function StoreItem({ item }: { item: Shortcut }) {
   const owner =
@@ -18,10 +19,15 @@ export default function StoreItem({ item }: { item: Shortcut }) {
   return (
     <Pressable
       style={({ pressed }) => pressedOpacity({ pressed, opacity: 0.6 })}
+      onPress={() => router.navigate(`/install-shortcut/${item.id}`)}
     >
       <ContextMenu
         actions={[
-          { title: "Download", systemIcon: "square.and.arrow.down" },
+          {
+            title: "Download Shortcut",
+            systemIcon: "square.and.arrow.down",
+            subtitle: item.name,
+          },
 
           ...(item.userName || item.serviceId
             ? [

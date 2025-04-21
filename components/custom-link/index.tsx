@@ -4,6 +4,7 @@ import {
   PressableProps,
   StyleProp,
   TextProps,
+  TextStyle,
   ViewStyle,
 } from "react-native";
 import CustomText from "../custom-text";
@@ -16,6 +17,8 @@ type CustomLinkProps = PressableProps & {
   bold?: boolean;
   color?: ColorValue;
   textProps?: TextProps;
+  containerStyle?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
 };
 
 export default function CustomLink({
@@ -24,15 +27,15 @@ export default function CustomLink({
   color = Colors.PRIMARY,
   disabled,
   textProps = {},
+  containerStyle = {},
+  textStyle = {},
   ...props
 }: CustomLinkProps) {
   return (
     <Pressable
       {...props}
-      style={({ pressed }) => [
-        pressedOpacity({ pressed }),
-        props.style as StyleProp<ViewStyle>,
-      ]}
+      style={({ pressed }) => [pressedOpacity({ pressed }), containerStyle]}
+      disabled={disabled}
     >
       <CustomText
         {...textProps}
@@ -41,7 +44,7 @@ export default function CustomLink({
           { color },
           bold && { fontWeight: "bold" },
           disabled && { opacity: 0.5 },
-          textProps.style,
+          textStyle,
         ]}
       >
         {title}

@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { Colors } from "./colors";
 
 const globalStyles = StyleSheet.create({
   container: {
@@ -24,7 +25,7 @@ const globalStyles = StyleSheet.create({
     borderRadius: 13,
   },
   inputError: {
-    borderColor: "red",
+    borderColor: Colors.ERROR,
     borderWidth: 1,
   },
 });

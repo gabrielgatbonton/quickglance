@@ -3,8 +3,9 @@ import pressedOpacity from "@/utils/pressedOpacity";
 import { SymbolView } from "expo-symbols";
 import { Pressable, useWindowDimensions, View } from "react-native";
 import styles from "./styles";
-import Animated, { ZoomIn } from "react-native-reanimated";
+import Animated, { Easing, ZoomIn } from "react-native-reanimated";
 import CustomText from "../custom-text";
+import { router } from "expo-router";
 
 type OnboardingViewProps = {
   onStartedChange: (isStarted: boolean) => void;
@@ -17,11 +18,11 @@ export default function OnboardingView({
 }: OnboardingViewProps) {
   const { height } = useWindowDimensions();
 
-  const onboardingHeight = height * 0.16;
+  const onboardingHeight = height * 0.14;
 
   return (
     <Animated.View
-      entering={ZoomIn.duration(200)}
+      entering={ZoomIn.duration(200).easing(Easing.out(Easing.exp)).delay(100)}
       style={[styles.container, { height: onboardingHeight }]}
     >
       <CustomText style={{ color: Colors.SECONDARY }}>
@@ -40,6 +41,7 @@ export default function OnboardingView({
         <Pressable
           style={({ pressed }) => pressedOpacity({ pressed })}
           onPress={() => onStartedChange(true)}
+          onLongPress={() => router.navigate("/(modal)/camera-test")}
         >
           <SymbolView
             name="play.circle.fill"

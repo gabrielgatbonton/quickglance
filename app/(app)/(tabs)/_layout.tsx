@@ -1,6 +1,7 @@
 import { Colors } from "@/assets/colors";
 import AddShortcutButton from "@/components/add-shortcut-button";
 import useAuthStore, { AuthStoreState } from "@/stores/useAuthStore";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { router, Tabs } from "expo-router";
 import { SymbolView } from "expo-symbols";
 import { useEffect } from "react";
@@ -8,25 +9,26 @@ import { Confetti } from "react-native-fast-confetti";
 import { useShallow } from "zustand/react/shallow";
 
 export default function TabLayout() {
-  const { isTokenLoaded, token } = useAuthStore<
-    Pick<AuthStoreState, "isTokenLoaded" | "token">
+  const { isTokenLoaded, token, user } = useAuthStore<
+    Pick<AuthStoreState, "isTokenLoaded" | "token" | "user">
   >(
     useShallow((state) => ({
       isTokenLoaded: state.isTokenLoaded,
       token: state.token,
+      user: state.user,
     })),
   );
 
   // Redirect to welcome screen if no token
   useEffect(() => {
     if (isTokenLoaded && !token) {
-      router.push("/(modal)/(welcome)");
+      router.navigate("/(modal)/welcome");
     }
   }, [isTokenLoaded, token]);
 
   return (
-    <>
-      {token && <Confetti isInfinite={false} />}
+    <BottomSheetModalProvider>
+      {token && user && <Confetti isInfinite={false} />}
 
       <Tabs
         screenOptions={{
@@ -37,7 +39,7 @@ export default function TabLayout() {
       >
         <Tabs.Screen name="index" options={{ href: null }} />
         <Tabs.Screen
-          name="(home)"
+          name="home"
           options={{
             title: "Home",
             tabBarIcon: ({ color }) => (
@@ -47,7 +49,7 @@ export default function TabLayout() {
           redirect={!token}
         />
         <Tabs.Screen
-          name="(store)"
+          name="store"
           options={{
             title: "Store",
             tabBarIcon: ({ color }) => (
@@ -67,7 +69,7 @@ export default function TabLayout() {
           redirect={!token}
         />
         <Tabs.Screen
-          name="(automation)"
+          name="automation"
           options={{
             title: "Automation",
             tabBarIcon: ({ color }) => (
@@ -77,7 +79,7 @@ export default function TabLayout() {
           redirect={!token}
         />
         <Tabs.Screen
-          name="(settings)"
+          name="settings"
           options={{
             title: "Settings",
             tabBarIcon: ({ color }) => (
@@ -87,6 +89,6 @@ export default function TabLayout() {
           redirect={!token}
         />
       </Tabs>
-    </>
+    </BottomSheetModalProvider>
   );
 }

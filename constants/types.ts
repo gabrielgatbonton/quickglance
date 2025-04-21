@@ -1,3 +1,4 @@
+import { CustomPickerSelectProps } from "@/components/custom-picker";
 import { AddShortcutState } from "@/stores/useAddShortcutStore";
 import { SFSymbol } from "expo-symbols";
 import { ImageRequireSource, SwitchProps, TextInputProps } from "react-native";
@@ -52,16 +53,10 @@ export type Shortcut = {
 };
 
 export type ActionInput = {
-  name: string;
+  key: string;
+  label: string;
   value?: any;
-  type?:
-    | "text"
-    | "number"
-    | "select"
-    | "slider"
-    | "file"
-    | "action"
-    | "datetime";
+  type?: "text" | "number" | "select" | "slider" | "file";
   placeholder?: string;
   multiline?: boolean;
   default?: any;
@@ -73,12 +68,18 @@ export type ActionInput = {
 };
 
 export type Action = {
+  key?: string;
   id: string;
   name: string;
   icon: SFSymbol;
   gradientStart: string;
   gradientEnd: string;
   inputs?: ActionInput[];
+};
+
+export type RunningAction = Action & {
+  isCurrent: boolean;
+  isCompleted: boolean;
 };
 
 export type Category = {
@@ -103,13 +104,21 @@ export type Automation = {
   actions: string[];
 };
 
+export type PickerItem = {
+  label: string;
+  value: any;
+  ItemComponent?: (item: PickerItem) => React.ReactNode;
+};
+
 export type EditDetailData = {
   key: keyof AddShortcutState["details"];
   label: string;
-  type: "input" | "switch";
+  type: "input" | "switch" | "select";
   placeholder?: string;
-  textInputProps?: TextInputProps;
-  switchProps?: SwitchProps;
+  options?: PickerItem[];
+  textInputProps?: Partial<TextInputProps>;
+  switchProps?: Partial<SwitchProps>;
+  pickerProps?: Partial<CustomPickerSelectProps>;
 };
 
 export type SettingData = {
@@ -122,4 +131,31 @@ export type SettingData = {
 export type Setting = {
   title: string;
   data: SettingData[];
+};
+
+export type TurnDirection = "center" | "left" | "right";
+
+export type NodDirection = "center" | "up" | "down";
+
+export type FaceTurnData = {
+  angle: number | null;
+  direction: TurnDirection;
+};
+
+export type FaceNodData = {
+  angle: number | null;
+  direction: NodDirection;
+};
+
+export type BlinkData = {
+  isBlinking: boolean;
+  leftEyeOpen: boolean;
+  rightEyeOpen: boolean;
+  blinkCount: number;
+};
+
+export type HeadShakeData = {
+  isShaking: boolean;
+  directionChanges: number;
+  pattern: TurnDirection[];
 };

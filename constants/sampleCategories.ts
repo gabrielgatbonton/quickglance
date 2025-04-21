@@ -14,7 +14,8 @@ export const SAMPLE_CATEGORIES: Category[] = [
         gradientEnd: "#65407D",
         inputs: [
           {
-            name: "Phone Number",
+            key: "phoneNumber",
+            label: "Phone Number",
           },
         ],
       },
@@ -26,10 +27,12 @@ export const SAMPLE_CATEGORIES: Category[] = [
         gradientEnd: "#086289",
         inputs: [
           {
-            name: "Recipient",
+            key: "recipient",
+            label: "Recipient",
           },
           {
-            name: "Message",
+            key: "message",
+            label: "Message",
           },
         ],
       },
@@ -41,7 +44,8 @@ export const SAMPLE_CATEGORIES: Category[] = [
         gradientEnd: "#2F7A3B",
         inputs: [
           {
-            name: "App Name",
+            key: "appName",
+            label: "App Name",
           },
         ],
       },
@@ -53,7 +57,8 @@ export const SAMPLE_CATEGORIES: Category[] = [
         gradientEnd: "#997A00",
         inputs: [
           {
-            name: "Brightness Level",
+            key: "brightnessLevel",
+            label: "Brightness Level",
             type: "slider",
             min: 0,
             max: 100,
@@ -69,7 +74,8 @@ export const SAMPLE_CATEGORIES: Category[] = [
         gradientEnd: "#992420",
         inputs: [
           {
-            name: "Text",
+            key: "text",
+            label: "Text",
             type: "text",
             default: "",
           },
@@ -121,7 +127,8 @@ export const SAMPLE_CATEGORIES: Category[] = [
         gradientEnd: "#683286",
         inputs: [
           {
-            name: "Sound File",
+            key: "soundFile",
+            label: "Sound File",
             type: "file",
             fileTypes: ["mp3", "wav"],
           },
@@ -143,7 +150,8 @@ export const SAMPLE_CATEGORIES: Category[] = [
         gradientEnd: "#991B33",
         inputs: [
           {
-            name: "Duration (seconds)",
+            key: "duration",
+            label: "Duration (seconds)",
             type: "number",
             default: 10,
           },
@@ -157,7 +165,8 @@ export const SAMPLE_CATEGORIES: Category[] = [
         gradientEnd: "#995900",
         inputs: [
           {
-            name: "Volume Level",
+            key: "volumeLevel",
+            label: "Volume Level",
             type: "slider",
             min: 0,
             max: 100,
@@ -188,7 +197,8 @@ export const SAMPLE_CATEGORIES: Category[] = [
         gradientEnd: "#992420",
         inputs: [
           {
-            name: "Location",
+            key: "location",
+            label: "Location",
           },
         ],
       },
@@ -200,10 +210,12 @@ export const SAMPLE_CATEGORIES: Category[] = [
         gradientEnd: "#367896",
         inputs: [
           {
-            name: "Start Location",
+            key: "startLocation",
+            label: "Start Location",
           },
           {
-            name: "End Location",
+            key: "endLocation",
+            label: "End Location",
           },
         ],
       },
@@ -215,7 +227,8 @@ export const SAMPLE_CATEGORIES: Category[] = [
         gradientEnd: "#004999",
         inputs: [
           {
-            name: "Location",
+            key: "location",
+            label: "Location",
             default: "Current",
           },
         ],
@@ -243,7 +256,8 @@ export const SAMPLE_CATEGORIES: Category[] = [
         gradientEnd: "#995900",
         inputs: [
           {
-            name: "Text",
+            key: "text",
+            label: "Text",
           },
         ],
       },
@@ -263,7 +277,8 @@ export const SAMPLE_CATEGORIES: Category[] = [
         gradientEnd: "#353480",
         inputs: [
           {
-            name: "Content",
+            key: "content",
+            label: "Content",
           },
         ],
       },
@@ -282,12 +297,14 @@ export const SAMPLE_CATEGORIES: Category[] = [
         gradientEnd: "#1E8A2D",
         inputs: [
           {
-            name: "Prompt",
+            key: "prompt",
+            label: "Prompt",
             type: "text",
             multiline: true,
           },
           {
-            name: "Length",
+            key: "length",
+            label: "Length",
             type: "select",
             options: ["Short", "Medium", "Long"],
           },
@@ -301,7 +318,8 @@ export const SAMPLE_CATEGORIES: Category[] = [
         gradientEnd: "#064F99",
         inputs: [
           {
-            name: "Text",
+            key: "text",
+            label: "Text",
             type: "text",
             multiline: true,
           },
@@ -315,7 +333,8 @@ export const SAMPLE_CATEGORIES: Category[] = [
         gradientEnd: "#733291",
         inputs: [
           {
-            name: "Image",
+            key: "image",
+            label: "Image",
             type: "file",
             fileTypes: ["jpg", "png", "heic"],
           },
@@ -329,7 +348,8 @@ export const SAMPLE_CATEGORIES: Category[] = [
         gradientEnd: "#992139",
         inputs: [
           {
-            name: "Text",
+            key: "text",
+            label: "Text",
             type: "text",
             multiline: true,
           },
@@ -343,12 +363,14 @@ export const SAMPLE_CATEGORIES: Category[] = [
         gradientEnd: "#1D6B77",
         inputs: [
           {
-            name: "Text",
+            key: "text",
+            label: "Text",
             type: "text",
             multiline: true,
           },
           {
-            name: "Target Language",
+            key: "targetLanguage",
+            label: "Target Language",
             type: "select",
             options: [
               "English",
@@ -369,7 +391,8 @@ export const SAMPLE_CATEGORIES: Category[] = [
         gradientEnd: "#995F06",
         inputs: [
           {
-            name: "Audio",
+            key: "audio",
+            label: "Audio",
             type: "file",
             fileTypes: ["mp3", "wav", "m4a"],
           },
@@ -390,7 +413,8 @@ export const SAMPLE_CATEGORIES: Category[] = [
         gradientEnd: "#991B33",
         inputs: [
           {
-            name: "URL",
+            key: "url",
+            label: "URL",
           },
         ],
       },
@@ -402,7 +426,8 @@ export const SAMPLE_CATEGORIES: Category[] = [
         gradientEnd: "#004999",
         inputs: [
           {
-            name: "URL",
+            key: "url",
+            label: "URL",
           },
         ],
       },
@@ -414,10 +439,12 @@ export const SAMPLE_CATEGORIES: Category[] = [
         gradientEnd: "#367896",
         inputs: [
           {
-            name: "Content",
+            key: "content",
+            label: "Content",
           },
           {
-            name: "App",
+            key: "app",
+            label: "App",
             type: "select",
             options: [
               "System Share",
@@ -437,17 +464,20 @@ export const SAMPLE_CATEGORIES: Category[] = [
         gradientEnd: "#995900",
         inputs: [
           {
-            name: "Platform",
+            key: "platform",
+            label: "Platform",
             type: "select",
             options: ["Twitter", "Facebook", "Instagram"],
           },
           {
-            name: "Content",
+            key: "content",
+            label: "Content",
             type: "text",
             multiline: true,
           },
           {
-            name: "Media (Optional)",
+            key: "media",
+            label: "Media (Optional)",
             type: "file",
             fileTypes: ["jpg", "png", "mp4"],
             required: false,

@@ -20,7 +20,7 @@ export default function ServiceItem({ item }: { item: Service }) {
   return (
     <Pressable
       style={({ pressed }) => pressedOpacity({ pressed, opacity: 0.6 })}
-      onPress={() => router.push(`/${item.id}`)}
+      onPress={() => router.navigate(`/store/${item.id}`)}
     >
       <ImageBackground
         source={{ uri: item.name }}
@@ -34,7 +34,7 @@ export default function ServiceItem({ item }: { item: Service }) {
       >
         <View style={styles.darkFilter} />
 
-        <BlurView intensity={50} tint="dark" style={styles.blurContainer}>
+        <BlurView intensity={60} style={styles.blurContainer}>
           <CustomText style={styles.name}>{item.name}</CustomText>
         </BlurView>
       </ImageBackground>
