@@ -1,6 +1,7 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
-export const DEFAULT_FONT_FAMILY = "SatoshiVariable-Bold_Medium";
+export const DEFAULT_FONT_FAMILY =
+  Platform.OS === "ios" ? "SatoshiVariable-Bold_Medium" : "Satoshi-Variable";
 
 const styles = StyleSheet.create({
   text: {

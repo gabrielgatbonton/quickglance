@@ -11,6 +11,7 @@ import useSignUpStore, {
 import { useShallow } from "zustand/react/shallow";
 import useAuthStore from "@/stores/useAuthStore";
 import CustomText from "@/components/custom-text";
+import globalStyles from "@/assets/global-styles";
 
 export default function SubmitAccount() {
   const { userInfo, isSignIn, setErrors, resetAll } = useSignUpStore<
@@ -30,11 +31,9 @@ export default function SubmitAccount() {
   const { mutate, isPending, isSuccess, isError } = useMutation({
     mutationKey: ["submitAccount"],
     mutationFn: isSignIn ? login : register,
-    onSuccess: async ({ data }) => {
-      console.log({ data });
-
+    onSuccess: async ({ access_token, user }) => {
       // Store token and user data
-      await handleLogin(data.access_token, data.user);
+      await handleLogin(access_token, user);
 
       resetAll();
       router.dismissAll();
@@ -59,13 +58,13 @@ export default function SubmitAccount() {
     if (isPending || isSuccess || isError) {
       return;
     }
-    console.log({ userInfo });
+    console.log("Account submitted:", userInfo);
     mutate(userInfo);
   }, [isPending, isSuccess, isError, userInfo, isSignIn, mutate]);
 
   return (
     <View style={styles.container}>
-      <View style={styles.loadingContainer}>
+      <View style={[globalStyles.modalLoading, styles.loadingContainer]}>
         <ActivityIndicator />
         <CustomText style={styles.loadingText}>
           Submitting account...

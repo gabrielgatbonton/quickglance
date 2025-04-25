@@ -4,6 +4,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
   {
     id: "device",
     name: "Device Actions",
+    imageKey: "device",
     image: require("@/assets/images/categories/device.jpg"),
     actions: [
       {
@@ -86,6 +87,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
   {
     id: "connectivity",
     name: "Connectivity",
+    imageKey: "connectivity",
     image: require("@/assets/images/categories/connectivity.jpg"),
     actions: [
       {
@@ -117,6 +119,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
   {
     id: "media",
     name: "Media",
+    imageKey: "media",
     image: require("@/assets/images/categories/media.jpg"),
     actions: [
       {
@@ -179,6 +182,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
   {
     id: "location",
     name: "Location",
+    imageKey: "location",
     image: require("@/assets/images/categories/location.jpg"),
     actions: [
       {
@@ -238,6 +242,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
   {
     id: "data",
     name: "Data",
+    imageKey: "data",
     image: require("@/assets/images/categories/data.jpg"),
     actions: [
       {
@@ -287,6 +292,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
   {
     id: "ai",
     name: "AI Assistant",
+    imageKey: "ai",
     image: require("@/assets/images/categories/ai.jpg"),
     actions: [
       {
@@ -403,6 +409,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
   {
     id: "web",
     name: "Web & Sharing",
+    imageKey: "web",
     image: require("@/assets/images/categories/web.jpg"),
     actions: [
       {

@@ -1,8 +1,7 @@
 import { Colors } from "@/assets/colors";
-import { SAMPLE_SHORTCUTS } from "@/constants/sampleShortcuts";
 import { Shortcut } from "@/constants/types";
 import { router, useNavigation } from "expo-router";
-import { useCallback, useLayoutEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { useWindowDimensions, View } from "react-native";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import Sortable from "react-native-sortables";
@@ -10,9 +9,11 @@ import { SortableGridRenderItemInfo } from "react-native-sortables/dist/typescri
 import styles from "./styles";
 import ReorderShortcutItem from "@/components/reorder-shortcut-item";
 import CustomLink from "@/components/custom-link";
+import { useQuery } from "@tanstack/react-query";
+import { getUserShortcuts } from "@/services/apiService";
 
 export default function ReorderShortcuts() {
-  const [shortcuts, setShortcuts] = useState<Shortcut[]>(SAMPLE_SHORTCUTS);
+  const [shortcuts, setShortcuts] = useState<Shortcut[]>([]);
 
   const scrollViewRef = useAnimatedRef<Animated.ScrollView>();
 
@@ -20,6 +21,17 @@ export default function ReorderShortcuts() {
   const navigation = useNavigation();
 
   const snapOffsetX = width * 0.9;
+
+  const { data: userShortcuts } = useQuery({
+    queryKey: ["shortcuts", "user"],
+    queryFn: getUserShortcuts,
+  });
+
+  useEffect(() => {
+    if (userShortcuts) {
+      setShortcuts(userShortcuts);
+    }
+  }, [userShortcuts]);
 
   const renderItem = useCallback(
     ({ item }: SortableGridRenderItemInfo<Shortcut>) => (
@@ -54,7 +66,11 @@ export default function ReorderShortcuts() {
       >
         <Sortable.Grid
           data={shortcuts}
-          onDragEnd={({ data }) => setShortcuts(data)}
+          onDragEnd={({ data, indexToKey, keyToIndex }) => {
+            console.log({ indexToKey });
+            console.log({ keyToIndex });
+            setShortcuts(data);
+          }}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
           rowGap={10}

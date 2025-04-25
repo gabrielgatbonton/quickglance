@@ -16,13 +16,6 @@ export default function InstallShortcutLayout() {
         name="[shortcut]"
         options={{
           title: "Install Shortcut",
-          headerLeft: () => (
-            <CustomLink
-              title="Cancel"
-              onPress={() => router.back()}
-              color={Colors.PRIMARY}
-            />
-          ),
         }}
       />
     </Stack>

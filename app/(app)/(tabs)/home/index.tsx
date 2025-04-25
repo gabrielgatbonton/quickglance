@@ -1,7 +1,6 @@
 import { Colors } from "@/assets/colors";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Pressable, ScrollView } from "react-native";
-import { SAMPLE_SHORTCUTS } from "@/constants/sampleShortcuts";
 import OnboardingView from "@/components/onboarding-view";
 import SelfieView from "@/components/selfie-view";
 import useSearch from "@/hooks/useSearch";
@@ -10,12 +9,17 @@ import { SymbolView } from "expo-symbols";
 import pressedOpacity from "@/utils/pressedOpacity";
 import CustomLink from "@/components/custom-link";
 import ShortcutDashboard from "@/components/shortcut-dashboard";
-import { NodDirection, TurnDirection } from "@/constants/types";
+import { NodDirection, Shortcut, TurnDirection } from "@/constants/types";
 import styles from "./styles";
 import { useIsFocused } from "@react-navigation/native";
 import { Face } from "react-native-vision-camera-face-detector";
+import { useQuery } from "@tanstack/react-query";
+import { getUser, getUserShortcuts } from "@/services/apiService";
 
 export default function Home() {
+  const [currentShortcuts, setCurrentShortcuts] = useState<Shortcut[] | null>(
+    null,
+  );
   const [isStarted, setIsStarted] = useState(false);
   const [isFrameProcessorEnabled, setIsFrameProcessorEnabled] = useState(true);
   const [turnDirection, setTurnDirection] = useState<TurnDirection>("center");
@@ -30,9 +34,39 @@ export default function Home() {
   const navigation = useNavigation();
   const search = useSearch();
 
-  const filteredShortcuts = SAMPLE_SHORTCUTS.filter((shortcut) =>
-    shortcut.name.toLowerCase().includes(search.toLowerCase()),
-  );
+  const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: getUser,
+  });
+
+  const { data: userShortcuts } = useQuery({
+    queryKey: ["shortcuts", "user"],
+    queryFn: getUserShortcuts,
+    enabled: Boolean(user),
+  });
+
+  useEffect(() => {
+    if (userShortcuts) {
+      // console.log({ userShortcuts, search });
+
+      if (!search) {
+        setCurrentShortcuts(userShortcuts);
+        return;
+      }
+
+      setCurrentShortcuts(
+        userShortcuts.filter((shortcut) =>
+          shortcut.name.toLowerCase().includes(search.toLowerCase()),
+        ),
+      );
+    }
+  }, [search, userShortcuts]);
+
+  useEffect(() => {
+    if (user) {
+      console.log("Current user:", user);
+    }
+  }, [user]);
 
   const handleStart = (isStarted: boolean) => {
     setIsStarted(isStarted);
@@ -119,7 +153,7 @@ export default function Home() {
       scrollEnabled={false}
     >
       <ShortcutDashboard
-        shortcuts={filteredShortcuts}
+        shortcuts={currentShortcuts}
         turnDirection={isStarted ? turnDirection : undefined}
         nodDirection={isStarted ? nodDirection : undefined}
         blinkCount={isStarted ? blinkCount : undefined}
@@ -156,17 +190,19 @@ export default function Home() {
         }}
       />
 
-      {isStarted ? (
-        <CustomLink
-          title="Cancel"
-          onPress={() => setIsStarted(false)}
-          color={Colors.PRIMARY}
-        />
-      ) : (
-        <OnboardingView
-          onStartedChange={(isStarted) => handleStart(isStarted)}
-        />
-      )}
+      {currentShortcuts?.length ? (
+        isStarted ? (
+          <CustomLink
+            title="Cancel"
+            onPress={() => setIsStarted(false)}
+            color={Colors.PRIMARY}
+          />
+        ) : (
+          <OnboardingView
+            onStartedChange={(isStarted) => handleStart(isStarted)}
+          />
+        )
+      ) : null}
     </ScrollView>
   );
 }

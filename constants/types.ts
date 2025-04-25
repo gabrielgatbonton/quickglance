@@ -47,9 +47,11 @@ export type Shortcut = {
   icon: SFSymbol;
   gradientStart: string;
   gradientEnd: string;
-  userName?: string;
   steps: ShortcutStep[];
-  serviceId?: string;
+  isUpload?: boolean;
+  isInstalled?: boolean;
+  userName?: string;
+  serviceName?: string;
 };
 
 export type ActionInput = {
@@ -85,7 +87,8 @@ export type RunningAction = Action & {
 export type Category = {
   id: string;
   name: string;
-  image: ImageRequireSource;
+  image?: ImageRequireSource;
+  imageKey: string;
   actions: Action[];
 };
 
@@ -93,8 +96,9 @@ export type Service = {
   id: string;
   name: string;
   description: string;
-  website_link: string;
-  image: ImageRequireSource;
+  websiteLink: string;
+  image?: ImageRequireSource;
+  imageKey: string;
   shortcuts: Shortcut[];
 };
 

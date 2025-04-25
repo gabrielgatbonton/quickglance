@@ -1,7 +1,13 @@
 import pressedOpacity from "@/utils/pressedOpacity";
 import { LinearGradient } from "expo-linear-gradient";
 import { SymbolView } from "expo-symbols";
-import { Pressable, StyleSheet, useWindowDimensions, View } from "react-native";
+import {
+  Alert,
+  Pressable,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import styles from "./styles";
 import globalStyles from "@/assets/global-styles";
 import { Shortcut } from "@/constants/types";
@@ -14,15 +20,16 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
+import { router } from "expo-router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteShortcut } from "@/services/apiService";
+import * as Notifications from "expo-notifications";
 
 type ShortcutItemProps = {
   item: Shortcut;
   isStarted?: boolean;
   isItemFocused?: boolean;
   isColumnSelected?: boolean;
-  onPress?: () => void;
-  onEdit?: () => void;
-  onDelete?: () => void;
 };
 
 export default function ShortcutItem({
@@ -30,11 +37,9 @@ export default function ShortcutItem({
   isStarted,
   isItemFocused,
   isColumnSelected,
-  onPress,
-  onEdit,
-  onDelete,
 }: ShortcutItemProps) {
   const { width, height } = useWindowDimensions();
+  const queryClient = useQueryClient();
 
   const itemHeight = height * 0.13;
   const itemWidth = width / 2 - 21;
@@ -52,6 +57,57 @@ export default function ShortcutItem({
     };
   });
 
+  const { mutate } = useMutation({
+    mutationKey: ["deleteShortcut"],
+    mutationFn: () => deleteShortcut(item.id),
+    onSuccess: async (data) => {
+      console.log(data);
+
+      await queryClient.invalidateQueries({ queryKey: ["shortcuts"] });
+
+      Notifications.scheduleNotificationAsync({
+        content: {
+          title: "Shortcut Deleted",
+          body: `You have successfully deleted ${item.name}`,
+        },
+        trigger: null,
+      });
+    },
+    onError: ({ response }: any) => {
+      console.log({ error: response });
+
+      Alert.alert("Please try again", response?.data.message);
+    },
+  });
+
+  const handlePress = () => {
+    router.navigate(`/(modal)/run-shortcut/${item.id}`);
+  };
+
+  const handleEdit = () => {
+    router.navigate({
+      pathname: `/(modal)/add-shortcut`,
+      params: { shortcut: item.id },
+    });
+  };
+
+  const handleDelete = () => {
+    Alert.alert(
+      "Delete Shortcut",
+      `Are you sure you want to delete ${item.name}?`,
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: () => mutate(),
+        },
+      ],
+    );
+  };
+
   return (
     <Animated.View
       layout={FadingTransition}
@@ -59,17 +115,22 @@ export default function ShortcutItem({
     >
       <Pressable
         style={({ pressed }) => pressedOpacity({ pressed, opacity: 0.6 })}
-        onPress={onPress}
+        onPress={handlePress}
       >
         <ContextMenu
           actions={[
             { title: "Edit", systemIcon: "pencil" },
             { title: "Delete", systemIcon: "trash", destructive: true },
           ]}
-          onPress={(e) => {
-            console.warn(
-              `Pressed ${e.nativeEvent.name} at index ${e.nativeEvent.index}`,
-            );
+          onPress={({ nativeEvent }) => {
+            switch (nativeEvent.index) {
+              case 0:
+                handleEdit();
+                break;
+              case 1:
+                handleDelete();
+                break;
+            }
           }}
         >
           <LinearGradient
@@ -104,6 +165,7 @@ export default function ShortcutItem({
                   globalStyles.transparentButton,
                   pressedOpacity({ pressed }),
                 ]}
+                onPress={handleEdit}
               >
                 <SymbolView
                   name="slider.vertical.3"

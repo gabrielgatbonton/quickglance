@@ -32,8 +32,8 @@ export default function EditProfile() {
   const { mutate, isPending } = useMutation({
     mutationKey: ["editProfile"],
     mutationFn: (data: User) => updateUser(user?.id!, data),
-    onSuccess: async ({ data }) => {
-      console.log({ data });
+    onSuccess: async (data) => {
+      console.log(data);
 
       await queryClient.invalidateQueries({ queryKey: ["user"] });
 

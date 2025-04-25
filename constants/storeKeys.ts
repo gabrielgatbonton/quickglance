@@ -1,4 +1,4 @@
 export const STORE_KEYS = {
-  USER_CREATED: "User-Created",
+  PUBLIC: "User-Created",
   SERVICES: "Services",
 };

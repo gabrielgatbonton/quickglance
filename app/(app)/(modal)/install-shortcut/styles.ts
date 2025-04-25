@@ -9,11 +9,6 @@ const styles = StyleSheet.create({
     paddingBottom: "30%",
     paddingHorizontal: 30,
   },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   iconContainer: {
     alignItems: "center",
     justifyContent: "center",

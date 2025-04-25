@@ -3,22 +3,24 @@ import { Alert, FlatList, Pressable, ScrollView } from "react-native";
 import styles from "./styles";
 import { useLayoutEffect } from "react";
 import { useLocalSearchParams, useNavigation } from "expo-router";
-import { SAMPLE_SERVICES } from "@/constants/sampleServices";
 import { Colors } from "@/assets/colors";
 import globalStyles from "@/assets/global-styles";
 import { SymbolView } from "expo-symbols";
 import pressedOpacity from "@/utils/pressedOpacity";
 import * as WebBrowser from "expo-web-browser";
 import useSearch from "@/hooks/useSearch";
+import { useQuery } from "@tanstack/react-query";
+import { getService } from "@/services/apiService";
 
 export default function ServiceStore() {
   const { service } = useLocalSearchParams<{ service: string }>();
   const navigation = useNavigation();
   const search = useSearch();
 
-  const currentService = SAMPLE_SERVICES.find(
-    (sampleService) => sampleService.id === service,
-  );
+  const { data: currentService } = useQuery({
+    queryKey: ["services", service],
+    queryFn: () => getService(service),
+  });
 
   useLayoutEffect(() => {
     if (currentService) {
@@ -32,7 +34,7 @@ export default function ServiceStore() {
                 {
                   text: "Visit Website",
                   onPress: () =>
-                    WebBrowser.openBrowserAsync(currentService.website_link),
+                    WebBrowser.openBrowserAsync(currentService.websiteLink),
                   isPreferred: true,
                 },
               ])
@@ -51,7 +53,7 @@ export default function ServiceStore() {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: currentService?.name,
+      title: currentService?.name ?? "Loading...",
     });
   }, [currentService?.name, navigation]);
 

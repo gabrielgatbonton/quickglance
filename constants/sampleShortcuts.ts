@@ -53,6 +53,7 @@ export const SAMPLE_SHORTCUTS: Shortcut[] = [
         },
       },
     ],
+    isUpload: true,
   },
   {
     id: "3",

@@ -2,11 +2,12 @@ import { Service } from "./types";
 
 export const SAMPLE_SERVICES: Service[] = [
   {
-    id: "1",
+    id: "ncda",
     name: "NCDA",
     description:
       "The National Council on Disability Affairs (NCDA) is the government agency mandated to formulate policies and coordinate the activities of all agencies concerning disability issues and concerns.",
-    website_link: "https://www.ncda.gov.ph",
+    websiteLink: "https://www.ncda.gov.ph",
+    imageKey: "ncda",
     image: require("@/assets/images/services/ncda.png"),
     shortcuts: [
       {
@@ -16,7 +17,7 @@ export const SAMPLE_SERVICES: Service[] = [
         icon: "person.crop.circle.badge.checkmark",
         gradientStart: "#FF6B6B",
         gradientEnd: "#FF8E8E",
-        serviceId: "1",
+        serviceName: "NCDA",
         steps: [],
       },
       {
@@ -26,7 +27,7 @@ export const SAMPLE_SERVICES: Service[] = [
         icon: "doc.text.fill",
         gradientStart: "#4ECDC4",
         gradientEnd: "#45B7AC",
-        serviceId: "1",
+        serviceName: "NCDA",
         steps: [],
       },
       {
@@ -36,7 +37,7 @@ export const SAMPLE_SERVICES: Service[] = [
         icon: "accessibility",
         gradientStart: "#96CEB4",
         gradientEnd: "#7AB59B",
-        serviceId: "1",
+        serviceName: "NCDA",
         steps: [],
       },
       {
@@ -46,7 +47,7 @@ export const SAMPLE_SERVICES: Service[] = [
         icon: "briefcase.fill",
         gradientStart: "#FF9F9F",
         gradientEnd: "#FF8787",
-        serviceId: "1",
+        serviceName: "NCDA",
         steps: [],
       },
       {
@@ -56,17 +57,18 @@ export const SAMPLE_SERVICES: Service[] = [
         icon: "heart.fill",
         gradientStart: "#88D8B0",
         gradientEnd: "#6FC49A",
-        serviceId: "1",
+        serviceName: "NCDA",
         steps: [],
       },
     ],
   },
   {
-    id: "2",
+    id: "doh",
     name: "DOH",
     description:
       "The Department of Health (DOH) is the principal health agency in the Philippines responsible for ensuring access to basic public health services by all Filipinos.",
-    website_link: "https://doh.gov.ph",
+    websiteLink: "https://doh.gov.ph",
+    imageKey: "doh",
     image: require("@/assets/images/services/doh.png"),
     shortcuts: [
       {
@@ -76,7 +78,7 @@ export const SAMPLE_SERVICES: Service[] = [
         icon: "syringe",
         gradientStart: "#6C63FF",
         gradientEnd: "#574FCC",
-        serviceId: "2",
+        serviceName: "DOH",
         steps: [],
       },
       {
@@ -86,7 +88,7 @@ export const SAMPLE_SERVICES: Service[] = [
         icon: "cross.case.fill",
         gradientStart: "#FF6B6B",
         gradientEnd: "#FF8E8E",
-        serviceId: "2",
+        serviceName: "DOH",
         steps: [],
       },
       {
@@ -96,7 +98,7 @@ export const SAMPLE_SERVICES: Service[] = [
         icon: "building.2.fill",
         gradientStart: "#4ECDC4",
         gradientEnd: "#45B7AC",
-        serviceId: "2",
+        serviceName: "DOH",
         steps: [],
       },
       {
@@ -106,7 +108,7 @@ export const SAMPLE_SERVICES: Service[] = [
         icon: "pills.fill",
         gradientStart: "#FFD93D",
         gradientEnd: "#FFB302",
-        serviceId: "2",
+        serviceName: "DOH",
         steps: [],
       },
       {
@@ -116,17 +118,18 @@ export const SAMPLE_SERVICES: Service[] = [
         icon: "waveform.path.ecg",
         gradientStart: "#FF9F9F",
         gradientEnd: "#FF8787",
-        serviceId: "2",
+        serviceName: "DOH",
         steps: [],
       },
     ],
   },
   {
-    id: "3",
+    id: "dswd",
     name: "DSWD",
     description:
       "The Department of Social Welfare and Development (DSWD) is the primary government agency mandated to develop, implement and coordinate social protection and poverty-reduction solutions for and with the poor, vulnerable and disadvantaged.",
-    website_link: "https://www.dswd.gov.ph",
+    websiteLink: "https://www.dswd.gov.ph",
+    imageKey: "dswd",
     image: require("@/assets/images/services/dswd.png"),
     shortcuts: [
       {
@@ -136,7 +139,7 @@ export const SAMPLE_SERVICES: Service[] = [
         icon: "person.3.fill",
         gradientStart: "#6C63FF",
         gradientEnd: "#574FCC",
-        serviceId: "3",
+        serviceName: "DSWD",
         steps: [],
       },
       {
@@ -146,7 +149,7 @@ export const SAMPLE_SERVICES: Service[] = [
         icon: "banknote.fill",
         gradientStart: "#4ECDC4",
         gradientEnd: "#45B7AC",
-        serviceId: "3",
+        serviceName: "DSWD",
         steps: [],
       },
       {
@@ -156,7 +159,7 @@ export const SAMPLE_SERVICES: Service[] = [
         icon: "cart.fill",
         gradientStart: "#FFD93D",
         gradientEnd: "#FFB302",
-        serviceId: "3",
+        serviceName: "DSWD",
         steps: [],
       },
       {
@@ -166,7 +169,7 @@ export const SAMPLE_SERVICES: Service[] = [
         icon: "exclamationmark.triangle.fill",
         gradientStart: "#FF6B6B",
         gradientEnd: "#FF8E8E",
-        serviceId: "3",
+        serviceName: "DSWD",
         steps: [],
       },
       {
@@ -176,17 +179,18 @@ export const SAMPLE_SERVICES: Service[] = [
         icon: "figure.child.circle",
         gradientStart: "#88D8B0",
         gradientEnd: "#6FC49A",
-        serviceId: "3",
+        serviceName: "DSWD",
         steps: [],
       },
     ],
   },
   {
-    id: "4",
+    id: "dict",
     name: "DICT",
     description:
       "The Department of Information and Communications Technology (DICT) is the executive department responsible for the planning, development, and promotion of the country's ICT agenda.",
-    website_link: "https://dict.gov.ph",
+    websiteLink: "https://dict.gov.ph",
+    imageKey: "dict",
     image: require("@/assets/images/services/dict.png"),
     shortcuts: [
       {
@@ -196,7 +200,7 @@ export const SAMPLE_SERVICES: Service[] = [
         icon: "wifi",
         gradientStart: "#6C63FF",
         gradientEnd: "#574FCC",
-        serviceId: "4",
+        serviceName: "DICT",
         steps: [],
       },
       {
@@ -206,7 +210,7 @@ export const SAMPLE_SERVICES: Service[] = [
         icon: "graduationcap.fill",
         gradientStart: "#4ECDC4",
         gradientEnd: "#45B7AC",
-        serviceId: "4",
+        serviceName: "DICT",
         steps: [],
       },
       {
@@ -216,7 +220,7 @@ export const SAMPLE_SERVICES: Service[] = [
         icon: "building.columns.fill",
         gradientStart: "#FFD93D",
         gradientEnd: "#FFB302",
-        serviceId: "4",
+        serviceName: "DICT",
         steps: [],
       },
       {
@@ -226,7 +230,7 @@ export const SAMPLE_SERVICES: Service[] = [
         icon: "lock.shield.fill",
         gradientStart: "#FF6B6B",
         gradientEnd: "#FF8E8E",
-        serviceId: "4",
+        serviceName: "DICT",
         steps: [],
       },
       {
@@ -236,7 +240,7 @@ export const SAMPLE_SERVICES: Service[] = [
         icon: "network",
         gradientStart: "#88D8B0",
         gradientEnd: "#6FC49A",
-        serviceId: "4",
+        serviceName: "DICT",
         steps: [],
       },
     ],

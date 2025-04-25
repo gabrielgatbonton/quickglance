@@ -1,7 +1,5 @@
 import CustomText from "@/components/custom-text";
-import { SAMPLE_CATEGORIES } from "@/constants/sampleCategories";
-import { SAMPLE_SHORTCUTS } from "@/constants/sampleShortcuts";
-import { Action, RunningAction } from "@/constants/types";
+import { RunningAction } from "@/constants/types";
 import { stepsToActions } from "@/utils/shortcutConverter";
 import {
   router,
@@ -16,7 +14,13 @@ import {
   useRef,
   useState,
 } from "react";
-import { FlatList, ScrollView, StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
 import styles from "./styles";
 import RunningActionItem from "@/components/running-action-item";
 import * as Notifications from "expo-notifications";
@@ -24,6 +28,10 @@ import HintView from "@/components/hint-view";
 import useShortcutRunnerStore from "@/stores/useShortcutRunnerStore";
 import SelfieCamera from "@/components/selfie-camera";
 import { HEADER_BAR_HEIGHT } from "@/constants/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { getActions, getShortcut } from "@/services/apiService";
+import { Colors } from "@/assets/colors";
+import globalStyles from "@/assets/global-styles";
 
 export default function ShortcutRunner() {
   const [currentActions, setCurrentActions] = useState<RunningAction[]>([]);
@@ -39,27 +47,31 @@ export default function ShortcutRunner() {
   );
   const navigation = useNavigation();
 
-  const currentShortcut = SAMPLE_SHORTCUTS.find(
-    (sampleShortcut) => sampleShortcut.id === shortcut,
-  );
+  const { data: currentShortcut } = useQuery({
+    queryKey: ["shortcuts", shortcut],
+    queryFn: () => getShortcut(shortcut),
+    enabled: Boolean(shortcut),
+  });
+
+  const { data: actions } = useQuery({
+    queryKey: ["actions"],
+    queryFn: getActions,
+  });
 
   useEffect(() => {
-    if (currentShortcut) {
-      const actions = stepsToActions(
+    if (currentShortcut && actions) {
+      const convertedActions = stepsToActions(
         currentShortcut.steps ?? [],
-        SAMPLE_CATEGORIES.reduce((acc, category) => {
-          const actions = category.actions.map((action, index) => ({
-            ...action,
-            isCurrent: index === 0,
-            isCompleted: false,
-          }));
-          return [...acc, ...actions];
-        }, [] as Action[]),
-      ) as RunningAction[];
+        actions ?? [],
+      ).map((action, index) => ({
+        ...action,
+        isCurrent: index === 0,
+        isCompleted: false,
+      })) as RunningAction[];
 
-      setCurrentActions(actions);
+      setCurrentActions(convertedActions);
     }
-  }, [currentShortcut]);
+  }, [actions, currentShortcut]);
 
   useEffect(() => {
     // Move current to the next index every 2 seconds
@@ -126,14 +138,14 @@ export default function ShortcutRunner() {
   }, [currentActions, currentShortcut?.name]);
 
   useLayoutEffect(() => {
-    if (currentShortcut) {
-      navigation.setOptions({
-        headerLeft: () => (
-          <CustomText style={styles.title}>{currentShortcut.name}</CustomText>
-        ),
-      });
-    }
-  }, [currentShortcut, navigation]);
+    navigation.setOptions({
+      headerLeft: () => (
+        <CustomText style={styles.title}>
+          {currentShortcut?.name ?? "Loading..."}
+        </CustomText>
+      ),
+    });
+  }, [currentShortcut?.name, navigation]);
 
   useFocusEffect(
     useCallback(() => {
@@ -148,6 +160,14 @@ export default function ShortcutRunner() {
       };
     }, [setIsShortcutRunning]),
   );
+
+  if (!currentShortcut || !actions) {
+    return (
+      <View style={globalStyles.modalLoading}>
+        <ActivityIndicator size="large" color={Colors.PRIMARY} />
+      </View>
+    );
+  }
 
   return (
     <>
@@ -180,7 +200,7 @@ export default function ShortcutRunner() {
 
       <View style={[StyleSheet.absoluteFillObject, { top: HEADER_BAR_HEIGHT }]}>
         <HintView
-          icon="chevron.up.chevron.down"
+          icon="chevron.left.chevron.right"
           title="How to cancel"
           description="Shake your head left and right to cancel the shortcut."
         />

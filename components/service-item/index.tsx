@@ -23,7 +23,7 @@ export default function ServiceItem({ item }: { item: Service }) {
       onPress={() => router.navigate(`/store/${item.id}`)}
     >
       <ImageBackground
-        source={{ uri: item.name }}
+        source={{ uri: item.imageKey }}
         style={[
           {
             width: itemWidth,

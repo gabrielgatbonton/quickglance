@@ -19,7 +19,10 @@ export default function ShortcutCategoryItem({
       style={({ pressed }) => pressedOpacity({ pressed, opacity: 0.6 })}
       onPress={() => onCategoryPress?.(item)}
     >
-      <ImageBackground source={{ uri: item.id }} style={styles.imageContainer}>
+      <ImageBackground
+        source={{ uri: item.imageKey }}
+        style={styles.imageContainer}
+      >
         <BlurView intensity={50} tint="dark" style={styles.nameContainer}>
           <CustomText style={styles.name} numberOfLines={1}>
             {item.name}

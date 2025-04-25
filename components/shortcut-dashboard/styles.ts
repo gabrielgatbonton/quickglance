@@ -1,14 +1,6 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  columnWrapper: {
-    columnGap: 14,
-  },
-  contentContainer: {
-    rowGap: 15,
-    paddingHorizontal: 14,
-    paddingTop: 5,
-  },
   gradientContainer: {
     position: "absolute",
     height: "100%",
@@ -22,6 +14,16 @@ const styles = StyleSheet.create({
   },
   pageControlView: {
     height: 15,
+  },
+  emptyContainer: {
+    position: "absolute",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    rowGap: 10,
+  },
+  emptyText: {
+    color: "gray",
   },
 });
 

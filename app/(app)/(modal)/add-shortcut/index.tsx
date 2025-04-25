@@ -1,5 +1,11 @@
-import { Alert, Pressable, View } from "react-native";
-import { useCallback, useLayoutEffect, useRef, useState } from "react";
+import { ActivityIndicator, Alert, Pressable, View } from "react-native";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import BottomSheet, {
   BottomSheetFlatList,
   BottomSheetModal,
@@ -7,7 +13,6 @@ import BottomSheet, {
 } from "@gorhom/bottom-sheet";
 import { SymbolView } from "expo-symbols";
 import pressedOpacity from "@/utils/pressedOpacity";
-import { SAMPLE_CATEGORIES } from "@/constants/sampleCategories";
 import styles from "./styles";
 import ShortcutCategoryItem from "@/components/shortcut-category-item";
 import { Action, Category } from "@/constants/types";
@@ -29,8 +34,12 @@ import useAddShortcutStore, {
 } from "@/stores/useAddShortcutStore";
 import CustomText from "@/components/custom-text";
 import { Colors } from "@/assets/colors";
-import { router, useNavigation } from "expo-router";
+import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import CustomLink from "@/components/custom-link";
+import { stepsToActions } from "@/utils/shortcutConverter";
+import { getActions, getCategories, getShortcut } from "@/services/apiService";
+import { useQuery } from "@tanstack/react-query";
+import globalStyles from "@/assets/global-styles";
 
 export default function AddShortcut() {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
@@ -38,37 +47,90 @@ export default function AddShortcut() {
   );
   const [selectedAction, setSelectedAction] = useState<Action | null>(null);
   const [isMicEnabled, setIsMicEnabled] = useState(false);
+  const [justAdded, setJustAdded] = useState(false);
 
   const scrollViewRef = useAnimatedRef<Animated.ScrollView>();
-  const bottomSheetRef = useRef<BottomSheetModal>(null);
+  const previewSheetRef = useRef<BottomSheetModal>(null);
+  const actionsSheetRef = useRef<BottomSheetModal>(null);
   const categorySheetRef = useRef<BottomSheetModal>(null);
 
+  const { shortcut } = useLocalSearchParams<{ shortcut: string }>();
   const navigation = useNavigation();
 
-  const { addedActions, setAddedActions, addOrUpdateAction, removeAction } =
-    useAddShortcutStore<
-      {
-        addedActions: AddShortcutState["actions"];
-        setAddedActions: AddShortcutActions["setActions"];
-      } & Pick<AddShortcutActions, "addOrUpdateAction" | "removeAction">
-    >(
-      useShallow((state) => ({
-        addedActions: state.actions,
-        setAddedActions: state.setActions,
-        addOrUpdateAction: state.addOrUpdateAction,
-        removeAction: state.removeAction,
-      })),
-    );
+  const {
+    addedActions,
+    setAddedActions,
+    setDetails,
+    addOrUpdateAction,
+    removeAction,
+  } = useAddShortcutStore<
+    {
+      addedActions: AddShortcutState["actions"];
+      setAddedActions: AddShortcutActions["setActions"];
+    } & Pick<
+      AddShortcutActions,
+      "setDetails" | "addOrUpdateAction" | "removeAction"
+    >
+  >(
+    useShallow((state) => ({
+      addedActions: state.actions,
+      setAddedActions: state.setActions,
+      setDetails: state.setDetails,
+      addOrUpdateAction: state.addOrUpdateAction,
+      removeAction: state.removeAction,
+    })),
+  );
+
+  const { data: currentShortcut } = useQuery({
+    queryKey: ["shortcuts", shortcut],
+    queryFn: () => getShortcut(shortcut),
+    enabled: Boolean(shortcut),
+  });
+
+  const { data: categories } = useQuery({
+    queryKey: ["categories"],
+    queryFn: getCategories,
+  });
+
+  const { data: actions } = useQuery({
+    queryKey: ["actions"],
+    queryFn: getActions,
+  });
+
+  useEffect(() => {
+    if (currentShortcut) {
+      setDetails({
+        name: currentShortcut.name,
+        description: currentShortcut.description,
+        icon: currentShortcut.icon,
+        gradientStart: currentShortcut.gradientStart,
+        gradientEnd: currentShortcut.gradientEnd,
+        isUpload: currentShortcut.isUpload,
+      });
+    }
+  }, [currentShortcut, setDetails]);
+
+  useEffect(() => {
+    if (currentShortcut && actions) {
+      const convertedActions = stepsToActions(
+        currentShortcut.steps ?? [],
+        actions ?? [],
+      ).map((action) => ({ ...action, key: Crypto.randomUUID() }));
+
+      setAddedActions(convertedActions);
+    }
+  }, [actions, currentShortcut, setAddedActions]);
 
   const onActionAdd = (action: Action) => {
+    // Close the preview sheet to show actions
+    previewSheetRef.current?.close();
+
     // Generate a random key for the action
     const newAction = { ...action, key: Crypto.randomUUID() };
 
     addOrUpdateAction(newAction);
     setSelectedAction(null);
-
-    // Close the sheet to show actions
-    bottomSheetRef.current?.collapse();
+    setJustAdded(true);
 
     // Workaround to scroll to the last added item
     setTimeout(() => {
@@ -94,17 +156,19 @@ export default function AddShortcut() {
   );
 
   const onActionPress = (action: Action) => {
-    setSelectedAction(action);
-
     // Expand the sheet to show action preview
-    bottomSheetRef.current?.expand();
+    // actionsSheetRef.current?.collapse();
+    // previewSheetRef.current?.expand();
+
+    setSelectedAction(action);
   };
 
   const onCategoryPress = (category: Category) => {
-    setSelectedCategory(category);
+    // Expand the sheet to show all actions
+    // categorySheetRef.current?.collapse();
+    // actionsSheetRef.current?.expand();
 
-    categorySheetRef.current?.collapse();
-    bottomSheetRef.current?.expand();
+    setSelectedCategory(category);
   };
 
   const renderItem = useCallback(
@@ -131,12 +195,23 @@ export default function AddShortcut() {
     });
   }, [addedActions.length, navigation]);
 
+  useLayoutEffect(() => {
+    if (shortcut) {
+      navigation.setOptions({
+        title: "Edit Shortcut",
+      });
+    }
+  }, [navigation, shortcut]);
+
   return (
     <View style={styles.container}>
       <View style={styles.shortcutsContainer}>
         {addedActions.length > 0 ? (
           <Animated.ScrollView
-            onScrollBeginDrag={() => bottomSheetRef.current?.collapse()}
+            onScrollBeginDrag={() => {
+              previewSheetRef.current?.collapse();
+              actionsSheetRef.current?.collapse();
+            }}
             contentContainerStyle={styles.shortcutsGrid}
             ref={scrollViewRef}
           >
@@ -150,6 +225,10 @@ export default function AddShortcut() {
               scrollableRef={scrollViewRef}
             />
           </Animated.ScrollView>
+        ) : shortcut ? (
+          <View style={globalStyles.modalLoading}>
+            <ActivityIndicator size="large" color={Colors.PRIMARY} />
+          </View>
         ) : (
           <Pressable
             style={({ pressed }) => [
@@ -165,17 +244,83 @@ export default function AddShortcut() {
         )}
       </View>
 
+      {selectedCategory ? (
+        <BottomSheet
+          snapPoints={["35%", "70%"]}
+          index={selectedAction || justAdded ? 0 : 1}
+          enableDynamicSizing={false}
+          onChange={() => setJustAdded(false)}
+          ref={actionsSheetRef}
+        >
+          <BottomSheetView style={styles.sheetHeaderContainer}>
+            <Pressable
+              style={({ pressed }) => pressedOpacity({ pressed })}
+              onPress={() => {
+                actionsSheetRef.current?.close();
+                setSelectedCategory(null);
+              }}
+            >
+              <SymbolView
+                name="arrow.backward.circle"
+                tintColor="lightgray"
+                size={40}
+              />
+            </Pressable>
+            <CustomText style={styles.sheetHeaderTitle}>
+              Select an action
+            </CustomText>
+            <Pressable
+              style={({ pressed }) => pressedOpacity({ pressed })}
+              onPress={() => setIsMicEnabled((prev) => !prev)}
+            >
+              <SymbolView
+                name={
+                  isMicEnabled ? "microphone.circle" : "microphone.slash.circle"
+                }
+                tintColor={isMicEnabled ? Colors.SECONDARY : "lightgray"}
+                size={40}
+              />
+            </Pressable>
+          </BottomSheetView>
+
+          <BottomSheetFlatList
+            key="actions-list"
+            data={
+              categories?.find(
+                (category) => category.id === selectedCategory.id,
+              )?.actions
+            }
+            renderItem={({ item }) => (
+              <Animated.View entering={ZoomIn.duration(100)}>
+                <ShortcutActionItem
+                  item={item}
+                  onActionPress={onActionPress}
+                  onActionAdd={onActionAdd}
+                />
+              </Animated.View>
+            )}
+            contentContainerStyle={styles.contentContainer}
+            columnWrapperStyle={styles.columnWrapper}
+            numColumns={2}
+          />
+        </BottomSheet>
+      ) : null}
+
       {selectedAction ? (
         <BottomSheet
           snapPoints={["35%", "70%"]}
           index={1}
           enableDynamicSizing={false}
-          ref={bottomSheetRef}
+          ref={previewSheetRef}
         >
           <BottomSheetView style={styles.sheetHeaderContainer}>
             <Pressable
               style={({ pressed }) => pressedOpacity({ pressed })}
-              onPress={() => setSelectedAction(null)}
+              onPress={() => {
+                previewSheetRef.current?.close();
+                actionsSheetRef.current?.expand();
+                setSelectedAction(null);
+              }}
             >
               <SymbolView
                 name="arrow.backward.circle"
@@ -225,102 +370,41 @@ export default function AddShortcut() {
             />
           </View>
         </BottomSheet>
-      ) : selectedCategory ? (
-        <BottomSheet
-          snapPoints={["35%", "70%"]}
-          index={1}
-          enableDynamicSizing={false}
-          animationConfigs={{
-            stiffness: 500,
-            damping: 100,
-          }}
-          ref={bottomSheetRef}
-        >
-          <BottomSheetView style={styles.sheetHeaderContainer}>
-            <Pressable
-              style={({ pressed }) => pressedOpacity({ pressed })}
-              onPress={() => {
-                bottomSheetRef.current?.close();
-                setSelectedCategory(null);
-              }}
-            >
-              <SymbolView
-                name="arrow.backward.circle"
-                tintColor="lightgray"
-                size={40}
-              />
-            </Pressable>
-            <CustomText style={styles.sheetHeaderTitle}>
-              Select an action
-            </CustomText>
-            <Pressable
-              style={({ pressed }) => pressedOpacity({ pressed })}
-              onPress={() => setIsMicEnabled((prev) => !prev)}
-            >
-              <SymbolView
-                name={
-                  isMicEnabled ? "microphone.circle" : "microphone.slash.circle"
-                }
-                tintColor={isMicEnabled ? Colors.SECONDARY : "lightgray"}
-                size={40}
-              />
-            </Pressable>
-          </BottomSheetView>
-
-          <BottomSheetFlatList
-            key="actions-list"
-            data={
-              SAMPLE_CATEGORIES.find(
-                (sampleCategory) => sampleCategory.id === selectedCategory.id,
-              )?.actions
-            }
-            renderItem={({ item }) => (
-              <Animated.View entering={ZoomIn.duration(100)}>
-                <ShortcutActionItem
-                  item={item}
-                  onActionPress={onActionPress}
-                  onActionAdd={onActionAdd}
-                />
-              </Animated.View>
-            )}
-            contentContainerStyle={styles.contentContainer}
-            columnWrapperStyle={styles.columnWrapper}
-            numColumns={2}
-          />
-        </BottomSheet>
       ) : null}
 
-      {!selectedAction && (
-        <BottomSheet
-          snapPoints={["5%", "35%"]}
-          index={selectedCategory ? 0 : 1}
-          enableDynamicSizing={false}
-          enableContentPanningGesture={false}
-          style={styles.categorySheet}
-          ref={categorySheetRef}
-          animateOnMount={selectedCategory === null || selectedAction !== null}
-        >
-          <BottomSheetView style={styles.sheetHeaderContainer}>
-            <CustomText style={styles.sheetHeaderTitle}>
-              Select a category
-            </CustomText>
-          </BottomSheetView>
+      <BottomSheet
+        snapPoints={["5%", "35%"]}
+        index={selectedCategory ? 0 : 1}
+        enableDynamicSizing={false}
+        enableContentPanningGesture={false}
+        style={styles.categorySheet}
+        ref={categorySheetRef}
+        animateOnMount={
+          selectedCategory === null ||
+          selectedAction !== null ||
+          categories !== undefined
+        }
+      >
+        <BottomSheetView style={styles.sheetHeaderContainer}>
+          <CustomText style={styles.sheetHeaderTitle}>
+            Select a category
+          </CustomText>
+        </BottomSheetView>
 
-          <BottomSheetFlatList
-            key="categories-list"
-            data={SAMPLE_CATEGORIES}
-            renderItem={({ item }) => (
-              <ShortcutCategoryItem
-                item={item}
-                onCategoryPress={onCategoryPress}
-              />
-            )}
-            contentContainerStyle={styles.contentContainer}
-            showsHorizontalScrollIndicator={false}
-            horizontal
-          />
-        </BottomSheet>
-      )}
+        <BottomSheetFlatList
+          key="categories-list"
+          data={categories}
+          renderItem={({ item }) => (
+            <ShortcutCategoryItem
+              item={item}
+              onCategoryPress={onCategoryPress}
+            />
+          )}
+          contentContainerStyle={styles.contentContainer}
+          showsHorizontalScrollIndicator={false}
+          horizontal
+        />
+      </BottomSheet>
     </View>
   );
 }

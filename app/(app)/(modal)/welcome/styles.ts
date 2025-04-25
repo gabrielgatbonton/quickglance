@@ -59,9 +59,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     rowGap: 15,
   },
   loadingText: {

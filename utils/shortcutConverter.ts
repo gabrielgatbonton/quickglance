@@ -24,13 +24,15 @@ export const stepsToActions = (
       const action = referenceActions.find(
         (action) => action.id === step.actionId,
       );
-      if (!action) return null;
+      if (!action) {
+        return null;
+      }
 
       return {
         ...action,
         inputs: action.inputs?.map((input) => ({
           ...input,
-          value: step.inputs[input.key],
+          value: step.inputs?.[input.key],
         })),
       };
     })

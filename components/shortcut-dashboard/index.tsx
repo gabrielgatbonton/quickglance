@@ -1,27 +1,32 @@
 import { Colors } from "@/assets/colors";
 import { LinearGradient } from "expo-linear-gradient";
-import { FlatList, useWindowDimensions } from "react-native";
+import {
+  ActivityIndicator,
+  Text,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import { usePagerView } from "react-native-pager-view";
 import Animated, {
-  Easing,
+  BounceIn,
   FadeIn,
   FadeOut,
   FadingTransition,
-  ZoomIn,
 } from "react-native-reanimated";
-import ShortcutItem from "../shortcut-item";
 import { router } from "expo-router";
 import { NodDirection, Shortcut, TurnDirection } from "@/constants/types";
 import styles from "./styles";
-import { useCallback, useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import useShortcutRunnerStore from "@/stores/useShortcutRunnerStore";
 import PageControl from "../page-control";
+import { SymbolView } from "expo-symbols";
+import ShortcutPage from "../shortcut-page";
 
 const SHORTCUTS_PER_SCREEN = 6;
 const SHORTCUTS_PER_ROW = 2;
 
 type ShortcutDashboardProps = {
-  shortcuts: Shortcut[];
+  shortcuts: Shortcut[] | null;
   turnDirection?: TurnDirection;
   nodDirection?: NodDirection;
   blinkCount?: number;
@@ -43,16 +48,31 @@ export default function ShortcutDashboard({
     (state) => state.isShortcutRunning,
   );
 
-  const numOfScreens = Math.ceil(shortcuts.length / SHORTCUTS_PER_SCREEN);
   const shortcutsHeight = height * 0.46;
   const gradientWidth = width / 2 - 7;
-  const isStartedNavigation = turnDirection && turnDirection !== "center";
+  const isStartedNavigation = turnDirection
+    ? turnDirection !== "center"
+    : false;
   const activeColumn =
     turnDirection === "left" ? 0 : turnDirection === "right" ? 1 : null;
 
-  const getCurrentFocusedShortcut = useCallback((): Shortcut | null => {
-    if (!isStartedNavigation || activeColumn === null || !nodDirection)
+  const numOfScreens = useMemo(
+    () =>
+      shortcuts?.length
+        ? Math.ceil(shortcuts.length / SHORTCUTS_PER_SCREEN)
+        : 0,
+    [shortcuts?.length],
+  );
+
+  const focusedShortcut = useMemo((): Shortcut | null => {
+    if (
+      !shortcuts ||
+      !isStartedNavigation ||
+      !nodDirection ||
+      activeColumn === null
+    ) {
       return null;
+    }
 
     const startIndex = activePage * SHORTCUTS_PER_SCREEN;
     let row = -1;
@@ -61,62 +81,43 @@ export default function ShortcutDashboard({
     else if (nodDirection === "center") row = 1;
     else if (nodDirection === "down") row = 2;
 
-    if (row === -1) return null;
+    if (row === -1) {
+      return null;
+    }
 
     const focusedIndex = startIndex + row * SHORTCUTS_PER_ROW + activeColumn;
     return focusedIndex < shortcuts.length ? shortcuts[focusedIndex] : null;
   }, [activePage, activeColumn, isStartedNavigation, nodDirection, shortcuts]);
 
-  const renderShortcutPage = useCallback(
-    (pageIndex: number) => {
-      const pageShortcuts = shortcuts.slice(
-        pageIndex * SHORTCUTS_PER_SCREEN,
-        (pageIndex + 1) * SHORTCUTS_PER_SCREEN,
-      );
-
-      return (
-        <FlatList
-          key={pageIndex}
-          data={pageShortcuts}
-          renderItem={({ item, index }) => (
-            <Animated.View
-              entering={ZoomIn.duration(350)
-                .easing(Easing.out(Easing.exp))
-                .delay(index * 100)}
-            >
-              <ShortcutItem
-                item={item}
-                isStarted={isStartedNavigation}
-                isItemFocused={getCurrentFocusedShortcut()?.id === item.id}
-                isColumnSelected={activeColumn === index % SHORTCUTS_PER_ROW}
-                onPress={() =>
-                  router.navigate(`/(modal)/run-shortcut/${item.id}`)
-                }
-              />
-            </Animated.View>
-          )}
-          keyExtractor={(item) => item.id}
-          columnWrapperStyle={styles.columnWrapper}
-          contentContainerStyle={styles.contentContainer}
-          numColumns={SHORTCUTS_PER_ROW}
-          scrollEnabled={false}
-        />
-      );
-    },
-    [activeColumn, getCurrentFocusedShortcut, isStartedNavigation, shortcuts],
-  );
-
   useEffect(() => {
     // Check if the user has blinked more than 3 times
     if (blinkCount && blinkCount > 2 && !isShortcutRunning) {
-      const shortcut = getCurrentFocusedShortcut();
-
       // Run the shortcut if it exists
-      if (shortcut) {
-        router.navigate(`/(modal)/run-shortcut/${shortcut.id}`);
+      if (focusedShortcut) {
+        router.navigate(`/(modal)/run-shortcut/${focusedShortcut.id}`);
       }
     }
-  }, [blinkCount, getCurrentFocusedShortcut, isShortcutRunning]);
+  }, [blinkCount, focusedShortcut, isShortcutRunning]);
+
+  if (!shortcuts) {
+    return (
+      <View style={[styles.emptyContainer, { height: shortcutsHeight }]}>
+        <ActivityIndicator size="large" color={Colors.PRIMARY} />
+      </View>
+    );
+  }
+
+  if (shortcuts.length === 0) {
+    return (
+      <Animated.View
+        entering={BounceIn}
+        style={[styles.emptyContainer, { height: shortcutsHeight }]}
+      >
+        <SymbolView name="square.on.square.dashed" size={80} tintColor="gray" />
+        <Text style={styles.emptyText}>No shortcuts available.</Text>
+      </Animated.View>
+    );
+  }
 
   return (
     <>
@@ -138,12 +139,23 @@ export default function ShortcutDashboard({
 
       <AnimatedPagerView
         {...rest}
+        key={numOfScreens}
         style={{ height: shortcutsHeight }}
+        initialPage={0}
         pageMargin={20}
       >
-        {Array.from({ length: numOfScreens }).map((_, index) =>
-          renderShortcutPage(index),
-        )}
+        {Array.from({ length: numOfScreens }).map((_, index) => (
+          <ShortcutPage
+            key={index}
+            pageIndex={index}
+            focusedShortcut={focusedShortcut}
+            activeColumn={activeColumn}
+            shortcuts={shortcuts}
+            shortcutsPerPage={SHORTCUTS_PER_SCREEN}
+            shortcutsPerRow={SHORTCUTS_PER_ROW}
+            isStarted={isStartedNavigation}
+          />
+        ))}
       </AnimatedPagerView>
 
       {isPageControlEnabled && (

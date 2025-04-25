@@ -1,40 +1,34 @@
 import { Colors } from "@/assets/colors";
 import pressedOpacity from "@/utils/pressedOpacity";
-import { useLocalSearchParams, useNavigation } from "expo-router";
+import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import { SymbolView } from "expo-symbols";
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect } from "react";
 import { ActivityIndicator, Pressable, ScrollView, View } from "react-native";
 import * as Linking from "expo-linking";
-import { SAMPLE_SHORTCUTS } from "@/constants/sampleShortcuts";
 import Share from "react-native-share";
 import HintView from "@/components/hint-view";
 import { LinearGradient } from "expo-linear-gradient";
 import CustomText from "@/components/custom-text";
 import CustomButton from "@/components/custom-button";
 import styles from "./styles";
-import { SAMPLE_SERVICES } from "@/constants/sampleServices";
-
-type InstallStatus = "pending" | "installing" | "installed";
-
-const INSTALL_STATUS = {
-  PENDING: "pending",
-  INSTALLING: "installing",
-  INSTALLED: "installed",
-} as const;
+import { useQuery } from "@tanstack/react-query";
+import { getShortcut } from "@/services/apiService";
+import CustomLink from "@/components/custom-link";
+import globalStyles from "@/assets/global-styles";
+import useInstallShortcut from "@/hooks/useInstallShortcut";
 
 export default function ShortcutInstaller() {
-  const [installStatus, setInstallStatus] = useState<InstallStatus>(
-    INSTALL_STATUS.PENDING,
-  );
-
   const { shortcut } = useLocalSearchParams<{ shortcut: string }>();
   const navigation = useNavigation();
 
-  const currentShortcut =
-    SAMPLE_SHORTCUTS.find((sampleShortcut) => sampleShortcut.id === shortcut) ||
-    SAMPLE_SERVICES.map((sampleService) => sampleService.shortcuts)
-      .flat()
-      .find((sampleShortcut) => sampleShortcut.id === shortcut);
+  const { data: currentShortcut } = useQuery({
+    queryKey: ["shortcuts", shortcut],
+    queryFn: () => getShortcut(shortcut),
+    enabled: Boolean(shortcut),
+  });
+
+  const { isInstalled, isInstalling, shortcutInstall } =
+    useInstallShortcut(currentShortcut);
 
   useLayoutEffect(() => {
     if (currentShortcut) {
@@ -59,8 +53,8 @@ export default function ShortcutInstaller() {
                     },
                   ],
                 });
-              } catch (err: any) {
-                console.log({ err });
+              } catch (error: any) {
+                console.log({ error });
               }
             }}
           >
@@ -75,9 +69,22 @@ export default function ShortcutInstaller() {
     }
   }, [currentShortcut, navigation]);
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <CustomLink
+          title={isInstalled ? "Done" : "Cancel"}
+          bold={isInstalled}
+          onPress={() => router.back()}
+          color={Colors.PRIMARY}
+        />
+      ),
+    });
+  }, [isInstalled, navigation]);
+
   if (!currentShortcut) {
     return (
-      <View style={styles.loadingContainer}>
+      <View style={globalStyles.modalLoading}>
         <ActivityIndicator size="large" color={Colors.PRIMARY} />
       </View>
     );
@@ -118,7 +125,7 @@ export default function ShortcutInstaller() {
         </View>
 
         <View style={styles.actionContainer}>
-          {installStatus === "installing" ? (
+          {isInstalling ? (
             <View style={styles.pendingContainer}>
               <ActivityIndicator />
               <CustomText
@@ -130,7 +137,7 @@ export default function ShortcutInstaller() {
                 Installing...
               </CustomText>
             </View>
-          ) : installStatus === "installed" ? (
+          ) : isInstalled ? (
             <View style={styles.installedContainer}>
               <SymbolView
                 name="arrow.down.circle.fill"
@@ -145,13 +152,7 @@ export default function ShortcutInstaller() {
             <CustomButton
               title="Install Shortcut"
               color={currentShortcut.gradientStart}
-              onPress={async () => {
-                setInstallStatus(INSTALL_STATUS.INSTALLING);
-
-                setTimeout(() => {
-                  setInstallStatus(INSTALL_STATUS.INSTALLED);
-                }, 2000);
-              }}
+              onPress={() => shortcutInstall()}
               containerStyle={styles.installButtonContainer}
             />
           )}
