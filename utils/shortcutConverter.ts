@@ -4,14 +4,13 @@ export const actionsToSteps = (actions: Action[]): ShortcutStep[] => {
   return actions.map((action, index) => ({
     id: action.key || index.toString(),
     actionId: action.id,
-    inputs:
-      action.inputs?.reduce(
-        (acc, input) => {
-          acc[input.key] = input.value;
-          return acc;
-        },
-        {} as Record<string, any>,
-      ) ?? {},
+    inputs: action.inputs?.reduce(
+      (acc, input) => {
+        acc[input.key] = input.value;
+        return acc;
+      },
+      {} as Record<string, any>,
+    ),
   }));
 };
 
