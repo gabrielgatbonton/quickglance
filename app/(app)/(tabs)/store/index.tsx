@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { NativeSyntheticEvent, ScrollView } from "react-native";
+import { NativeSyntheticEvent, Platform, ScrollView } from "react-native";
 import SegmentedControl, {
   NativeSegmentedControlIOSChangeEvent,
 } from "@react-native-segmented-control/segmented-control";
@@ -41,7 +41,10 @@ export default function Store() {
   return (
     <ScrollView
       contentInsetAdjustmentBehavior="automatic"
-      contentContainerStyle={[globalStyles.container, { paddingTop: 0 }]}
+      contentContainerStyle={[
+        globalStyles.container,
+        Platform.OS === "ios" && { paddingTop: 0 },
+      ]}
       scrollToOverflowEnabled
       ref={scrollViewRef}
     >

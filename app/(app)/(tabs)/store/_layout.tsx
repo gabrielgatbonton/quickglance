@@ -1,6 +1,7 @@
 import { Colors } from "@/assets/colors";
 import { DEFAULT_FONT_FAMILY } from "@/components/custom-text/styles";
 import { Stack } from "expo-router";
+import { Platform } from "react-native";
 
 export default function StoreLayout() {
   return (
@@ -29,7 +30,7 @@ export default function StoreLayout() {
           },
           headerTitleStyle: { color: "black", fontFamily: DEFAULT_FONT_FAMILY },
           headerBackTitleStyle: { fontFamily: DEFAULT_FONT_FAMILY },
-          headerTransparent: true,
+          headerTransparent: Platform.OS === "ios",
           headerBlurEffect: "prominent",
         }}
       />

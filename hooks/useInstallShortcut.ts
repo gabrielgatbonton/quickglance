@@ -20,13 +20,20 @@ export default function useInstallShortcut(shortcut?: Shortcut) {
 
       setIsInstalled(true);
 
-      Notifications.scheduleNotificationAsync({
-        content: {
-          title: "Shortcut Installed",
-          body: `You have successfully installed ${shortcut?.name}`,
-        },
-        trigger: null,
-      });
+      if (shortcut) {
+        Notifications.scheduleNotificationAsync({
+          content: {
+            title: "Shortcut Installed",
+            body: `You have successfully installed ${shortcut.name}`,
+            data: {
+              shortcutId: shortcut.id,
+              type: "shortcut",
+              action: "install",
+            },
+          },
+          trigger: null,
+        });
+      }
     },
     onError: ({ response }: any) => {
       console.log({ error: response });

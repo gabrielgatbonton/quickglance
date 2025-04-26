@@ -13,6 +13,9 @@ type RunningActionItemProps = {
   item: RunningAction;
 };
 
+// This is a workaround for the style object bug on Android
+Animated.addWhitelistedUIProps({ shadowOffset: true });
+
 export default function RunningActionItem({ item }: RunningActionItemProps) {
   const animatedStyles = useAnimatedStyle(() => {
     return {

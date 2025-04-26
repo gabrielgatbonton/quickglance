@@ -6,6 +6,7 @@ import { useShallow } from "zustand/react/shallow";
 import useNotificationStore, {
   NotificationActions,
 } from "@/stores/useNotificationStore";
+import { router } from "expo-router";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -41,6 +42,18 @@ export default function useNotifications() {
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
         console.log(response);
+
+        const { data } = response.notification.request.content;
+
+        if (!data) {
+          return;
+        }
+
+        if (data.type === "shortcut") {
+          if (data.action === "install") {
+            router.navigate(`/(modal)/run-shortcut/${data.shortcutId}`);
+          }
+        }
       });
 
     return () => {

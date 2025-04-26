@@ -5,8 +5,11 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { router, Tabs } from "expo-router";
 import { SymbolView } from "expo-symbols";
 import { useEffect } from "react";
+import { Platform } from "react-native";
 import { Confetti } from "react-native-fast-confetti";
 import { useShallow } from "zustand/react/shallow";
+
+const ANDROID_TAB_BAR_HEIGHT = 60;
 
 export default function TabLayout() {
   const { isTokenLoaded, token, user } = useAuthStore<
@@ -35,6 +38,9 @@ export default function TabLayout() {
           headerShown: false,
           tabBarActiveTintColor: Colors.PRIMARY,
           tabBarInactiveTintColor: Colors.SECONDARY,
+          tabBarStyle: Platform.OS === "android" && {
+            height: ANDROID_TAB_BAR_HEIGHT,
+          },
         }}
       >
         <Tabs.Screen name="index" options={{ href: null }} />

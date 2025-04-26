@@ -10,6 +10,7 @@ export default function AddAutomationLayout() {
         headerTintColor: Colors.PRIMARY,
         headerTitleStyle: { color: "black", fontFamily: DEFAULT_FONT_FAMILY },
         headerBackTitleStyle: { fontFamily: DEFAULT_FONT_FAMILY },
+        headerTitleAlign: "center",
       }}
     >
       <Stack.Screen

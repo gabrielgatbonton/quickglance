@@ -1,5 +1,5 @@
 import { SettingData } from "@/constants/types";
-import { Pressable, Switch } from "react-native";
+import { Platform, Pressable, Switch } from "react-native";
 import styles from "./styles";
 import { useState } from "react";
 import { Colors } from "@/assets/colors";
@@ -41,7 +41,8 @@ export default function SettingItem({ item }: { item: SettingData }) {
         <Switch
           value={isEnabled}
           onValueChange={setIsEnabled}
-          trackColor={{ true: Colors.PRIMARY }}
+          trackColor={{ true: Colors.PRIMARY, false: "lightgray" }}
+          thumbColor={Platform.OS === "android" ? Colors.PRIMARY : undefined}
         />
       ) : item.type === "list" ? (
         <SymbolView name="chevron.right" size={15} tintColor="gray" />

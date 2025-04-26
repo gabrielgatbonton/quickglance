@@ -86,7 +86,11 @@ export default function CustomColorPicker({
         animationType="slide"
         transparent
       >
-        <BlurView intensity={60} style={styles.container}>
+        <BlurView
+          intensity={60}
+          experimentalBlurMethod="dimezisBlurView"
+          style={styles.container}
+        >
           <Animated.View
             entering={ZoomIn.duration(200).easing(Easing.out(Easing.quad))}
             style={styles.pickerContainer}

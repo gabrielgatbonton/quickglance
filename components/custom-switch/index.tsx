@@ -1,6 +1,7 @@
-import { Switch, SwitchProps, View } from "react-native";
+import { Platform, Switch, SwitchProps, View } from "react-native";
 import styles from "./styles";
 import CustomText from "../custom-text";
+import { Colors } from "@/assets/colors";
 
 export type CustomSwitchProps = SwitchProps & {
   label: string;
@@ -17,7 +18,11 @@ export default function CustomSwitch({
       </View>
 
       <View style={styles.switchContainer}>
-        <Switch {...switchProps} />
+        <Switch
+          trackColor={{ true: Colors.PRIMARY, false: "lightgray" }}
+          thumbColor={Platform.OS === "android" ? Colors.PRIMARY : undefined}
+          {...switchProps}
+        />
       </View>
     </View>
   );

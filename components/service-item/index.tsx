@@ -34,7 +34,11 @@ export default function ServiceItem({ item }: { item: Service }) {
       >
         <View style={styles.darkFilter} />
 
-        <BlurView intensity={60} style={styles.blurContainer}>
+        <BlurView
+          intensity={60}
+          experimentalBlurMethod="dimezisBlurView"
+          style={styles.blurContainer}
+        >
           <CustomText style={styles.name}>{item.name}</CustomText>
         </BlurView>
       </ImageBackground>

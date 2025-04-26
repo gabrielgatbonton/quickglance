@@ -23,7 +23,12 @@ export default function ShortcutCategoryItem({
         source={{ uri: item.imageKey }}
         style={styles.imageContainer}
       >
-        <BlurView intensity={50} tint="dark" style={styles.nameContainer}>
+        <BlurView
+          intensity={50}
+          experimentalBlurMethod="dimezisBlurView"
+          tint="dark"
+          style={styles.nameContainer}
+        >
           <CustomText style={styles.name} numberOfLines={1}>
             {item.name}
           </CustomText>

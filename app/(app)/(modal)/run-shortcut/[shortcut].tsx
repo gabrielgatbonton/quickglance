@@ -114,13 +114,20 @@ export default function ShortcutRunner() {
       setIsShortcutCompleted(true);
 
       // Show notification that the shortcut is completed
-      Notifications.scheduleNotificationAsync({
-        content: {
-          title: "Shortcut Completed",
-          body: `${currentShortcut?.name} has been completed.`,
-        },
-        trigger: null,
-      });
+      if (currentShortcut) {
+        Notifications.scheduleNotificationAsync({
+          content: {
+            title: "Shortcut Completed",
+            body: `${currentShortcut.name} has been completed.`,
+            data: {
+              shortcutId: currentShortcut.id,
+              type: "shortcut",
+              action: "completed",
+            },
+          },
+          trigger: null,
+        });
+      }
 
       countdownInterval.current = setInterval(() => {
         setCountdownTimer((prevTimer) => {
@@ -135,7 +142,7 @@ export default function ShortcutRunner() {
     }
 
     return () => clearInterval(countdownInterval.current!);
-  }, [currentActions, currentShortcut?.name]);
+  }, [currentActions, currentShortcut]);
 
   useLayoutEffect(() => {
     navigation.setOptions({

@@ -381,7 +381,7 @@ export default function AddShortcut() {
       ) : null}
 
       <BottomSheet
-        snapPoints={["5%", "35%"]}
+        snapPoints={["4%", "35%"]}
         index={selectedCategory ? 0 : 1}
         enableDynamicSizing={false}
         enableContentPanningGesture={false}

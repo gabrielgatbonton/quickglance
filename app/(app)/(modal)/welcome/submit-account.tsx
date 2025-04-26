@@ -12,6 +12,7 @@ import { useShallow } from "zustand/react/shallow";
 import useAuthStore from "@/stores/useAuthStore";
 import CustomText from "@/components/custom-text";
 import globalStyles from "@/assets/global-styles";
+import { Colors } from "@/assets/colors";
 
 export default function SubmitAccount() {
   const { userInfo, isSignIn, setErrors, resetAll } = useSignUpStore<
@@ -65,7 +66,7 @@ export default function SubmitAccount() {
   return (
     <View style={styles.container}>
       <View style={[globalStyles.modalLoading, styles.loadingContainer]}>
-        <ActivityIndicator />
+        <ActivityIndicator color={Colors.PRIMARY} />
         <CustomText style={styles.loadingText}>
           Submitting account...
         </CustomText>

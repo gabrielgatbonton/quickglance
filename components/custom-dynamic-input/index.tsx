@@ -1,7 +1,6 @@
 import { EditDetailData } from "@/constants/types";
 import CustomTextInput from "../custom-text-input";
 import CustomSwitch from "../custom-switch";
-import { Colors } from "@/assets/colors";
 import CustomPicker from "../custom-picker";
 
 type CustomDynamicInputProps = {
@@ -33,7 +32,6 @@ export default function CustomDynamicInput({
         value={value as boolean}
         label={item.label}
         onValueChange={(value) => onValueChange?.(value)}
-        trackColor={{ true: Colors.PRIMARY }}
         {...item.switchProps}
       />
     );

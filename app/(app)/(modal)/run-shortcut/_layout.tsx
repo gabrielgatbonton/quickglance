@@ -2,13 +2,13 @@ import { Colors } from "@/assets/colors";
 import pressedOpacity from "@/utils/pressedOpacity";
 import { router, Stack } from "expo-router";
 import { SymbolView } from "expo-symbols";
-import { Pressable } from "react-native";
+import { Platform, Pressable } from "react-native";
 
 export default function RunShortcutLayout() {
   return (
     <Stack
       screenOptions={{
-        headerTransparent: true,
+        headerTransparent: Platform.OS === "ios",
         headerBlurEffect: "prominent",
         headerTitle: "",
       }}

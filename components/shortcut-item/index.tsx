@@ -23,7 +23,6 @@ import Animated, {
 import { router } from "expo-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteShortcut } from "@/services/apiService";
-import * as Notifications from "expo-notifications";
 
 type ShortcutItemProps = {
   item: Shortcut;
@@ -64,14 +63,6 @@ export default function ShortcutItem({
       console.log(data);
 
       await queryClient.invalidateQueries({ queryKey: ["shortcuts"] });
-
-      Notifications.scheduleNotificationAsync({
-        content: {
-          title: "Shortcut Deleted",
-          body: `You have successfully deleted ${item.name}`,
-        },
-        trigger: null,
-      });
     },
     onError: ({ response }: any) => {
       console.log({ error: response });
@@ -153,6 +144,7 @@ export default function ShortcutItem({
             {isStarted && !isColumnSelected && (
               <BlurView
                 intensity={3}
+                experimentalBlurMethod="dimezisBlurView"
                 style={[StyleSheet.absoluteFillObject, { zIndex: 1 }]}
               />
             )}

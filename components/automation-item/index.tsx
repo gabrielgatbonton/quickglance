@@ -31,7 +31,10 @@ export default function AutomationItem({ item }: { item: Automation }) {
           );
         }}
       >
-        <BlurView style={styles.detailsContainer}>
+        <BlurView
+          experimentalBlurMethod="dimezisBlurView"
+          style={styles.detailsContainer}
+        >
           {item.actions.map((action, index) => (
             <CustomText key={index} style={styles.action}>
               ▶️ {action}
