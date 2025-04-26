@@ -4,7 +4,6 @@ import { KeyboardProvider } from "react-native-keyboard-controller";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { configureReanimatedLogger } from "react-native-reanimated";
 import useNotifications from "@/hooks/useNotifications";
-import { StrictMode } from "react";
 
 export const queryClient = new QueryClient();
 
@@ -16,14 +15,12 @@ export default function RootLayout() {
   useNotifications();
 
   return (
-    <StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <GestureHandlerRootView>
-          <KeyboardProvider>
-            <Slot />
-          </KeyboardProvider>
-        </GestureHandlerRootView>
-      </QueryClientProvider>
-    </StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <GestureHandlerRootView>
+        <KeyboardProvider>
+          <Slot />
+        </KeyboardProvider>
+      </GestureHandlerRootView>
+    </QueryClientProvider>
   );
 }
