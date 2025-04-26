@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Action } from "@/constants/types";
+import { Action, Shortcut } from "@/constants/types";
 import { SFSymbol } from "expo-symbols";
 
 export type AddShortcutState = {
@@ -12,11 +12,13 @@ export type AddShortcutState = {
     gradientEnd: string;
   };
   actions: Action[];
+  currentShortcut?: Shortcut;
 };
 
 export type AddShortcutActions = {
   setDetails: (details: Partial<AddShortcutState["details"]>) => void;
   setActions: (actions: Action[]) => void;
+  setCurrentShortcut: (shortcut: Shortcut) => void;
   addOrUpdateAction: (action: Action) => void;
   removeAction: (key: string) => void;
   resetAll: () => void;
@@ -38,6 +40,8 @@ const useAddShortcutStore = create<AddShortcutState & AddShortcutActions>(
     setDetails: (details) =>
       set((state) => ({ details: { ...state.details, ...details } })),
     setActions: (actions) => set({ actions }),
+    setCurrentShortcut: (shortcut) =>
+      set((state) => ({ ...state, currentShortcut: shortcut })),
     addOrUpdateAction: (action) =>
       set((state) => {
         const existingIndex = state.actions.findIndex(
@@ -68,7 +72,11 @@ const useAddShortcutStore = create<AddShortcutState & AddShortcutActions>(
           (existingAction) => existingAction.key !== key,
         ),
       })),
-    resetAll: () => set({ details: initialDetailState, actions: [] }),
+    resetAll: () =>
+      set({
+        details: initialDetailState,
+        actions: [],
+      }),
   }),
 );
 

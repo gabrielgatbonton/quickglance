@@ -1,6 +1,6 @@
 import CustomColorPicker from "@/components/custom-color-picker";
 import { useLayoutEffect, useState } from "react";
-import { FlatList, View } from "react-native";
+import { ActivityIndicator, FlatList, View } from "react-native";
 import styles from "./styles";
 import LineSeparator from "@/components/line-separator";
 import { EditDetailData, Shortcut } from "@/constants/types";
@@ -19,6 +19,8 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SymbolView } from "expo-symbols";
 import { actionsToSteps } from "@/utils/shortcutConverter";
 import CustomDynamicInput from "@/components/custom-dynamic-input";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { saveShortcut, updateShortcut } from "@/services/apiService";
 
 const DETAILS_DATA: EditDetailData[] = [
   { key: "name", label: "Name", placeholder: "Enter Name", type: "input" },
@@ -57,49 +59,68 @@ export default function EditDetails() {
   const [isGradientEndModalVisible, setIsGradientEndModalVisible] =
     useState(false);
 
-  const { actions, details, setDetails } = useAddShortcutStore<
-    Pick<AddShortcutState, "actions" | "details"> &
+  const { actions, details, setDetails, currentShortcut } = useAddShortcutStore<
+    Pick<AddShortcutState, "actions" | "details" | "currentShortcut"> &
       Pick<AddShortcutActions, "setDetails">
   >(
     useShallow((state) => ({
       actions: state.actions,
       details: state.details,
       setDetails: state.setDetails,
+      currentShortcut: state.currentShortcut,
     })),
   );
   const navigation = useNavigation();
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: [currentShortcut ? "updateShortcut" : "addShortcut"],
+    mutationFn: (data: Shortcut) =>
+      currentShortcut
+        ? updateShortcut(currentShortcut.id, data)
+        : saveShortcut(data),
+    onSuccess: async (data) => {
+      console.log(data);
+
+      await queryClient.invalidateQueries({ queryKey: ["shortcuts", "user"] });
+
+      router.dismissAll();
+      router.back();
+    },
+  });
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => (
-        <CustomLink
-          title="Save"
-          bold
-          onPress={() => {
-            console.log({ actions, details });
+      headerRight: () =>
+        isPending ? (
+          <ActivityIndicator />
+        ) : (
+          <CustomLink
+            title="Save"
+            bold
+            onPress={() => {
+              console.log({ actions, details });
 
-            const shortcut: Shortcut = {
-              id: "new-shortcut",
-              ...details,
-              steps: actionsToSteps(actions),
-            };
+              const shortcut: Shortcut = {
+                id: "new-shortcut",
+                ...details,
+                steps: actionsToSteps(actions),
+              };
 
-            console.log({ shortcut });
-            router.dismissAll();
-            router.back();
-          }}
-          disabled={
-            !details.name ||
-            !details.description ||
-            !details.icon ||
-            !details.gradientStart ||
-            !details.gradientEnd
-          }
-          color={Colors.PRIMARY}
-        />
-      ),
+              mutate(shortcut);
+            }}
+            disabled={
+              !details.name ||
+              !details.description ||
+              !details.icon ||
+              !details.gradientStart ||
+              !details.gradientEnd
+            }
+            color={Colors.PRIMARY}
+          />
+        ),
     });
-  }, [actions, details, navigation]);
+  }, [actions, details, isPending, mutate, navigation]);
 
   return (
     <GestureHandlerRootView>

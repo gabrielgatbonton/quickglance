@@ -61,6 +61,7 @@ export default function AddShortcut() {
     addedActions,
     setAddedActions,
     setDetails,
+    setCurrentShortcut,
     addOrUpdateAction,
     removeAction,
   } = useAddShortcutStore<
@@ -69,19 +70,20 @@ export default function AddShortcut() {
       setAddedActions: AddShortcutActions["setActions"];
     } & Pick<
       AddShortcutActions,
-      "setDetails" | "addOrUpdateAction" | "removeAction"
+      "setDetails" | "setCurrentShortcut" | "addOrUpdateAction" | "removeAction"
     >
   >(
     useShallow((state) => ({
       addedActions: state.actions,
       setAddedActions: state.setActions,
       setDetails: state.setDetails,
+      setCurrentShortcut: state.setCurrentShortcut,
       addOrUpdateAction: state.addOrUpdateAction,
       removeAction: state.removeAction,
     })),
   );
 
-  const { data: currentShortcut } = useQuery({
+  const { data: currentShortcut, isPending } = useQuery({
     queryKey: ["shortcuts", shortcut],
     queryFn: () => getShortcut(shortcut),
     enabled: Boolean(shortcut),
@@ -96,6 +98,12 @@ export default function AddShortcut() {
     queryKey: ["actions"],
     queryFn: getActions,
   });
+
+  useEffect(() => {
+    if (currentShortcut) {
+      setCurrentShortcut(currentShortcut);
+    }
+  }, [currentShortcut, setCurrentShortcut]);
 
   useEffect(() => {
     if (currentShortcut) {
@@ -225,7 +233,7 @@ export default function AddShortcut() {
               scrollableRef={scrollViewRef}
             />
           </Animated.ScrollView>
-        ) : shortcut ? (
+        ) : shortcut && isPending ? (
           <View style={globalStyles.modalLoading}>
             <ActivityIndicator size="large" color={Colors.PRIMARY} />
           </View>
