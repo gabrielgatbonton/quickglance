@@ -27,9 +27,7 @@ type SaveActionParams = Omit<Action, "key" | "id">;
 
 type SaveCategoryParams = Omit<Category, "id" | "actions">;
 
-type SaveShortcutParams = Omit<Shortcut, "id" | "userName" | "steps"> & {
-  actions: Pick<Action, "id" | "inputs">[];
-};
+type SaveShortcutParams = Omit<Shortcut, "id" | "userName">;
 
 type SaveServiceParams = Omit<Service, "id" | "shortcuts"> & {
   shortcuts: Pick<Shortcut, "id">[];
