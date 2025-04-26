@@ -37,7 +37,7 @@ export type UserPasswordErrors =
 export type ShortcutStep = {
   id: string;
   actionId: string;
-  inputs: Record<string, any>;
+  inputs?: Record<string, any>;
 };
 
 export type Shortcut = {
