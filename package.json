@@ -57,6 +57,7 @@
     "react-native": "0.76.9",
     "react-native-context-menu-view": "^1.18.0",
     "react-native-fast-confetti": "^0.8.2",
+    "react-native-fast-tflite": "^1.6.1",
     "react-native-gesture-handler": "~2.20.2",
     "react-native-keyboard-controller": "^1.16.8",
     "react-native-pager-view": "6.5.1",
@@ -74,6 +75,7 @@
     "reanimated-color-picker": "^4.0.0",
     "rn-qr-generator": "^1.4.3",
     "symbolist": "^5.1.0",
+    "vision-camera-resize-plugin": "^3.2.0",
     "zustand": "^5.0.3"
   },
   "devDependencies": {

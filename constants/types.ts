@@ -141,6 +141,17 @@ export type TurnDirection = "center" | "left" | "right";
 
 export type NodDirection = "center" | "up" | "down";
 
+export type Emotion =
+  | "happy"
+  | "sad"
+  | "surprised"
+  | "fearful"
+  | "angry"
+  | "disgusted"
+  | "neutral";
+
+export type EmotionResultWithLabels = Record<Emotion, number>;
+
 export type FaceTurnData = {
   angle: number | null;
   direction: TurnDirection;
@@ -156,6 +167,12 @@ export type BlinkData = {
   leftEyeOpen: boolean;
   rightEyeOpen: boolean;
   blinkCount: number;
+  blinkDuration: number;
+};
+
+export type EmotionData = {
+  emotion: Emotion;
+  results?: EmotionResultWithLabels;
 };
 
 export type HeadShakeData = {

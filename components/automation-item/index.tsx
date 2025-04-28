@@ -32,7 +32,7 @@ export default function AutomationItem({ item }: { item: Automation }) {
         }}
       >
         <BlurView
-          experimentalBlurMethod="dimezisBlurView"
+          // experimentalBlurMethod="dimezisBlurView"
           style={styles.detailsContainer}
         >
           {item.actions.map((action, index) => (

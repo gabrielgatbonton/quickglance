@@ -68,6 +68,13 @@
           }
         }
       ],
+      [
+        "react-native-fast-tflite",
+        {
+          "enableCoreMLDelegate": true,
+          "enableAndroidGpuLibraries": true
+        }
+      ],
       "expo-secure-store",
       "react-native-vision-camera"
     ],

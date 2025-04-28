@@ -9,12 +9,18 @@ import { SymbolView } from "expo-symbols";
 import pressedOpacity from "@/utils/pressedOpacity";
 import CustomLink from "@/components/custom-link";
 import ShortcutDashboard from "@/components/shortcut-dashboard";
-import { NodDirection, Shortcut, TurnDirection } from "@/constants/types";
+import {
+  Emotion,
+  NodDirection,
+  Shortcut,
+  TurnDirection,
+} from "@/constants/types";
 import styles from "./styles";
 import { useIsFocused } from "@react-navigation/native";
 import { Face } from "react-native-vision-camera-face-detector";
 import { useQuery } from "@tanstack/react-query";
 import { getUser, getUserShortcuts } from "@/services/apiService";
+import EmotionPopover from "@/components/emotion-popover";
 
 export default function Home() {
   const [currentShortcuts, setCurrentShortcuts] = useState<Shortcut[] | null>(
@@ -24,7 +30,9 @@ export default function Home() {
   const [isFrameProcessorEnabled, setIsFrameProcessorEnabled] = useState(true);
   const [turnDirection, setTurnDirection] = useState<TurnDirection>("center");
   const [nodDirection, setNodDirection] = useState<NodDirection>("center");
-  const [blinkCount, setBlinkCount] = useState(0);
+  // const [blinkCount, setBlinkCount] = useState(0);
+  const [blinkDuration, setBlinkDuration] = useState(0);
+  const [emotion, setEmotion] = useState<Emotion | null>(null);
 
   const faceCenterTimerRef = useRef<NodeJS.Timeout | null>(null);
   const faceDetectedTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -156,7 +164,8 @@ export default function Home() {
         shortcuts={currentShortcuts}
         turnDirection={isStarted ? turnDirection : undefined}
         nodDirection={isStarted ? nodDirection : undefined}
-        blinkCount={isStarted ? blinkCount : undefined}
+        // blinkCount={isStarted ? blinkCount : undefined}
+        blinkDuration={isStarted ? blinkDuration : undefined}
         isPageControlEnabled={!isStarted}
       />
 
@@ -177,18 +186,30 @@ export default function Home() {
           // console.log(`Face nodded ${angle} degrees to the ${direction}`);
           setNodDirection(direction);
         }}
-        onBlinkDetected={({ blinkCount }) => {
-          if (!isStarted && turnDirection === "center" && blinkCount > 2) {
+        onBlinkDetected={({ blinkCount, blinkDuration }) => {
+          if (
+            !isStarted &&
+            turnDirection === "center" &&
+            blinkCount > 1 &&
+            blinkDuration > 600
+          ) {
             handleStart(true);
             return;
           }
-          // console.log("Blink detected", blinkCount);
-          setBlinkCount(blinkCount);
+          // console.log("Blink detected", blinkDuration);
+          setBlinkDuration(blinkDuration);
+        }}
+        onEmotionDetected={({ emotion, results }) => {
+          // console.log("Emotion detected", emotion);
+          // console.log("Other emotions", results);
+          setEmotion(emotion);
         }}
         cameraProps={{
           onError: (error) => console.log(JSON.stringify(error)),
         }}
       />
+
+      <EmotionPopover emotion={emotion} />
 
       {currentShortcuts?.length ? (
         isStarted ? (

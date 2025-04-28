@@ -36,7 +36,7 @@ export default function ServiceItem({ item }: { item: Service }) {
 
         <BlurView
           intensity={60}
-          experimentalBlurMethod="dimezisBlurView"
+          // experimentalBlurMethod="dimezisBlurView"
           style={styles.blurContainer}
         >
           <CustomText style={styles.name}>{item.name}</CustomText>

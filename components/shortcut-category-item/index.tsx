@@ -25,7 +25,7 @@ export default function ShortcutCategoryItem({
       >
         <BlurView
           intensity={50}
-          experimentalBlurMethod="dimezisBlurView"
+          // experimentalBlurMethod="dimezisBlurView"
           tint="dark"
           style={styles.nameContainer}
         >
