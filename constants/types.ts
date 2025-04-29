@@ -1,7 +1,7 @@
-import { CustomPickerSelectProps } from "@/components/custom-picker";
+import { CustomDynamicInputProps } from "@/components/custom-dynamic-input";
 import { AddShortcutState } from "@/stores/useAddShortcutStore";
 import { SFSymbol } from "expo-symbols";
-import { ImageRequireSource, SwitchProps, TextInputProps } from "react-native";
+import { ImageRequireSource } from "react-native";
 
 export type WelcomeData = {
   label: string;
@@ -58,7 +58,7 @@ export type ActionInput = {
   key: string;
   label: string;
   value?: any;
-  type?: "text" | "number" | "select" | "slider" | "file";
+  type?: "text" | "number" | "select" | "switch" | "slider";
   placeholder?: string;
   multiline?: boolean;
   default?: any;
@@ -114,15 +114,8 @@ export type PickerItem = {
   ItemComponent?: (item: PickerItem) => React.ReactNode;
 };
 
-export type EditDetailData = {
+export type EditDetailData = Omit<CustomDynamicInputProps, "value"> & {
   key: keyof AddShortcutState["details"];
-  label: string;
-  type: "input" | "switch" | "select";
-  placeholder?: string;
-  options?: PickerItem[];
-  textInputProps?: Partial<TextInputProps>;
-  switchProps?: Partial<SwitchProps>;
-  pickerProps?: Partial<CustomPickerSelectProps>;
 };
 
 export type SettingData = {
