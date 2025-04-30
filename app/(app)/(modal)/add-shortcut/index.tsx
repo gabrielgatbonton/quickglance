@@ -62,6 +62,7 @@ export default function AddShortcut() {
   const [selectedInputs, setSelectedInputs] = useState<ActionInput[] | null>(
     null,
   );
+  const [inputsContext, setInputsContext] = useState<Action | null>(null);
   const [isMicEnabled, setIsMicEnabled] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
 
@@ -70,7 +71,6 @@ export default function AddShortcut() {
   const previewSheetRef = useRef<BottomSheetModal>(null);
   const actionsSheetRef = useRef<BottomSheetModal>(null);
   const categorySheetRef = useRef<BottomSheetModal>(null);
-  const isEasyAddRef = useRef(false);
 
   const { shortcut } = useLocalSearchParams<{ shortcut: string }>();
   const navigation = useNavigation();
@@ -152,27 +152,46 @@ export default function AddShortcut() {
     }
   }, [actions, currentShortcut, setAddedActions]);
 
+  const onActionEdit = useCallback((action: Action) => {
+    if (!action.inputs || action.inputs.length === 0) {
+      return;
+    }
+
+    // Filter out invalid inputs and set initial values
+    const newInputs = action.inputs
+      .filter((input) => input.type && checkValidInputType(input.type))
+      .map((input) => ({
+        ...input,
+        value: input.value || input.default || "",
+      }));
+
+    setSelectedInputs(newInputs);
+    setInputsContext(action);
+  }, []);
+
   const onActionAdd = (action: Action, inputs?: ActionInput[]) => {
     if (action.inputs && action.inputs.length > 0 && !inputs) {
-      // Add default values to inputs
-      const defaultInputs = action.inputs.map((input) => ({
-        ...input,
-        value: input.default,
-      }));
-      setSelectedInputs(defaultInputs);
-      setSelectedAction(action);
+      onActionEdit(action);
       return;
     }
 
     // Close the preview sheet to show actions
     previewSheetRef.current?.close();
+    inputSheetRef.current?.close();
 
-    // Generate a random key for the action
-    const newAction = { ...action, inputs, key: Crypto.randomUUID() };
+    // Generate a random key for the action if it doesn't exist
+    const newAction = {
+      ...action,
+      inputs,
+      key: action.key || Crypto.randomUUID(),
+    };
 
     addOrUpdateAction(newAction);
+
+    // Reset data
     setSelectedAction(null);
     setSelectedInputs(null);
+    setInputsContext(null);
     setJustAdded(true);
 
     // Workaround to scroll to the last added item
@@ -219,10 +238,13 @@ export default function AddShortcut() {
       <AddActionItem
         item={item}
         index={index}
+        onActionEdit={
+          item.inputs && item.inputs.length > 0 ? onActionEdit : undefined
+        }
         onActionDelete={onActionDelete}
       />
     ),
-    [onActionDelete],
+    [onActionDelete, onActionEdit],
   );
 
   useLayoutEffect(() => {
@@ -295,10 +317,6 @@ export default function AddShortcut() {
             index={selectedAction || justAdded ? 0 : 1}
             enableDynamicSizing={false}
             onChange={() => setJustAdded(false)}
-            animationConfigs={{
-              stiffness: 300,
-              damping: 300,
-            }}
             ref={actionsSheetRef}
           >
             <BottomSheetView style={styles.sheetHeaderContainer}>
@@ -346,10 +364,7 @@ export default function AddShortcut() {
                   <ShortcutActionItem
                     item={item}
                     onActionPress={onActionPress}
-                    onActionAdd={(action) => {
-                      onActionAdd(action);
-                      isEasyAddRef.current = true;
-                    }}
+                    onActionAdd={onActionAdd}
                   />
                 </Animated.View>
               )}
@@ -421,16 +436,13 @@ export default function AddShortcut() {
               <CustomButton
                 title="Add"
                 color={selectedAction.gradientStart}
-                onPress={() => {
-                  onActionAdd(selectedAction);
-                  isEasyAddRef.current = false;
-                }}
+                onPress={() => onActionAdd(selectedAction)}
               />
             </View>
           </BottomSheet>
         ) : null}
 
-        {selectedInputs && selectedAction ? (
+        {selectedInputs && inputsContext ? (
           <BottomSheet
             snapPoints={["35%", "70%"]}
             index={1}
@@ -441,14 +453,9 @@ export default function AddShortcut() {
               <Pressable
                 style={({ pressed }) => pressedOpacity({ pressed })}
                 onPress={() => {
-                  // Don't show preview if easy add
-                  if (isEasyAddRef.current) {
-                    previewSheetRef.current?.close();
-                    setSelectedAction(null);
-                  }
-
                   inputSheetRef.current?.close();
                   setSelectedInputs(null);
+                  setInputsContext(null);
                 }}
               >
                 <SymbolView
@@ -471,7 +478,7 @@ export default function AddShortcut() {
                       : "microphone.slash.circle"
                   }
                   tintColor={
-                    isMicEnabled ? selectedAction.gradientStart : "lightgray"
+                    isMicEnabled ? inputsContext.gradientStart : "lightgray"
                   }
                   size={40}
                 />
@@ -481,9 +488,7 @@ export default function AddShortcut() {
             <View style={styles.actionContainer}>
               <View style={styles.actionInputsContainer}>
                 <FlatList
-                  data={selectedInputs.filter(
-                    (input) => input.type && checkValidInputType(input.type),
-                  )}
+                  data={selectedInputs}
                   renderItem={({ item }) => {
                     const { key, ...inputProps } = item;
                     return (
@@ -512,11 +517,20 @@ export default function AddShortcut() {
                           label: option,
                           value: option,
                         }))}
+                        sliderProps={{
+                          thumbTintColor: inputsContext.gradientStart,
+                          minimumTrackTintColor: inputsContext.gradientStart,
+                        }}
                       />
                     );
                   }}
                   ItemSeparatorComponent={() => (
                     <LineSeparator leading={20} width="90%" />
+                  )}
+                  ListEmptyComponent={() => (
+                    <CustomText style={styles.emptyInputsText}>
+                      No supported inputs.
+                    </CustomText>
                   )}
                 />
               </View>
@@ -535,8 +549,8 @@ export default function AddShortcut() {
 
                 <CustomButton
                   title="Save"
-                  color={selectedAction.gradientStart}
-                  onPress={() => onActionAdd(selectedAction, selectedInputs)}
+                  color={inputsContext.gradientStart}
+                  onPress={() => onActionAdd(inputsContext, selectedInputs)}
                   disabled={isSaveDisabled}
                 />
               </View>

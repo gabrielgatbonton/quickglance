@@ -101,6 +101,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.37,
     shadowRadius: 7.49,
   },
+  emptyInputsText: {
+    textAlign: "center",
+    color: "lightgray",
+    fontSize: 16,
+    padding: "15%",
+  },
 });
 
 export default styles;

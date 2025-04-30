@@ -11,12 +11,14 @@ import CustomText from "../custom-text";
 type AddActionItemProps = {
   item: Action;
   index: number;
+  onActionEdit?: (action: Action) => void;
   onActionDelete?: (action: Action) => void;
 };
 
 export default function AddActionItem({
   item,
   index,
+  onActionEdit,
   onActionDelete,
 }: AddActionItemProps) {
   const { height } = useWindowDimensions();
@@ -40,13 +42,19 @@ export default function AddActionItem({
           <View style={globalStyles.rowBetween}>
             <SymbolView name={item.icon} size={30} tintColor="white" />
 
-            <View
-              style={{
-                columnGap: 10,
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
+            <View style={styles.buttonContainer}>
+              {onActionEdit && (
+                <Pressable
+                  style={({ pressed }) => [
+                    globalStyles.transparentButton,
+                    pressedOpacity({ pressed }),
+                  ]}
+                  onPress={() => onActionEdit(item)}
+                >
+                  <SymbolView name="pencil" size={15} tintColor="white" />
+                </Pressable>
+              )}
+
               {onActionDelete && (
                 <Pressable
                   style={({ pressed }) => [
