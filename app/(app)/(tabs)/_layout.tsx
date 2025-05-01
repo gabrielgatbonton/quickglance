@@ -1,9 +1,9 @@
 import { Colors } from "@/assets/colors";
 import AddShortcutButton from "@/components/add-shortcut-button";
+import IconView from "@/components/icon-view";
 import useAuthStore, { AuthStoreState } from "@/stores/useAuthStore";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { router, Tabs } from "expo-router";
-import { SymbolView } from "expo-symbols";
 import { useEffect } from "react";
 import { Platform } from "react-native";
 import { Confetti } from "react-native-fast-confetti";
@@ -19,7 +19,7 @@ export default function TabLayout() {
       isTokenLoaded: state.isTokenLoaded,
       token: state.token,
       user: state.user,
-    })),
+    }))
   );
 
   // Redirect to welcome screen if no token
@@ -49,7 +49,7 @@ export default function TabLayout() {
           options={{
             title: "Home",
             tabBarIcon: ({ color }) => (
-              <SymbolView name="house.fill" tintColor={color} />
+              <IconView name={["house.fill", "home"]} color={color} />
             ),
           }}
           redirect={!token}
@@ -59,9 +59,9 @@ export default function TabLayout() {
           options={{
             title: "Store",
             tabBarIcon: ({ color }) => (
-              <SymbolView
-                name="sparkles.rectangle.stack.fill"
-                tintColor={color}
+              <IconView
+                name={["sparkles.rectangle.stack.fill", "storefront"]}
+                color={color}
               />
             ),
           }}
@@ -79,7 +79,7 @@ export default function TabLayout() {
           options={{
             title: "Automation",
             tabBarIcon: ({ color }) => (
-              <SymbolView name="timer" tintColor={color} />
+              <IconView name={["timer", "timer"]} color={color} />
             ),
           }}
           redirect={!token}
@@ -89,7 +89,7 @@ export default function TabLayout() {
           options={{
             title: "Settings",
             tabBarIcon: ({ color }) => (
-              <SymbolView name="gear" tintColor={color} />
+              <IconView name={["gear", "settings"]} color={color} />
             ),
           }}
           redirect={!token}
