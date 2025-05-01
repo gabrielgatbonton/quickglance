@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.37,
     shadowRadius: 7.49,
   },
-  emptyInputsText: {
+  emptyText: {
     textAlign: "center",
     color: "lightgray",
     fontSize: 16,

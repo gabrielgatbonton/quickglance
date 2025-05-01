@@ -106,18 +106,18 @@ export default function AddShortcut() {
     })),
   );
 
-  const { data: currentShortcut, isPending } = useQuery({
+  const { data: currentShortcut, isPending: isShortcutPending } = useQuery({
     queryKey: ["shortcuts", shortcut],
     queryFn: () => getShortcut(shortcut),
     enabled: Boolean(shortcut),
   });
 
-  const { data: categories } = useQuery({
+  const { data: categories, isPending: isCategoriesPending } = useQuery({
     queryKey: ["categories"],
     queryFn: getCategories,
   });
 
-  const { data: actions } = useQuery({
+  const { data: actions, isPending: isActionsPending } = useQuery({
     queryKey: ["actions"],
     queryFn: getActions,
   });
@@ -169,7 +169,8 @@ export default function AddShortcut() {
     setInputsContext(action);
   }, []);
 
-  const onActionAdd = (action: Action, inputs?: ActionInput[]) => {
+  const onActionAddOrUpdate = (action: Action, inputs?: ActionInput[]) => {
+    // Check if the action has inputs and if they are already set
     if (action.inputs && action.inputs.length > 0 && !inputs) {
       onActionEdit(action);
       return;
@@ -194,7 +195,7 @@ export default function AddShortcut() {
     setInputsContext(null);
     setJustAdded(true);
 
-    // Workaround to scroll to the last added item
+    // Workaround to scroll to the last added item after adding an action
     setTimeout(() => {
       scrollViewRef.current?.scrollToEnd();
     }, 500);
@@ -292,7 +293,7 @@ export default function AddShortcut() {
                 scrollableRef={scrollViewRef}
               />
             </Animated.ScrollView>
-          ) : shortcut && isPending ? (
+          ) : shortcut && isShortcutPending ? (
             <View style={globalStyles.modalLoading}>
               <ActivityIndicator size="large" color={Colors.PRIMARY} />
             </View>
@@ -352,26 +353,36 @@ export default function AddShortcut() {
               </Pressable>
             </BottomSheetView>
 
-            <BottomSheetFlatList
-              key="actions-list"
-              data={
-                categories?.find(
-                  (category) => category.id === selectedCategory.id,
-                )?.actions
-              }
-              renderItem={({ item }) => (
-                <Animated.View entering={ZoomIn.duration(100)}>
-                  <ShortcutActionItem
-                    item={item}
-                    onActionPress={onActionPress}
-                    onActionAdd={onActionAdd}
-                  />
-                </Animated.View>
-              )}
-              contentContainerStyle={styles.contentContainer}
-              columnWrapperStyle={styles.columnWrapper}
-              numColumns={2}
-            />
+            {isActionsPending ? (
+              <View style={globalStyles.modalLoading}>
+                <ActivityIndicator />
+              </View>
+            ) : (
+              <BottomSheetFlatList
+                data={
+                  categories?.find(
+                    (category) => category.id === selectedCategory.id,
+                  )?.actions
+                }
+                renderItem={({ item }) => (
+                  <Animated.View entering={ZoomIn.duration(100)}>
+                    <ShortcutActionItem
+                      item={item}
+                      onActionPress={onActionPress}
+                      onActionAdd={onActionAddOrUpdate}
+                    />
+                  </Animated.View>
+                )}
+                contentContainerStyle={styles.contentContainer}
+                columnWrapperStyle={styles.columnWrapper}
+                numColumns={2}
+                ListEmptyComponent={() => (
+                  <CustomText style={styles.emptyText}>
+                    No actions available.
+                  </CustomText>
+                )}
+              />
+            )}
           </BottomSheet>
         ) : null}
 
@@ -419,7 +430,6 @@ export default function AddShortcut() {
 
             <View style={styles.actionContainer}>
               <Animated.View
-                key="preview-container"
                 entering={FadeIn.duration(150)}
                 style={styles.actionPreviewContainer}
               >
@@ -436,7 +446,7 @@ export default function AddShortcut() {
               <CustomButton
                 title="Add"
                 color={selectedAction.gradientStart}
-                onPress={() => onActionAdd(selectedAction)}
+                onPress={() => onActionAddOrUpdate(selectedAction)}
               />
             </View>
           </BottomSheet>
@@ -517,10 +527,10 @@ export default function AddShortcut() {
                           label: option,
                           value: option,
                         }))}
-                        sliderProps={{
-                          thumbTintColor: inputsContext.gradientStart,
-                          minimumTrackTintColor: inputsContext.gradientStart,
-                        }}
+                        textInputProps={{ color: inputsContext.gradientStart }}
+                        switchProps={{ color: inputsContext.gradientStart }}
+                        pickerProps={{ color: inputsContext.gradientStart }}
+                        sliderProps={{ color: inputsContext.gradientStart }}
                       />
                     );
                   }}
@@ -528,7 +538,7 @@ export default function AddShortcut() {
                     <LineSeparator leading={20} width="90%" />
                   )}
                   ListEmptyComponent={() => (
-                    <CustomText style={styles.emptyInputsText}>
+                    <CustomText style={styles.emptyText}>
                       No supported inputs.
                     </CustomText>
                   )}
@@ -550,7 +560,9 @@ export default function AddShortcut() {
                 <CustomButton
                   title="Save"
                   color={inputsContext.gradientStart}
-                  onPress={() => onActionAdd(inputsContext, selectedInputs)}
+                  onPress={() =>
+                    onActionAddOrUpdate(inputsContext, selectedInputs)
+                  }
                   disabled={isSaveDisabled}
                 />
               </View>
@@ -565,11 +577,6 @@ export default function AddShortcut() {
           enableContentPanningGesture={false}
           style={styles.categorySheet}
           ref={categorySheetRef}
-          animateOnMount={
-            selectedCategory === null ||
-            selectedAction !== null ||
-            categories !== undefined
-          }
         >
           <BottomSheetView style={styles.sheetHeaderContainer}>
             <CustomText style={styles.sheetHeaderTitle}>
@@ -577,19 +584,28 @@ export default function AddShortcut() {
             </CustomText>
           </BottomSheetView>
 
-          <BottomSheetFlatList
-            key="categories-list"
-            data={categories}
-            renderItem={({ item }) => (
-              <ShortcutCategoryItem
-                item={item}
-                onCategoryPress={onCategoryPress}
-              />
-            )}
-            contentContainerStyle={styles.contentContainer}
-            showsHorizontalScrollIndicator={false}
-            horizontal
-          />
+          {isCategoriesPending ? (
+            <View style={globalStyles.modalLoading}>
+              <ActivityIndicator />
+            </View>
+          ) : categories?.length === 0 ? (
+            <CustomText style={styles.emptyText}>
+              No categories available.
+            </CustomText>
+          ) : (
+            <BottomSheetFlatList
+              data={categories}
+              renderItem={({ item }) => (
+                <ShortcutCategoryItem
+                  item={item}
+                  onCategoryPress={onCategoryPress}
+                />
+              )}
+              contentContainerStyle={styles.contentContainer}
+              showsHorizontalScrollIndicator={false}
+              horizontal
+            />
+          )}
         </BottomSheet>
       </View>
     </BottomSheetModalProvider>
