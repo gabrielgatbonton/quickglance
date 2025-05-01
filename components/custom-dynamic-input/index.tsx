@@ -1,11 +1,8 @@
 import { PickerItem } from "@/constants/types";
-import CustomTextInput from "../custom-text-input";
-import CustomSwitch from "../custom-switch";
-import CustomPicker from "../custom-picker";
-import { SwitchProps, TextInputProps } from "react-native";
-import CustomSlider from "../custom-slider";
-import { PickerSheetProps } from "../picker-sheet";
-import { SliderProps } from "@react-native-community/slider";
+import CustomTextInput, { CustomTextInputProps } from "../custom-text-input";
+import CustomSwitch, { CustomSwitchProps } from "../custom-switch";
+import CustomPicker, { CustomPickerSelectProps } from "../custom-picker";
+import CustomSlider, { CustomSliderProps } from "../custom-slider";
 
 export type CustomDynamicInputProps = {
   value: any;
@@ -17,10 +14,10 @@ export type CustomDynamicInputProps = {
   options?: PickerItem[];
   min?: number;
   max?: number;
-  textInputProps?: Partial<TextInputProps>;
-  switchProps?: Partial<SwitchProps>;
-  pickerProps?: Partial<PickerSheetProps>;
-  sliderProps?: Partial<SliderProps>;
+  textInputProps?: Partial<CustomTextInputProps>;
+  switchProps?: Partial<CustomSwitchProps>;
+  pickerProps?: Partial<CustomPickerSelectProps>;
+  sliderProps?: Partial<CustomSliderProps>;
 };
 
 export default function CustomDynamicInput({
