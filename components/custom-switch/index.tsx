@@ -5,10 +5,12 @@ import { Colors } from "@/assets/colors";
 
 export type CustomSwitchProps = SwitchProps & {
   label: string;
+  color?: string;
 };
 
 export default function CustomSwitch({
   label,
+  color = Colors.PRIMARY,
   ...switchProps
 }: CustomSwitchProps) {
   return (
@@ -19,8 +21,8 @@ export default function CustomSwitch({
 
       <View style={styles.switchContainer}>
         <Switch
-          trackColor={{ true: Colors.PRIMARY, false: "lightgray" }}
-          thumbColor={Platform.OS === "android" ? Colors.PRIMARY : undefined}
+          trackColor={{ true: color, false: "lightgray" }}
+          thumbColor={Platform.OS === "android" ? color : undefined}
           {...switchProps}
         />
       </View>

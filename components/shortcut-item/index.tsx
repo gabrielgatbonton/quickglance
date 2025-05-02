@@ -144,7 +144,7 @@ export default function ShortcutItem({
             {isStarted && !isColumnSelected && (
               <BlurView
                 intensity={3}
-                experimentalBlurMethod="dimezisBlurView"
+                // experimentalBlurMethod="dimezisBlurView"
                 style={[StyleSheet.absoluteFillObject, { zIndex: 1 }]}
               />
             )}

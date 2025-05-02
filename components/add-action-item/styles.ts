@@ -33,6 +33,11 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 15,
   },
+  buttonContainer: {
+    columnGap: 10,
+    flexDirection: "row",
+    alignItems: "center",
+  },
 });
 
 export default styles;

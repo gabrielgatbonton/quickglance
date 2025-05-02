@@ -22,6 +22,7 @@ export type PickerSheetProps = {
   value: any;
   onSelected: (value: any) => void;
   disabled?: boolean;
+  color?: string;
   searchEnabled?: boolean;
 };
 
@@ -31,6 +32,7 @@ export default function PickerSheet({
   value,
   onSelected,
   disabled,
+  color = Colors.PRIMARY,
   labelStyle,
   searchEnabled,
 }: PickerSheetProps) {
@@ -62,7 +64,7 @@ export default function PickerSheet({
                 labelStyle,
                 styles.itemLabel,
                 {
-                  color: item.value === value ? Colors.PRIMARY : "",
+                  color: item.value === value ? color : "",
                 },
               ]}
             >
@@ -76,14 +78,14 @@ export default function PickerSheet({
                 <SymbolView
                   name="checkmark"
                   size={20}
-                  tintColor={Colors.PRIMARY}
+                  tintColor={color}
                   weight="bold"
                 />
               )}
         </Pressable>
       );
     },
-    [labelStyle, onOptionPress, value],
+    [color, labelStyle, onOptionPress, value],
   );
 
   return (
@@ -104,7 +106,7 @@ export default function PickerSheet({
           <SymbolView
             name="chevron.down"
             size={18}
-            tintColor={Colors.PRIMARY}
+            tintColor={color}
             weight="bold"
           />
         </View>
@@ -128,7 +130,7 @@ export default function PickerSheet({
             <SymbolView
               name="magnifyingglass"
               size={20}
-              tintColor={Colors.PRIMARY}
+              tintColor={color}
               weight="bold"
             />
             <BottomSheetTextInput

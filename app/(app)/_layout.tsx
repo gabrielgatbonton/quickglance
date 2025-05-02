@@ -65,12 +65,6 @@ export default function RootLayout() {
         name="(modal)/install-shortcut"
         options={{ presentation: MODAL_PRESENTATION }}
       />
-
-      {/* Test screens */}
-      <Stack.Screen
-        name="(modal)/camera-test/index"
-        options={{ presentation: MODAL_PRESENTATION }}
-      />
     </Stack>
   );
 }

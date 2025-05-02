@@ -1,7 +1,6 @@
 import { SymbolView } from "expo-symbols";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ActivityIndicator, Alert } from "react-native";
-import styles from "./styles";
 import { Colors } from "@/assets/colors";
 import {
   Camera,
@@ -17,15 +16,17 @@ import {
   FaceDetectionOptions,
   useFaceDetector,
 } from "react-native-vision-camera-face-detector";
-import { Worklets } from "react-native-worklets-core";
+import { useSharedValue, Worklets } from "react-native-worklets-core";
 import {
   BlinkData,
+  EmotionData,
   FaceNodData,
   FaceTurnData,
   HeadShakeData,
   NodDirection,
   TurnDirection,
 } from "@/constants/types";
+import styles from "./styles";
 
 export type SelfieCameraProps = {
   isActive?: boolean;
@@ -37,6 +38,7 @@ export type SelfieCameraProps = {
   onFaceTurn?: (data: FaceTurnData) => void;
   onFaceNod?: (data: FaceNodData) => void;
   onBlinkDetected?: (data: BlinkData) => void;
+  onEmotionDetected?: (data: EmotionData) => void;
   onHeadShake?: (data: HeadShakeData) => void;
 };
 
@@ -52,24 +54,33 @@ export default function SelfieCamera({
   onFaceTurn,
   onFaceNod,
   onBlinkDetected,
+  onEmotionDetected,
   onHeadShake,
 }: SelfieCameraProps) {
   const [isGranted, setIsGranted] = useState(false);
 
+  // Face detection
+  const hasDetectedFace = useSharedValue(false);
+
+  // Blink detection
+  const blinkCount = useSharedValue(0);
+  const blinkStartTime = useSharedValue<number | null>(null);
+  const blinkDuration = useSharedValue(0);
+
+  // Turn detection
+  const lastTurnDirection = useSharedValue<TurnDirection | null>(null);
+  const directionChanges = useSharedValue<TurnDirection[]>([]);
+
   const faceDetectionOptions = useRef<FaceDetectionOptions>({
+    performanceMode: "accurate",
     classificationMode: "all",
   }).current;
 
-  // Blink detection
   const blinkTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const blinkCountRef = useRef(0);
-
-  // Head shake detection
-  const lastTurnDirectionRef = useRef<TurnDirection | null>(null);
-  const directionChangesRef = useRef<TurnDirection[]>([]);
   const headShakeTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const { detectFaces } = useFaceDetector(faceDetectionOptions);
+  // const { detectEmotions } = useEmotionDetector();
   const { hasPermission, requestPermission } = useCameraPermission();
   const device = useCameraDevice("front");
   const format = useCameraFormat(device, [{ fps: 30 }]);
@@ -111,10 +122,10 @@ export default function SelfieCamera({
 
       // Only record direction changes
       if (
-        direction !== lastTurnDirectionRef.current &&
-        lastTurnDirectionRef.current !== null
+        direction !== lastTurnDirection.value &&
+        lastTurnDirection.value !== null
       ) {
-        directionChangesRef.current.push(direction);
+        directionChanges.value.push(direction);
 
         // Reset shake detection after a certain time of inactivity
         if (headShakeTimerRef.current) {
@@ -122,7 +133,7 @@ export default function SelfieCamera({
         }
 
         headShakeTimerRef.current = setTimeout(() => {
-          directionChangesRef.current = [];
+          directionChanges.value = [];
           headShakeTimerRef.current = null;
 
           onHeadShake({
@@ -133,7 +144,7 @@ export default function SelfieCamera({
         }, headShakeResetTime); // Reset if no new direction changes for 1.5 seconds
 
         // Check for shake pattern
-        const changes = directionChangesRef.current;
+        const changes = directionChanges.value;
         if (changes.length >= 2) {
           onHeadShake({
             isShaking: true,
@@ -145,9 +156,9 @@ export default function SelfieCamera({
         }
       }
 
-      lastTurnDirectionRef.current = direction;
+      lastTurnDirection.value = direction;
     },
-    [onHeadShake],
+    [directionChanges, lastTurnDirection, onHeadShake],
   );
 
   const handleFaceTurn = useCallback(
@@ -204,7 +215,7 @@ export default function SelfieCamera({
       }
 
       const blinkThreshold = 0.5;
-      const blinkResetTime = 200;
+      const blinkResetTime = 300;
 
       const leftEyeOpen = face.leftEyeOpenProbability > blinkThreshold;
       const rightEyeOpen = face.rightEyeOpenProbability > blinkThreshold;
@@ -212,11 +223,22 @@ export default function SelfieCamera({
       // Check if both eyes are closed
       const isBlinking = !leftEyeOpen && !rightEyeOpen;
 
-      // Increment blink count if both eyes are closed
-      if (isBlinking) {
+      // If blink starts, record the start time
+      if (isBlinking && blinkStartTime.value === null) {
+        blinkStartTime.value = Date.now();
         // Increment blink count on blink start
-        blinkCountRef.current += 1;
+        blinkCount.value += 1;
+      }
 
+      // If eyes open after a blink, calculate duration
+      if (!isBlinking && blinkStartTime.value !== null) {
+        // Calculate blink duration
+        blinkDuration.value = Date.now() - blinkStartTime.value;
+        blinkStartTime.value = null;
+      }
+
+      // Handle timer logic for resetting
+      if (isBlinking) {
         // Clear existing timer if there is one
         if (blinkTimerRef.current) {
           clearTimeout(blinkTimerRef.current);
@@ -224,7 +246,9 @@ export default function SelfieCamera({
 
         // Set new timer to reset blink count after specified time
         blinkTimerRef.current = setTimeout(() => {
-          blinkCountRef.current = 0;
+          blinkCount.value = 0;
+          blinkDuration.value = 0;
+          blinkStartTime.value = null;
           blinkTimerRef.current = null;
 
           // Prevents multiple shortcut runs,
@@ -233,7 +257,8 @@ export default function SelfieCamera({
             isBlinking: false,
             leftEyeOpen: false,
             rightEyeOpen: false,
-            blinkCount: blinkCountRef.current,
+            blinkCount: 0,
+            blinkDuration: 0,
           });
         }, blinkResetTime); // Reset blink count after a short delay
       }
@@ -242,22 +267,49 @@ export default function SelfieCamera({
         isBlinking,
         leftEyeOpen,
         rightEyeOpen,
-        blinkCount: blinkCountRef.current,
+        blinkCount: blinkCount.value,
+        blinkDuration: blinkDuration.value,
       });
     },
-    [onBlinkDetected],
+    [blinkCount, blinkDuration, blinkStartTime, onBlinkDetected],
   );
 
-  const handleDetectedFaces = Worklets.createRunOnJS((faces: Face[]) => {
-    const face = faces[0];
+  const handleSmile = useCallback(
+    (face: Face) => {
+      if (!onEmotionDetected) {
+        return;
+      }
+
+      const smileThreshold = 0.5;
+      const smileProbability = face.smilingProbability;
+      const isSmiling = smileProbability > smileThreshold;
+
+      onEmotionDetected({
+        emotion: isSmiling ? "happy" : "neutral",
+      });
+    },
+    [onEmotionDetected],
+  );
+
+  const handleDetectedFace = Worklets.createRunOnJS((face: Face | null) => {
+    hasDetectedFace.value = !!face;
     onFaceDetected?.(face);
 
     if (face) {
       handleFaceTurn?.(face);
       handleFaceNod?.(face);
       handleEyeBlink?.(face);
+      handleSmile?.(face);
     }
   });
+
+  // const handleDetectedEmotions = Worklets.createRunOnJS(
+  //   (emotionData: EmotionData | null) => {
+  //     if (emotionData) {
+  //       onEmotionDetected?.(emotionData);
+  //     }
+  //   },
+  // );
 
   const frameProcessor = useFrameProcessor(
     (frame) => {
@@ -270,25 +322,35 @@ export default function SelfieCamera({
       runAsync(frame, () => {
         "worklet";
         const faces = detectFaces(frame);
-        handleDetectedFaces(faces);
+        handleDetectedFace(faces[0]);
       });
+
+      // runAtTargetFps(1, () => {
+      //   if (!hasDetectedFace.value) {
+      //     return;
+      //   }
+      //   const emotionData = detectEmotions(frame);
+      //   handleDetectedEmotions(emotionData);
+      // });
     },
-    [handleDetectedFaces, isFrameProcessorEnabled],
+    [handleDetectedFace, isFrameProcessorEnabled],
   );
 
   useEffect(() => {
     return () => {
       // Cleanup timers on unmount
       if (blinkTimerRef.current) {
-        blinkCountRef.current = 0;
+        blinkCount.value = 0;
+        blinkDuration.value = 0;
+        blinkStartTime.value = null;
         clearTimeout(blinkTimerRef.current);
       }
       if (headShakeTimerRef.current) {
-        directionChangesRef.current = [];
+        directionChanges.value = [];
         clearTimeout(headShakeTimerRef.current);
       }
     };
-  }, []);
+  }, [blinkCount, blinkDuration, blinkStartTime, directionChanges]);
 
   if (!hasPermission) {
     return <ActivityIndicator size="large" />;

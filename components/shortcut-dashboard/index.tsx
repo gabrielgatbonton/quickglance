@@ -29,7 +29,7 @@ type ShortcutDashboardProps = {
   shortcuts: Shortcut[] | null;
   turnDirection?: TurnDirection;
   nodDirection?: NodDirection;
-  blinkCount?: number;
+  blinkDuration?: number;
   isPageControlEnabled?: boolean;
 };
 
@@ -39,7 +39,7 @@ export default function ShortcutDashboard({
   shortcuts,
   turnDirection,
   nodDirection,
-  blinkCount,
+  blinkDuration,
   isPageControlEnabled = true,
 }: ShortcutDashboardProps) {
   const { AnimatedPagerView, activePage, setPage, ...rest } = usePagerView();
@@ -91,13 +91,13 @@ export default function ShortcutDashboard({
 
   useEffect(() => {
     // Check if the user has blinked more than 3 times
-    if (blinkCount && blinkCount > 2 && !isShortcutRunning) {
+    if (blinkDuration! > 600 && !isShortcutRunning) {
       // Run the shortcut if it exists
       if (focusedShortcut) {
         router.navigate(`/(modal)/run-shortcut/${focusedShortcut.id}`);
       }
     }
-  }, [blinkCount, focusedShortcut, isShortcutRunning]);
+  }, [blinkDuration, focusedShortcut, isShortcutRunning]);
 
   if (!shortcuts) {
     return (

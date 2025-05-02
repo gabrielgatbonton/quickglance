@@ -23,12 +23,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { saveShortcut, updateShortcut } from "@/services/apiService";
 
 const DETAILS_DATA: EditDetailData[] = [
-  { key: "name", label: "Name", placeholder: "Enter Name", type: "input" },
+  { key: "name", label: "Name", placeholder: "Enter Name", type: "text" },
   {
     key: "description",
     label: "Description",
     placeholder: "Enter Description Here",
-    type: "input",
+    type: "text",
   },
   {
     key: "icon",
@@ -131,7 +131,8 @@ export default function EditDetails() {
               data={DETAILS_DATA}
               renderItem={({ item }) => (
                 <CustomDynamicInput
-                  item={item}
+                  {...item}
+                  key={item.key}
                   value={details[item.key]}
                   onValueChange={(value) => setDetails({ [item.key]: value })}
                 />

@@ -1,51 +1,87 @@
-import { EditDetailData } from "@/constants/types";
-import CustomTextInput from "../custom-text-input";
-import CustomSwitch from "../custom-switch";
-import CustomPicker from "../custom-picker";
+import { PickerItem } from "@/constants/types";
+import CustomTextInput, { CustomTextInputProps } from "../custom-text-input";
+import CustomSwitch, { CustomSwitchProps } from "../custom-switch";
+import CustomPicker, { CustomPickerSelectProps } from "../custom-picker";
+import CustomSlider, { CustomSliderProps } from "../custom-slider";
 
-type CustomDynamicInputProps = {
-  item: EditDetailData;
-  value: string | boolean;
-  onValueChange?: (value: string | boolean) => void;
+export type CustomDynamicInputProps = {
+  value: any;
+  onValueChange?: (value: any) => void;
+  label: string;
+  type: "text" | "number" | "select" | "switch" | "slider";
+  placeholder?: string;
+  multiline?: boolean;
+  options?: PickerItem[];
+  min?: number;
+  max?: number;
+  textInputProps?: Partial<CustomTextInputProps>;
+  switchProps?: Partial<CustomSwitchProps>;
+  pickerProps?: Partial<CustomPickerSelectProps>;
+  sliderProps?: Partial<CustomSliderProps>;
 };
 
 export default function CustomDynamicInput({
-  item,
   value,
   onValueChange,
+  type,
+  label,
+  placeholder,
+  multiline,
+  options,
+  min,
+  max,
+  textInputProps,
+  switchProps,
+  pickerProps,
+  sliderProps,
 }: CustomDynamicInputProps) {
-  if (item.type === "input") {
+  if (type === "text" || type === "number") {
     return (
       <CustomTextInput
-        value={value as string}
-        label={item.label}
-        placeholder={item.placeholder}
+        value={value}
+        label={label}
+        placeholder={placeholder}
+        multiline={multiline}
         onChangeText={(text) => onValueChange?.(text)}
-        {...item.textInputProps}
+        keyboardType={type === "number" ? "numeric" : undefined}
+        {...textInputProps}
       />
     );
   }
 
-  if (item.type === "switch") {
+  if (type === "switch") {
     return (
       <CustomSwitch
-        value={value as boolean}
-        label={item.label}
+        value={value}
+        label={label}
         onValueChange={(value) => onValueChange?.(value)}
-        {...item.switchProps}
+        {...switchProps}
       />
     );
   }
 
-  if (item.type === "select") {
+  if (type === "select") {
     return (
       <CustomPicker
         value={value}
-        label={item.label}
-        placeholder={item.placeholder}
+        label={label}
+        placeholder={placeholder}
         onSelected={(value) => onValueChange?.(value)}
-        data={item.options ?? []}
-        {...item.pickerProps}
+        data={options ?? []}
+        {...pickerProps}
+      />
+    );
+  }
+
+  if (type === "slider") {
+    return (
+      <CustomSlider
+        value={value}
+        label={label}
+        onValueChange={(value) => onValueChange?.(value)}
+        minimumValue={min}
+        maximumValue={max}
+        {...sliderProps}
       />
     );
   }

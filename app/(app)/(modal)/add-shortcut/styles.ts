@@ -85,6 +85,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
   },
+  actionErrorText: {
+    color: "red",
+    textAlign: "center",
+  },
   actionInputsContainer: {
     rowGap: 15,
   },
@@ -96,6 +100,12 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.37,
     shadowRadius: 7.49,
+  },
+  emptyText: {
+    textAlign: "center",
+    color: "lightgray",
+    fontSize: 16,
+    padding: "15%",
   },
 });
 

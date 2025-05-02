@@ -88,7 +88,7 @@ export default function CustomColorPicker({
       >
         <BlurView
           intensity={60}
-          experimentalBlurMethod="dimezisBlurView"
+          // experimentalBlurMethod="dimezisBlurView"
           style={styles.container}
         >
           <Animated.View

@@ -8,6 +8,7 @@ import styles from "./styles";
 import CustomText from "../custom-text";
 import { SymbolView } from "expo-symbols";
 import { Colors } from "@/assets/colors";
+import convertHexToRGBA from "@/utils/colorConverter";
 
 type RunningActionItemProps = {
   item: RunningAction;
@@ -17,15 +18,17 @@ type RunningActionItemProps = {
 Animated.addWhitelistedUIProps({ shadowOffset: true });
 
 export default function RunningActionItem({ item }: RunningActionItemProps) {
+  const shadowColor = convertHexToRGBA(item.gradientStart, 0.25);
+
   const animatedStyles = useAnimatedStyle(() => {
     return {
-      shadowColor: "rgba(182, 157, 247, 0.25)",
+      shadowColor: shadowColor,
       shadowOffset: {
         width: 0,
         height: withTiming(item.isCurrent ? 3 : 0),
       },
       shadowOpacity: withTiming(item.isCurrent ? 1 : 0),
-      shadowRadius: withTiming(item.isCurrent ? 26 : 0),
+      shadowRadius: withTiming(item.isCurrent ? 20 : 0),
     };
   });
 
