@@ -8,12 +8,21 @@ type IoniconName = keyof typeof Ionicons.glyphMap;
 type IconViewProps = {
   name: [symbolName: SFSymbol, ioniconName: IoniconName];
   color: string;
+  size?: number;
 };
 
-export default function IconView({ name, color }: IconViewProps) {
+export default function IconView({ name, color, size }: IconViewProps) {
+  const androidSize = size ?? 24;
+
   if (Platform.OS === "android") {
-    return <Ionicons name={name[1]} color={color} size={24} />;
+    return <Ionicons name={name[1]} color={color} size={androidSize} />;
   }
 
-  return <SymbolView name={name[0]} tintColor={color} />;
+  return (
+    <SymbolView
+      name={name[0]}
+      tintColor={color}
+      {...(size ? { size } : {})} // only pass size on iOS if explicitly provided
+    />
+  );
 }

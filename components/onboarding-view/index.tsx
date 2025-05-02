@@ -1,6 +1,6 @@
 import { Colors } from "@/assets/colors";
 import pressedOpacity from "@/utils/pressedOpacity";
-import { SymbolView } from "expo-symbols";
+import IconView from "../icon-view";
 import { Pressable, useWindowDimensions, View } from "react-native";
 import styles from "./styles";
 import Animated, { Easing, ZoomIn } from "react-native-reanimated";
@@ -29,9 +29,9 @@ export default function OnboardingView({
       </CustomText>
 
       <View style={styles.iconContainer}>
-        <SymbolView
-          name="eyebrow"
-          tintColor={Colors.SECONDARY}
+        <IconView
+          name={["eyebrow", "eye"]}
+          color={Colors.SECONDARY}
           size={ONBOARDING_ICON_SIZE}
         />
 
@@ -41,9 +41,9 @@ export default function OnboardingView({
           style={({ pressed }) => pressedOpacity({ pressed })}
           onPress={() => onStartedChange(true)}
         >
-          <SymbolView
-            name="play.circle.fill"
-            tintColor={Colors.SECONDARY}
+          <IconView
+            name={["play.circle.fill", "play-circle"]}
+            color={Colors.SECONDARY}
             size={ONBOARDING_ICON_SIZE}
           />
         </Pressable>
