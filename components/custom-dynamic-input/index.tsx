@@ -14,6 +14,7 @@ export type CustomDynamicInputProps = {
   options?: PickerItem[];
   min?: number;
   max?: number;
+  useBottomSheetInput?: boolean;
   textInputProps?: Partial<CustomTextInputProps>;
   switchProps?: Partial<CustomSwitchProps>;
   pickerProps?: Partial<CustomPickerSelectProps>;

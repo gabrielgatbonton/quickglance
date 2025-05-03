@@ -157,6 +157,9 @@ export default function AddShortcut() {
       return;
     }
 
+    // Temporarily close the category sheet to show inputs
+    categorySheetRef.current?.collapse();
+
     // Filter out invalid inputs and set initial values
     const newInputs = action.inputs
       .filter((input) => input.type && checkValidInputType(input.type))
@@ -306,7 +309,7 @@ export default function AddShortcut() {
               onPress={() => categorySheetRef.current?.expand()}
             >
               <CustomText style={styles.dropText}>
-                Add a shortcut by tapping on them!
+                Add an action by selecting a category!
               </CustomText>
             </Pressable>
           )}
@@ -457,12 +460,18 @@ export default function AddShortcut() {
             snapPoints={["35%", "70%"]}
             index={1}
             enableDynamicSizing={false}
+            keyboardBlurBehavior="restore"
             ref={inputSheetRef}
           >
             <BottomSheetView style={styles.sheetHeaderContainer}>
               <Pressable
                 style={({ pressed }) => pressedOpacity({ pressed })}
                 onPress={() => {
+                  // If there are no category selected yet, open the category sheet
+                  if (!selectedCategory) {
+                    categorySheetRef.current?.expand();
+                  }
+
                   inputSheetRef.current?.close();
                   setSelectedInputs(null);
                   setInputsContext(null);
@@ -495,8 +504,10 @@ export default function AddShortcut() {
               </Pressable>
             </BottomSheetView>
 
-            <View style={styles.actionContainer}>
-              <View style={styles.actionInputsContainer}>
+            <View style={[styles.actionContainer, { marginBottom: 10 }]}>
+              <View
+                style={[styles.actionInputsContainer, { marginBottom: 20 }]}
+              >
                 <FlatList
                   data={selectedInputs}
                   renderItem={({ item }) => {
@@ -527,7 +538,10 @@ export default function AddShortcut() {
                           label: option,
                           value: option,
                         }))}
-                        textInputProps={{ color: inputsContext.gradientStart }}
+                        textInputProps={{
+                          color: inputsContext.gradientStart,
+                          useBottomSheetInput: true,
+                        }}
                         switchProps={{ color: inputsContext.gradientStart }}
                         pickerProps={{ color: inputsContext.gradientStart }}
                         sliderProps={{ color: inputsContext.gradientStart }}
@@ -575,6 +589,12 @@ export default function AddShortcut() {
           index={selectedCategory ? 0 : 1}
           enableDynamicSizing={false}
           enableContentPanningGesture={false}
+          onChange={(index) => {
+            // Prevents the sheet from not being opened again
+            if (index === 0 && !selectedCategory && !selectedInputs) {
+              categorySheetRef.current?.expand();
+            }
+          }}
           style={styles.categorySheet}
           ref={categorySheetRef}
         >

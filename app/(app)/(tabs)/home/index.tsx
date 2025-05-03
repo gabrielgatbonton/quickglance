@@ -34,9 +34,9 @@ export default function Home() {
   const [blinkDuration, setBlinkDuration] = useState(0);
   const [emotion, setEmotion] = useState<Emotion | null>(null);
 
-  const faceCenterTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const faceDetectedTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const frameProcessorTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const faceCenterTimerRef = useRef<number>(null);
+  const faceDetectedTimerRef = useRef<number>(null);
+  const frameProcessorTimerRef = useRef<number>(null);
 
   const isFocused = useIsFocused();
   const navigation = useNavigation();
