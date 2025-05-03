@@ -1,11 +1,6 @@
 import { Colors } from "@/assets/colors";
 import { LinearGradient } from "expo-linear-gradient";
-import {
-  ActivityIndicator,
-  Text,
-  useWindowDimensions,
-  View,
-} from "react-native";
+import { ActivityIndicator, useWindowDimensions, View } from "react-native";
 import { usePagerView } from "react-native-pager-view";
 import Animated, {
   BounceIn,
@@ -21,6 +16,7 @@ import useShortcutRunnerStore from "@/stores/useShortcutRunnerStore";
 import PageControl from "../page-control";
 import { SymbolView } from "expo-symbols";
 import ShortcutPage from "../shortcut-page";
+import CustomText from "../custom-text";
 
 const SHORTCUTS_PER_SCREEN = 6;
 const SHORTCUTS_PER_ROW = 2;
@@ -110,11 +106,13 @@ export default function ShortcutDashboard({
   if (shortcuts.length === 0) {
     return (
       <Animated.View
-        entering={BounceIn}
+        entering={BounceIn.duration(300)}
         style={[styles.emptyContainer, { height: shortcutsHeight }]}
       >
-        <SymbolView name="square.on.square.dashed" size={80} tintColor="gray" />
-        <Text style={styles.emptyText}>No shortcuts available.</Text>
+        <SymbolView name="square.grid.2x2" size={80} tintColor="gray" />
+        <CustomText style={styles.emptyText}>
+          No shortcuts available.
+        </CustomText>
       </Animated.View>
     );
   }

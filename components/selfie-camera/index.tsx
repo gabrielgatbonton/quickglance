@@ -76,8 +76,8 @@ export default function SelfieCamera({
     classificationMode: "all",
   }).current;
 
-  const blinkTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const headShakeTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const blinkTimerRef = useRef<number>(null);
+  const headShakeTimerRef = useRef<number>(null);
 
   const { detectFaces } = useFaceDetector(faceDetectionOptions);
   // const { detectEmotions } = useEmotionDetector();

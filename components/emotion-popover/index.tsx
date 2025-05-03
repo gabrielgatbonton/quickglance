@@ -1,9 +1,10 @@
 import { Emotion } from "@/constants/types";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet } from "react-native";
 import Animated, { runOnJS, ZoomIn, ZoomOut } from "react-native-reanimated";
 import styles from "./styles";
 import { useEffect, useRef, useState } from "react";
 import { BlurView } from "expo-blur";
+import CustomText from "../custom-text";
 
 type EmotionAlertProps = {
   emotion: Emotion | null;
@@ -25,7 +26,7 @@ export default function EmotionPopover({
 }: EmotionAlertProps) {
   const [lastEmotion, setLastEmotion] = useState<Emotion | null>(null);
 
-  const alertTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const alertTimerRef = useRef<number>(null);
 
   useEffect(() => {
     // Reset emotion when face is neutral
@@ -67,7 +68,7 @@ export default function EmotionPopover({
         // experimentalBlurMethod="dimezisBlurView"
         style={styles.emojiContainer}
       >
-        <Text style={styles.emoji}>{EMOTION_MAPPING[emotion]}</Text>
+        <CustomText style={styles.emoji}>{EMOTION_MAPPING[emotion]}</CustomText>
       </BlurView>
     </Animated.View>
   );

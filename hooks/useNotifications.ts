@@ -10,15 +10,16 @@ import { router } from "expo-router";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
-    shouldShowAlert: true,
+    shouldShowBanner: true,
+    shouldShowList: false,
     shouldPlaySound: true,
     shouldSetBadge: false,
   }),
 });
 
 export default function useNotifications() {
-  const notificationListener = useRef<Notifications.EventSubscription>();
-  const responseListener = useRef<Notifications.EventSubscription>();
+  const notificationListener = useRef<Notifications.EventSubscription>(null);
+  const responseListener = useRef<Notifications.EventSubscription>(null);
 
   const { setExpoPushToken, setNotification } = useNotificationStore<
     Pick<NotificationActions, "setExpoPushToken" | "setNotification">
@@ -57,12 +58,8 @@ export default function useNotifications() {
       });
 
     return () => {
-      notificationListener.current &&
-        Notifications.removeNotificationSubscription(
-          notificationListener.current,
-        );
-      responseListener.current &&
-        Notifications.removeNotificationSubscription(responseListener.current);
+      notificationListener.current?.remove();
+      responseListener.current?.remove();
     };
   }, [setExpoPushToken, setNotification]);
 }

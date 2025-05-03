@@ -20,6 +20,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "edgeToEdgeEnabled": true,
       "package": "com.melmatx.QuickGlance"
     },
     "web": {
@@ -76,6 +77,7 @@
         }
       ],
       "expo-secure-store",
+      "expo-web-browser",
       "react-native-vision-camera"
     ],
     "experiments": {

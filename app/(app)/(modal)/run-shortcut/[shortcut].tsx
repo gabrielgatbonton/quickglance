@@ -38,8 +38,8 @@ export default function ShortcutRunner() {
   const [isShortcutCompleted, setIsShortcutCompleted] = useState(false);
   const [countdownTimer, setCountdownTimer] = useState(3);
 
-  const stepInterval = useRef<NodeJS.Timeout | null>(null);
-  const countdownInterval = useRef<NodeJS.Timeout | null>(null);
+  const stepInterval = useRef<number>(null);
+  const countdownInterval = useRef<number>(null);
 
   const { shortcut } = useLocalSearchParams<{ shortcut: string }>();
   const setIsShortcutRunning = useShortcutRunnerStore(
