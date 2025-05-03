@@ -6,6 +6,7 @@ import styles from "./styles";
 import pressedOpacity from "@/utils/pressedOpacity";
 import globalStyles from "@/assets/global-styles";
 import CustomText from "../custom-text";
+import IconView from "../icon-view";
 
 type ShortcutActionItemProps = {
   item: Action;
@@ -38,7 +39,8 @@ export default function ShortcutActionItem({
         ]}
       >
         <View style={globalStyles.rowBetween}>
-          <SymbolView name={item.icon} size={30} tintColor="white" />
+          <IconView name={[item.icon, "eye"]} color="white" size={30} />
+          {/* <SymbolView name={item.icon} size={30} tintColor="white" /> */}
           <Pressable
             style={({ pressed }) => [
               globalStyles.transparentButton,
@@ -46,7 +48,8 @@ export default function ShortcutActionItem({
             ]}
             onPress={() => onActionAdd?.(item)}
           >
-            <SymbolView name="plus" size={18} tintColor="white" weight="bold" />
+            <IconView name={["plus", "add"]} color="white" size={18} />
+            {/* <SymbolView name="plus" size={18} tintColor="white" weight="bold" /> */}
           </Pressable>
         </View>
 

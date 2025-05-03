@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 10,
     bottom: -1,
+    backgroundColor: "rgba(0, 0, 0, 0.17)"
   },
   darkFilter: {
     position: "absolute",
@@ -19,7 +20,8 @@ const styles = StyleSheet.create({
   },
   name: {
     fontWeight: "500",
-    fontSize: 16,
+    fontSize: 15,
+    color: "rgb(255, 255, 255)"
   },
 });
 

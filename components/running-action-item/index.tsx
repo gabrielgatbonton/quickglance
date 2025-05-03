@@ -9,6 +9,7 @@ import CustomText from "../custom-text";
 import { SymbolView } from "expo-symbols";
 import { Colors } from "@/assets/colors";
 import convertHexToRGBA from "@/utils/colorConverter";
+import IconView from "../icon-view";
 
 type RunningActionItemProps = {
   item: RunningAction;
@@ -35,18 +36,20 @@ export default function RunningActionItem({ item }: RunningActionItemProps) {
   return (
     <View style={styles.actionContainer}>
       <Animated.View style={[styles.actionContentContainer, animatedStyles]}>
-        <SymbolView name={item.icon} size={30} tintColor={Colors.PRIMARY} />
+        <IconView name={[item.icon, "eye"]} color={Colors.PRIMARY} size={30} />
+        {/* <SymbolView name={item.icon} size={30} tintColor={Colors.PRIMARY} /> */}
         <CustomText style={styles.name}>{item.name}</CustomText>
       </Animated.View>
 
       {item.isCompleted ? (
-        <SymbolView
-          name="checkmark.circle.fill"
-          size={36}
-          tintColor={Colors.SUCCESS}
-        />
+        <IconView name={["checkmark.circle.fill", "checkmark-circle"]} color={Colors.SUCCESS} size={36} />
+        // <SymbolView
+        //   name="checkmark.circle.fill"
+        //   size={36}
+        //   tintColor={Colors.SUCCESS}
+        // />
       ) : (
-        <ActivityIndicator size="large" animating={item.isCurrent} />
+        <ActivityIndicator size="large" animating={item.isCurrent} color={Colors.PRIMARY} />
       )}
     </View>
   );

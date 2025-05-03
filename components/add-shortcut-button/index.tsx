@@ -3,6 +3,7 @@ import { router } from "expo-router";
 import { SymbolView } from "expo-symbols";
 import { Pressable, PressableProps } from "react-native";
 import styles from "./styles";
+import IconView from "../icon-view";
 
 export default function AddShortcutButton(props: PressableProps) {
   return (
@@ -11,7 +12,7 @@ export default function AddShortcutButton(props: PressableProps) {
       style={({ pressed }) => [styles.container, pressedOpacity({ pressed })]}
       onPress={() => router.navigate("/(modal)/add-shortcut")}
     >
-      <SymbolView name="plus" tintColor="white" />
+      <IconView name={["plus", "add-sharp"]} color="white" size={35} />
     </Pressable>
   );
 }

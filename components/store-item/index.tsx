@@ -10,6 +10,7 @@ import CustomText from "../custom-text";
 import { router } from "expo-router";
 import Animated, { Easing, ZoomIn } from "react-native-reanimated";
 import useInstallShortcut from "@/hooks/useInstallShortcut";
+import IconView from "../icon-view";
 
 export default function StoreItem({ item }: { item: Shortcut }) {
   const owner = item.userName || item.serviceName;
@@ -55,7 +56,8 @@ export default function StoreItem({ item }: { item: Shortcut }) {
             style={styles.contentContainer}
           >
             <View style={globalStyles.rowBetween}>
-              <SymbolView name={item.icon} size={30} tintColor="white" />
+            <IconView name={[item.icon, "eye"]} color="white" size={30} />
+              {/* <SymbolView name={item.icon} size={30} tintColor="white" /> */}
 
               {isInstalling ? (
                 <View style={globalStyles.transparentButton}>
@@ -85,14 +87,15 @@ export default function StoreItem({ item }: { item: Shortcut }) {
                     );
                   }}
                 >
-                  <SymbolView
+                  <IconView name={["square.and.arrow.down" , "checkmark-circle-outline"]} color="white" />
+                  {/* <SymbolView
                     name="checkmark.icloud.fill"
                     size={25}
                     tintColor="white"
                     resizeMode="top"
                     scale="large"
                     weight="bold"
-                  />
+                  /> */}
                 </Pressable>
               ) : (
                 <Pressable
@@ -102,14 +105,15 @@ export default function StoreItem({ item }: { item: Shortcut }) {
                   ]}
                   onPress={() => shortcutInstall()}
                 >
-                  <SymbolView
+                  <IconView name={["square.and.arrow.down" , "download-outline"]} color="white" />
+                  {/* <SymbolView
                     name="square.and.arrow.down"
                     size={25}
                     tintColor="white"
                     resizeMode="top"
                     scale="large"
                     weight="bold"
-                  />
+                  /> */}
                 </Pressable>
               )}
             </View>

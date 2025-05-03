@@ -23,6 +23,7 @@ import Animated, {
 import { router } from "expo-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteShortcut } from "@/services/apiService";
+import IconView from "../icon-view";
 
 type ShortcutItemProps = {
   item: Shortcut;
@@ -150,7 +151,8 @@ export default function ShortcutItem({
             )}
 
             <View style={globalStyles.rowBetween}>
-              <SymbolView name={item.icon} size={30} tintColor="white" />
+              <IconView name={[item.icon, "eye"]} color="white" size={30} />
+              {/* <SymbolView name={item.icon} size={30} tintColor="white" /> */}
 
               <Pressable
                 style={({ pressed }) => [
@@ -159,12 +161,13 @@ export default function ShortcutItem({
                 ]}
                 onPress={handleEdit}
               >
-                <SymbolView
+                <IconView name={["slider.vertical.3", "options"]} color="white" size={20} buttonStyle={styles.optionIcon} />
+                {/* <SymbolView
                   name="slider.vertical.3"
                   size={20}
                   tintColor="white"
                   weight="bold"
-                />
+                /> */}
               </Pressable>
             </View>
 

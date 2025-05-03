@@ -53,6 +53,7 @@ import CustomDynamicInput, {
 } from "@/components/custom-dynamic-input";
 import LineSeparator from "@/components/line-separator";
 import { checkValidInputType } from "@/utils/validInputTypeChecker";
+import IconView from "@/components/icon-view";
 
 export default function AddShortcut() {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
@@ -328,11 +329,12 @@ export default function AddShortcut() {
                   setSelectedCategory(null);
                 }}
               >
-                <SymbolView
+                <IconView name={["arrow.backward.circle", "arrow-back-circle"]} color="lightgray" size={33} />
+                {/* <SymbolView
                   name="arrow.backward.circle"
                   tintColor="lightgray"
                   size={40}
-                />
+                /> */}
               </Pressable>
               <CustomText style={styles.sheetHeaderTitle}>
                 Select an action
@@ -401,11 +403,12 @@ export default function AddShortcut() {
                   setSelectedAction(null);
                 }}
               >
-                <SymbolView
+                <IconView name={["arrow.backward.circle", "arrow-back-circle"]} color="lightgray" size={33} />
+                {/* <SymbolView
                   name="arrow.backward.circle"
                   tintColor="lightgray"
                   size={40}
-                />
+                /> */}
               </Pressable>
               <CustomText style={styles.sheetHeaderTitle}>
                 Action Preview
@@ -433,11 +436,12 @@ export default function AddShortcut() {
                 entering={FadeIn.duration(150)}
                 style={styles.actionPreviewContainer}
               >
-                <SymbolView
+                <IconView name={[selectedAction.icon, "eye"]} color={selectedAction.gradientStart} size={80} />
+                {/* <SymbolView
                   name={selectedAction.icon}
                   size={80}
                   tintColor={selectedAction.gradientStart}
-                />
+                /> */}
                 <CustomText style={styles.actionPreviewText}>
                   {selectedAction.name}
                 </CustomText>
@@ -468,11 +472,12 @@ export default function AddShortcut() {
                   setInputsContext(null);
                 }}
               >
-                <SymbolView
+                <IconView name={["arrow.backward.circle", "arrow-back-circle"]} color="lightgray" size={33}  />
+                {/* <SymbolView
                   name="arrow.backward.circle"
                   tintColor="lightgray"
                   size={40}
-                />
+                /> */}
               </Pressable>
               <CustomText style={styles.sheetHeaderTitle}>
                 Configure Inputs

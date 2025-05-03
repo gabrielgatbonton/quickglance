@@ -11,6 +11,7 @@ import pressedOpacity from "@/utils/pressedOpacity";
 import { useScrollToTop } from "@react-navigation/native";
 import { HEADER_HEIGHT } from "@/constants/navigation";
 import Animated, { Easing, ZoomIn } from "react-native-reanimated";
+import IconView from "@/components/icon-view";
 
 export default function Automation() {
   const navigation = useNavigation();
@@ -29,11 +30,12 @@ export default function Automation() {
           style={({ pressed }) => pressedOpacity({ pressed })}
           onPress={() => router.navigate("/(modal)/add-automation")}
         >
-          <SymbolView
+          <IconView name={["plus.circle.fill", "add-circle"]} size={30} color={Colors.PRIMARY} />
+          {/* <SymbolView
             name="plus.circle.fill"
             size={30}
             tintColor={Colors.PRIMARY}
-          />
+          /> */}
         </Pressable>
       ),
     });

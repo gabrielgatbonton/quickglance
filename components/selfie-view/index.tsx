@@ -4,6 +4,7 @@ import styles from "./styles";
 import { TurnDirection } from "@/constants/types";
 import { View } from "react-native";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
+import IconView from "../icon-view";
 
 type SelfieViewProps = SelfieCameraProps & {
   isVisible: boolean;
@@ -22,11 +23,16 @@ export default function SelfieView({
           entering={FadeIn.duration(250)}
           exiting={FadeOut.duration(300)}
         >
-          <SymbolView
+          <IconView
+            name={["arrow.backward.circle", "arrow-back-circle"]}
+            color={turnDirection === "left" ? "gray" : "lightgray"}
+            size={60}
+          />
+          {/* <SymbolView
             name="arrow.backward.circle"
             size={60}
             tintColor={turnDirection === "left" ? "gray" : "lightgray"}
-          />
+          /> */}
         </Animated.View>
       )}
 
@@ -37,11 +43,12 @@ export default function SelfieView({
           entering={FadeIn.duration(250)}
           exiting={FadeOut.duration(300)}
         >
-          <SymbolView
+          <IconView name={["arrow.right.circle", "arrow-forward-circle"]} color={turnDirection === "right" ? "gray" : "lightgray"} size={60} />
+          {/* <SymbolView
             name="arrow.right.circle"
             size={60}
             tintColor={turnDirection === "right" ? "gray" : "lightgray"}
-          />
+          /> */}
         </Animated.View>
       )}
     </View>

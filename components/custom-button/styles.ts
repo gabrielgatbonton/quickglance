@@ -7,12 +7,16 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
+    flexDirection: 'row'
   },
   title: {
     color: "white",
     fontSize: 16,
     fontWeight: "600",
   },
+  icon: {
+    marginRight: 10
+  }
 });
 
 export default styles;
