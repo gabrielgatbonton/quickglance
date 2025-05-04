@@ -1,6 +1,6 @@
 import { SymbolView } from "expo-symbols";
 import { Ionicons } from "@expo/vector-icons";
-import { Platform, StyleProp, ViewStyle } from "react-native";
+import { Platform, StyleProp, TextStyle } from "react-native";
 
 import type { SFSymbol } from "expo-symbols";
 type IoniconName = keyof typeof Ionicons.glyphMap;
@@ -9,10 +9,15 @@ type IconViewProps = {
   name: [symbolName: SFSymbol, ioniconName: IoniconName];
   color: string;
   size?: number;
-  buttonStyle?: StyleProp<ViewStyle>
+  buttonStyle?: StyleProp<TextStyle>;
 };
 
-export default function IconView({ name, color, size, buttonStyle = {} }: IconViewProps) {
+export default function IconView({
+  name,
+  color,
+  size,
+  buttonStyle = {},
+}: IconViewProps) {
   const androidSize = size ?? 24;
 
   if (Platform.OS === "android") {

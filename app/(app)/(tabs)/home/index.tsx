@@ -9,6 +9,7 @@ import { SymbolView } from "expo-symbols";
 import pressedOpacity from "@/utils/pressedOpacity";
 import CustomLink from "@/components/custom-link";
 import ShortcutDashboard from "@/components/shortcut-dashboard";
+import AndroidSearchBar from "@/components/android-searchbar";
 import {
   Emotion,
   NodDirection,
@@ -24,7 +25,7 @@ import EmotionPopover from "@/components/emotion-popover";
 
 export default function Home() {
   const [currentShortcuts, setCurrentShortcuts] = useState<Shortcut[] | null>(
-    null,
+    null
   );
   const [isStarted, setIsStarted] = useState(false);
   const [isFrameProcessorEnabled, setIsFrameProcessorEnabled] = useState(true);
@@ -64,8 +65,8 @@ export default function Home() {
 
       setCurrentShortcuts(
         userShortcuts.filter((shortcut) =>
-          shortcut.name.toLowerCase().includes(search.toLowerCase()),
-        ),
+          shortcut.name.toLowerCase().includes(search.toLowerCase())
+        )
       );
     }
   }, [search, userShortcuts]);
@@ -160,6 +161,8 @@ export default function Home() {
       contentContainerStyle={styles.container}
       scrollEnabled={false}
     >
+      <AndroidSearchBar />
+
       <ShortcutDashboard
         shortcuts={currentShortcuts}
         turnDirection={isStarted ? turnDirection : undefined}

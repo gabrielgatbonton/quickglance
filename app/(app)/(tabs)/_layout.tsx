@@ -19,7 +19,7 @@ export default function TabLayout() {
       isTokenLoaded: state.isTokenLoaded,
       token: state.token,
       user: state.user,
-    }))
+    })),
   );
 
   // Redirect to welcome screen if no token
