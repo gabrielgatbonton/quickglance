@@ -41,7 +41,7 @@ export default function Home() {
 
   const isFocused = useIsFocused();
   const navigation = useNavigation();
-  const search = useSearch();
+  const { search, setSearchFn, isAndroid } = useSearch();
 
   const { data: user } = useQuery({
     queryKey: ["user"],
@@ -161,7 +161,7 @@ export default function Home() {
       contentContainerStyle={styles.container}
       scrollEnabled={false}
     >
-      <AndroidSearchBar />
+      {isAndroid && <AndroidSearchBar onSearch={setSearchFn} />}
 
       <ShortcutDashboard
         shortcuts={currentShortcuts}

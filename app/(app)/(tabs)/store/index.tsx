@@ -12,6 +12,7 @@ import { useScrollToTop } from "@react-navigation/native";
 import { HEADER_HEIGHT } from "@/constants/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getPublicShortcuts, getServices } from "@/services/apiService";
+import AndroidSearchBar from "@/components/android-searchbar";
 
 const STORE_TABS = Object.values(STORE_KEYS);
 
@@ -23,10 +24,10 @@ export default function Store() {
   useScrollToTop(
     useRef({
       scrollToTop: () => scrollViewRef.current?.scrollTo({ y: -HEADER_HEIGHT }),
-    }),
+    })
   );
 
-  const search = useSearch();
+  const { search, setSearchFn, isAndroid } = useSearch();
 
   const { data: publicShortcuts } = useQuery({
     queryKey: ["shortcuts"],
@@ -52,22 +53,24 @@ export default function Store() {
         values={STORE_TABS}
         selectedIndex={selectedIndex}
         onChange={(
-          event: NativeSyntheticEvent<NativeSegmentedControlIOSChangeEvent>,
+          event: NativeSyntheticEvent<NativeSegmentedControlIOSChangeEvent>
         ) => {
           setSelectedIndex(event.nativeEvent.selectedSegmentIndex);
         }}
         style={styles.segmentedControl}
       />
 
+      {isAndroid && <AndroidSearchBar onSearch={setSearchFn} />}
+
       <StoreContent
         storeKey={currentTab}
         userShortcuts={publicShortcuts?.filter(
           (shortcut) =>
             shortcut.name.toLowerCase().includes(search.toLowerCase()) ||
-            shortcut.description.toLowerCase().includes(search.toLowerCase()),
+            shortcut.description.toLowerCase().includes(search.toLowerCase())
         )}
         services={services?.filter((service) =>
-          service.name.toLowerCase().includes(search.toLowerCase()),
+          service.name.toLowerCase().includes(search.toLowerCase())
         )}
       />
     </ScrollView>

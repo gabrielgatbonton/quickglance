@@ -16,6 +16,8 @@ export default function StoreLayout() {
           headerTitleStyle: { fontFamily: DEFAULT_FONT_FAMILY },
           headerTintColor: "black",
           contentStyle: { backgroundColor: "white" },
+          headerShadowVisible: Platform.OS === "ios",
+          headerTitleAlign: Platform.OS === "ios" ? "left" : "center",
         }}
       />
       <Stack.Screen
