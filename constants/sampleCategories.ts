@@ -11,6 +11,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "d1",
         name: "Call Number",
         icon: "phone.fill",
+        androidIcon: "call",
         gradientStart: "#B874E3",
         gradientEnd: "#65407D",
         inputs: [
@@ -24,6 +25,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "d2",
         name: "Send Message",
         icon: "message.fill",
+        androidIcon: "chatbubble-ellipses",
         gradientStart: "#0EABEF",
         gradientEnd: "#086289",
         inputs: [
@@ -41,6 +43,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "d3",
         name: "Open App",
         icon: "app.fill",
+        androidIcon: "apps",
         gradientStart: "#53D769",
         gradientEnd: "#2F7A3B",
         inputs: [
@@ -54,6 +57,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "d4",
         name: "Set Brightness",
         icon: "sun.max.fill",
+        androidIcon: "sunny",
         gradientStart: "#FFCC00",
         gradientEnd: "#997A00",
         inputs: [
@@ -71,6 +75,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "d5",
         name: "Copy to Clipboard",
         icon: "doc.on.doc",
+        androidIcon: "documents-sharp",
         gradientStart: "#FF3B30",
         gradientEnd: "#992420",
         inputs: [
@@ -94,6 +99,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "c1",
         name: "Toggle WiFi",
         icon: "wifi",
+        androidIcon: "wifi",
         gradientStart: "#34AADC",
         gradientEnd: "#1F6583",
         inputs: [],
@@ -102,6 +108,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "c2",
         name: "Toggle Bluetooth",
         icon: "antenna.radiowaves.left.and.right",
+        androidIcon: "bluetooth",
         gradientStart: "#007AFF",
         gradientEnd: "#004999",
         inputs: [],
@@ -110,6 +117,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "c3",
         name: "Toggle Airplane Mode",
         icon: "airplane",
+        androidIcon: "airplane",
         gradientStart: "#FF9500",
         gradientEnd: "#995900",
         inputs: [],
@@ -126,6 +134,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "m1",
         name: "Play Sound",
         icon: "speaker.wave.3.fill",
+        androidIcon: "play-circle-sharp",
         gradientStart: "#AF52DE",
         gradientEnd: "#683286",
         inputs: [
@@ -141,6 +150,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "m2",
         name: "Get Recent Photo",
         icon: "photo.fill",
+        androidIcon: "camera",
         gradientStart: "#64D2FF",
         gradientEnd: "#3C7E99",
         inputs: [],
@@ -149,6 +159,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "m3",
         name: "Record Audio",
         icon: "mic.fill",
+        androidIcon: "mic",
         gradientStart: "#FF2D55",
         gradientEnd: "#991B33",
         inputs: [
@@ -164,6 +175,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "m4",
         name: "Set Volume",
         icon: "speaker.wave.2.fill",
+        androidIcon: "volume-high",
         gradientStart: "#FF9500",
         gradientEnd: "#995900",
         inputs: [
@@ -189,6 +201,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "l1",
         name: "Get Current Location",
         icon: "location.fill",
+        androidIcon: "location",
         gradientStart: "#4CD964",
         gradientEnd: "#2E823C",
         inputs: [],
@@ -197,6 +210,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "l2",
         name: "Open Maps",
         icon: "map.fill",
+        androidIcon: "map",
         gradientStart: "#FF3B30",
         gradientEnd: "#992420",
         inputs: [
@@ -210,6 +224,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "l3",
         name: "Get Distance Between",
         icon: "arrow.triangle.swap",
+        androidIcon: "git-compare-sharp",
         gradientStart: "#5AC8FA",
         gradientEnd: "#367896",
         inputs: [
@@ -227,6 +242,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "l4",
         name: "Get Weather",
         icon: "cloud.sun.fill",
+        androidIcon: "cloudy-night",
         gradientStart: "#007AFF",
         gradientEnd: "#004999",
         inputs: [
@@ -249,6 +265,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "da1",
         name: "Get Clipboard",
         icon: "doc.on.clipboard",
+        androidIcon: "document",
         gradientStart: "#8E8E93",
         gradientEnd: "#555558",
         inputs: [],
@@ -257,6 +274,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "da2",
         name: "Set Clipboard",
         icon: "clipboard.fill",
+        androidIcon: "clipboard",
         gradientStart: "#FF9500",
         gradientEnd: "#995900",
         inputs: [
@@ -270,6 +288,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "da3",
         name: "Get Battery Level",
         icon: "battery.100",
+        androidIcon: "battery-full",
         gradientStart: "#4CD964",
         gradientEnd: "#2E823C",
         inputs: [],
@@ -278,6 +297,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "da4",
         name: "Generate QR Code",
         icon: "qrcode",
+        androidIcon: "qr-code",
         gradientStart: "#5856D6",
         gradientEnd: "#353480",
         inputs: [
@@ -299,6 +319,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "ai1",
         name: "Text Completion",
         icon: "text.bubble.fill",
+        androidIcon: "chatbox",
         gradientStart: "#32D74B",
         gradientEnd: "#1E8A2D",
         inputs: [
@@ -320,6 +341,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "ai2",
         name: "Summarize Text",
         icon: "doc.text.magnifyingglass",
+        androidIcon: "file-tray-full",
         gradientStart: "#0A84FF",
         gradientEnd: "#064F99",
         inputs: [
@@ -335,6 +357,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "ai3",
         name: "Image Description",
         icon: "photo.fill.on.rectangle.fill",
+        androidIcon: "reader",
         gradientStart: "#BF5AF2",
         gradientEnd: "#733291",
         inputs: [
@@ -350,6 +373,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "ai4",
         name: "Sentiment Analysis",
         icon: "face.smiling",
+        androidIcon: "happy",
         gradientStart: "#FF375F",
         gradientEnd: "#992139",
         inputs: [
@@ -365,6 +389,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "ai5",
         name: "Language Translation",
         icon: "globe",
+        androidIcon: "language",
         gradientStart: "#30B0C7",
         gradientEnd: "#1D6B77",
         inputs: [
@@ -393,6 +418,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "ai6",
         name: "Voice Recognition",
         icon: "waveform",
+        androidIcon: "mic-circle",
         gradientStart: "#FF9F0A",
         gradientEnd: "#995F06",
         inputs: [
@@ -416,6 +442,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "w1",
         name: "Open URL",
         icon: "safari",
+        androidIcon: "globe",
         gradientStart: "#FF2D55",
         gradientEnd: "#991B33",
         inputs: [
@@ -429,6 +456,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "w2",
         name: "Fetch Web Content",
         icon: "arrow.down.doc",
+        androidIcon: "download",
         gradientStart: "#007AFF",
         gradientEnd: "#004999",
         inputs: [
@@ -442,6 +470,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "w3",
         name: "Share via",
         icon: "square.and.arrow.up",
+        androidIcon: "share",
         gradientStart: "#5AC8FA",
         gradientEnd: "#367896",
         inputs: [
@@ -467,6 +496,7 @@ export const SAMPLE_CATEGORIES: Category[] = [
         id: "w4",
         name: "Post to Social Media",
         icon: "network",
+        androidIcon: "share-social",
         gradientStart: "#FF9500",
         gradientEnd: "#995900",
         inputs: [

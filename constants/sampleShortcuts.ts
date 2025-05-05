@@ -7,6 +7,7 @@ export const SAMPLE_SHORTCUTS: Shortcut[] = [
     description:
       "Quickly dial emergency services for immediate assistance in case of medical emergencies",
     icon: "cross.case.fill",
+    androidIcon: 'medkit',
     gradientStart: "#FF2D55",
     gradientEnd: "#991B33",
     userName: "Mel Mathew Palana",
@@ -35,6 +36,7 @@ export const SAMPLE_SHORTCUTS: Shortcut[] = [
     description:
       "Get directions to the nearest doctor or medical facility in your area",
     icon: "stethoscope",
+    androidIcon: 'fitness',
     gradientStart: "#19CCDF",
     gradientEnd: "#0E6F79",
     userName: "Sarah Johnson",
@@ -61,6 +63,7 @@ export const SAMPLE_SHORTCUTS: Shortcut[] = [
     description:
       "Set up reminders for taking medications on time and track your medication schedule",
     icon: "pills.fill",
+    androidIcon: 'heart-circle',
     gradientStart: "#E5BC09",
     gradientEnd: "#7F6805",
     userName: "Robert Chen",
@@ -82,6 +85,7 @@ export const SAMPLE_SHORTCUTS: Shortcut[] = [
     description:
       "Convert your speech to text messages for easy communication when typing is difficult",
     icon: "microphone.fill",
+    androidIcon: 'mic',
     gradientStart: "#0EABEF",
     gradientEnd: "#086289",
     userName: "Emily Martinez",
@@ -102,6 +106,7 @@ export const SAMPLE_SHORTCUTS: Shortcut[] = [
     description:
       "Quickly order essential items and groceries from nearby stores for home delivery",
     icon: "cart.fill",
+    androidIcon: 'cart',
     gradientStart: "#19CCDF",
     gradientEnd: "#0E6F79",
     userName: "James Wilson",
@@ -122,6 +127,7 @@ export const SAMPLE_SHORTCUTS: Shortcut[] = [
     description:
       "Request a ride or transportation service to help you get to your destination",
     icon: "car.fill",
+    androidIcon: 'car',
     gradientStart: "#37DF19",
     gradientEnd: "#1E790E",
     userName: "Maria Garcia",
