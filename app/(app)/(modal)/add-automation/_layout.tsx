@@ -24,17 +24,6 @@ export default function AddAutomationLayout() {
               color={Colors.PRIMARY}
             />
           ),
-          headerRight: () => (
-            <CustomLink
-              title="Done"
-              bold
-              onPress={() => {
-                router.back();
-                console.log("Automation saved!");
-              }}
-              color={Colors.PRIMARY}
-            />
-          ),
         }}
       />
     </Stack>

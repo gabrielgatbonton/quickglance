@@ -106,7 +106,7 @@ export default function AddShortcut() {
     })),
   );
 
-  const { data: currentShortcut, isPending: isShortcutPending } = useQuery({
+  const { data: currentShortcut, isLoading: isShortcutLoading } = useQuery({
     queryKey: ["shortcuts", shortcut],
     queryFn: () => getShortcut(shortcut),
     enabled: Boolean(shortcut),
@@ -296,7 +296,7 @@ export default function AddShortcut() {
                 scrollableRef={scrollViewRef}
               />
             </Animated.ScrollView>
-          ) : shortcut && isShortcutPending ? (
+          ) : shortcut || isShortcutLoading ? (
             <View style={globalStyles.modalLoading}>
               <ActivityIndicator size="large" color={Colors.PRIMARY} />
             </View>

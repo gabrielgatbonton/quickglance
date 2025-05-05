@@ -118,6 +118,17 @@ export type EditDetailData = Omit<CustomDynamicInputProps, "value"> & {
   key: keyof AddShortcutState["details"];
 };
 
+export type AutomationEventData = {
+  label: string;
+  description: string;
+  emoji: string;
+};
+
+export type AutomationEvent = {
+  title: string;
+  data: [{ items: AutomationEventData[] }];
+};
+
 export type SettingData = {
   label: string;
   type: "list" | "hint" | "link" | "switch" | "destructive";
