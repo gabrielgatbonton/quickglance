@@ -1,9 +1,6 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 14,
-  },
   inputContainer: {
     backgroundColor: "#ECE6F0",
     borderRadius: 50,
@@ -18,6 +15,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
+    flex: 1,
+  },
+  textInput: {
     flex: 1,
   },
   icons: {

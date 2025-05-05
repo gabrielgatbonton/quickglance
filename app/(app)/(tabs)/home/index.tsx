@@ -161,7 +161,12 @@ export default function Home() {
       contentContainerStyle={styles.container}
       scrollEnabled={false}
     >
-      {isAndroid && <AndroidSearchBar onSearch={setSearchFn} />}
+      {isAndroid && (
+        <AndroidSearchBar
+          style={{ paddingHorizontal: 14 }}
+          onSearch={setSearchFn}
+        />
+      )}
 
       <ShortcutDashboard
         shortcuts={currentShortcuts}
