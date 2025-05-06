@@ -5,7 +5,13 @@ import { useWindowDimensions, View } from "react-native";
 import styles from "./styles";
 import CustomText from "../custom-text";
 
-export default function ReorderShortcutItem({ item }: { item: Shortcut }) {
+type ReorderShortcutItemProps = {
+  item: Shortcut;
+};
+
+export default function ReorderShortcutItem({
+  item,
+}: ReorderShortcutItemProps) {
   const { height } = useWindowDimensions();
   const itemHeight = height * 0.1;
 

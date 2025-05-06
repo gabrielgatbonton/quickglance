@@ -80,13 +80,13 @@ export default function Settings() {
         {
           label: "Edit Profile",
           type: "link",
-          action: () => router.navigate("/(modal)/edit-profile"),
+          action: () => router.navigate("/(app)/(modal)/edit-profile"),
           hidden: !user,
         },
         {
           label: "Change Password",
           type: "link",
-          action: () => router.navigate("/(modal)/change-password"),
+          action: () => router.navigate("/(app)/(modal)/change-password"),
           hidden: !user,
         },
         {
@@ -111,7 +111,7 @@ export default function Settings() {
         {
           label: "Show Onboarding",
           type: "link",
-          action: () => router.navigate("/(modal)/welcome"),
+          action: () => router.navigate("/(app)/(modal)/welcome"),
         },
         { label: "Privacy Policy", type: "link" },
         { label: "Help Center", type: "link" },

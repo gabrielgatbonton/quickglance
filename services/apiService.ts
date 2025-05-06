@@ -1,5 +1,6 @@
 import {
   Action,
+  Automation,
   Category,
   Service,
   Shortcut,
@@ -30,6 +31,10 @@ type SaveCategoryParams = Omit<Category, "id" | "actions">;
 type SaveShortcutParams = Omit<Shortcut, "id" | "userName">;
 
 type SaveServiceParams = Omit<Service, "id" | "shortcuts"> & {
+  shortcuts: Pick<Shortcut, "id">[];
+};
+
+type SaveAutomationParams = Omit<Automation, "id" | "shortcuts"> & {
   shortcuts: Pick<Shortcut, "id">[];
 };
 
@@ -288,6 +293,30 @@ export const saveService = async (params: SaveServiceParams) => {
     return message;
   } catch (error: any) {
     console.log("Error saving service", error.response);
+    throw error;
+  }
+};
+
+/* Automations */
+export const getAutomations = async (): Promise<Automation[]> => {
+  try {
+    const {
+      data: { automations },
+    } = await QuickGlanceAPI.get("/automation");
+    return automations;
+  } catch (error: any) {
+    console.log("Error fetching automations", error.response);
+    throw error;
+  }
+};
+export const saveAutomation = async (params: SaveAutomationParams) => {
+  try {
+    const {
+      data: { message },
+    } = await QuickGlanceAPI.post("/automation", params);
+    return message;
+  } catch (error: any) {
+    console.log("Error saving automation", error.response);
     throw error;
   }
 };

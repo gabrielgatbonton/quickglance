@@ -74,7 +74,7 @@ export default function StoreItem({ item }: { item: Shortcut }) {
                       [
                         {
                           text: "View Shortcuts",
-                          onPress: () => router.push("/home"),
+                          onPress: () => router.navigate("/home"),
                         },
                         {
                           text: "Install Again",

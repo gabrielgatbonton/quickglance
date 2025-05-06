@@ -2,17 +2,18 @@ import pressedOpacity from "@/utils/pressedOpacity";
 import {
   BottomSheetBackdrop,
   BottomSheetFlatList,
+  BottomSheetFlatListMethods,
   BottomSheetModal,
   BottomSheetTextInput,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Pressable, StyleProp, TextInput, TextStyle, View } from "react-native";
-import CustomText from "../custom-text";
 import { SymbolView } from "expo-symbols";
 import { Colors } from "@/assets/colors";
 import { PickerItem } from "@/constants/types";
 import styles from "./styles";
+import PickerSheetItem from "../picker-sheet-item";
 
 export type PickerSheetProps = {
   placeholder?: string;
@@ -37,54 +38,41 @@ export default function PickerSheet({
   searchEnabled,
 }: PickerSheetProps) {
   const [search, setSearch] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const flatListRef = useRef<BottomSheetFlatListMethods>(null);
+
+  useEffect(() => {
+    // Set initial index
+    if (data.length > 0 && value) {
+      const index = data.findIndex((item) => item.value === value);
+      if (index !== -1) {
+        setCurrentIndex(index);
+      }
+    }
+  }, [data, value]);
 
   const onOptionPress = useCallback(
-    (option: string) => {
+    (option: string, index: number) => {
       onSelected(option === value ? null : option);
+      setCurrentIndex(index);
+
       bottomSheetModalRef.current?.dismiss();
     },
     [onSelected, value],
   );
 
   const renderItem = useCallback(
-    ({ item }: { item: PickerItem }) => {
-      return (
-        <Pressable
-          onPress={() => onOptionPress(item.value)}
-          style={({ pressed }) => [
-            pressedOpacity({ pressed }),
-            styles.itemContainer,
-          ]}
-        >
-          {item.label && (
-            <CustomText
-              style={[
-                labelStyle,
-                styles.itemLabel,
-                {
-                  color: item.value === value ? color : "",
-                },
-              ]}
-            >
-              {item.label}
-            </CustomText>
-          )}
-
-          {item.ItemComponent
-            ? item.ItemComponent(item)
-            : item.value === value && (
-                <SymbolView
-                  name="checkmark"
-                  size={20}
-                  tintColor={color}
-                  weight="bold"
-                />
-              )}
-        </Pressable>
-      );
-    },
+    ({ item, index }: { item: PickerItem; index: number }) => (
+      <PickerSheetItem
+        item={item}
+        isSelected={item.value === value}
+        selectedColor={color}
+        onOptionPress={() => onOptionPress?.(item.value, index)}
+        labelStyle={labelStyle}
+      />
+    ),
     [color, labelStyle, onOptionPress, value],
   );
 
@@ -144,9 +132,16 @@ export default function PickerSheet({
         )}
 
         <BottomSheetFlatList
+          ref={flatListRef}
           data={data.filter((item) =>
             item.label?.toLowerCase().includes(search.toLowerCase().trim()),
           )}
+          initialScrollIndex={currentIndex}
+          onScrollToIndexFailed={({ highestMeasuredFrameIndex }) =>
+            flatListRef.current?.scrollToIndex({
+              index: highestMeasuredFrameIndex,
+            })
+          }
           keyExtractor={(item) => item.value}
           contentContainerStyle={styles.contentContainer}
           renderItem={renderItem}

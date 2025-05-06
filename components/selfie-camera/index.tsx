@@ -26,6 +26,7 @@ import {
   NodDirection,
   TurnDirection,
 } from "@/constants/types";
+import * as Device from "expo-device";
 import styles from "./styles";
 
 export type SelfieCameraProps = {
@@ -104,7 +105,7 @@ export default function SelfieCamera({
 
   useEffect(() => {
     // Check if a camera device is available
-    if (!device) {
+    if (!device && Device.isDevice) {
       Alert.alert(
         "Camera Not Found",
         "We couldn't find the camera on your device. Please check your device settings.",

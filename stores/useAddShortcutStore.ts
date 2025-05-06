@@ -76,6 +76,7 @@ const useAddShortcutStore = create<AddShortcutState & AddShortcutActions>(
       set({
         details: initialDetailState,
         actions: [],
+        currentShortcut: undefined,
       }),
   }),
 );

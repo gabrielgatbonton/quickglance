@@ -9,16 +9,18 @@ import CustomText from "../custom-text";
 
 export default function AutomationItem({ item }: { item: Automation }) {
   return (
-    <Pressable style={({ pressed }) => pressedOpacity({ pressed })}>
-      <View style={styles.nameContainer}>
-        <CustomText style={styles.name}>{item.name}</CustomText>
-        <SymbolView
-          name="chevron.right"
-          size={15}
-          tintColor="gray"
-          weight="bold"
-        />
-      </View>
+    <View style={styles.container}>
+      <Pressable style={({ pressed }) => pressedOpacity({ pressed })}>
+        <View style={styles.nameContainer}>
+          <CustomText style={styles.name}>{item.name}</CustomText>
+          <SymbolView
+            name="chevron.right"
+            size={15}
+            tintColor="gray"
+            weight="bold"
+          />
+        </View>
+      </Pressable>
 
       <ContextMenu
         actions={[
@@ -35,13 +37,13 @@ export default function AutomationItem({ item }: { item: Automation }) {
           // experimentalBlurMethod="dimezisBlurView"
           style={styles.detailsContainer}
         >
-          {item.actions.map((action, index) => (
-            <CustomText key={index} style={styles.action}>
-              ▶️ {action}
+          {item.shortcuts.map((shortcut, index) => (
+            <CustomText key={index} style={styles.shortcutText}>
+              ▶️ {shortcut.name}
             </CustomText>
           ))}
         </BlurView>
       </ContextMenu>
-    </Pressable>
+    </View>
   );
 }

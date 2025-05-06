@@ -45,6 +45,12 @@ export default function RunningActionItem({ item }: RunningActionItemProps) {
           size={36}
           tintColor={Colors.SUCCESS}
         />
+      ) : item.isFailed ? (
+        <SymbolView
+          name="exclamationmark.triangle.fill"
+          size={36}
+          tintColor={Colors.ERROR}
+        />
       ) : (
         <ActivityIndicator size="large" animating={item.isCurrent} />
       )}

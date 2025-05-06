@@ -52,7 +52,7 @@ export default function useNotifications() {
 
         if (data.type === "shortcut") {
           if (data.action === "install") {
-            router.navigate(`/(modal)/run-shortcut/${data.shortcutId}`);
+            router.navigate(`/run-shortcut/${data.shortcutId}`);
           }
         }
       });

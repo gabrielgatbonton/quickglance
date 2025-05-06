@@ -27,7 +27,7 @@ export default function Automation() {
       headerRight: () => (
         <Pressable
           style={({ pressed }) => pressedOpacity({ pressed })}
-          onPress={() => router.navigate("/(modal)/add-automation")}
+          onPress={() => router.navigate("/(app)/(modal)/add-automation")}
         >
           <SymbolView
             name="plus.circle.fill"

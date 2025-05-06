@@ -471,7 +471,6 @@ export default function AddShortcut() {
                   if (!selectedCategory) {
                     categorySheetRef.current?.expand();
                   }
-
                   inputSheetRef.current?.close();
                   setSelectedInputs(null);
                   setInputsContext(null);
@@ -574,9 +573,13 @@ export default function AddShortcut() {
                 <CustomButton
                   title="Save"
                   color={inputsContext.gradientStart}
-                  onPress={() =>
-                    onActionAddOrUpdate(inputsContext, selectedInputs)
-                  }
+                  onPress={() => {
+                    // If there are no category selected yet, open the category sheet
+                    if (!selectedCategory) {
+                      categorySheetRef.current?.expand();
+                    }
+                    onActionAddOrUpdate(inputsContext, selectedInputs);
+                  }}
                   disabled={isSaveDisabled}
                 />
               </View>

@@ -1,10 +1,12 @@
 import { FlatList, SectionList, View } from "react-native";
 import CustomText from "@/components/custom-text";
 import styles from "./styles";
-import { AutomationEvent } from "@/constants/types";
+import { AutomationEvent, AutomationEventCategory } from "@/constants/types";
 import AutomationEventItem from "@/components/automation-event-item";
+import { router } from "expo-router";
+import useAddAutomationStore from "@/stores/useAddAutomationStore";
 
-const AUTOMATION_EVENT_DATA: AutomationEvent[] = [
+const AUTOMATION_CATEGORY_DATA: AutomationEventCategory[] = [
   {
     title: "Based on emotions",
     data: [
@@ -72,25 +74,37 @@ const AUTOMATION_EVENT_DATA: AutomationEvent[] = [
 ];
 
 export default function AddAutomation() {
+  const setEvent = useAddAutomationStore((state) => state.setEvent);
+
+  const onEventPress = (item: AutomationEvent) => {
+    // Set the selected event data in the store
+    setEvent(item);
+
+    // Navigate to the edit shortcuts screen
+    router.navigate("/add-automation/edit-shortcuts");
+  };
+
   return (
     <SectionList
       contentInsetAdjustmentBehavior="automatic"
       scrollToOverflowEnabled
-      sections={AUTOMATION_EVENT_DATA}
+      sections={AUTOMATION_CATEGORY_DATA}
       stickySectionHeadersEnabled={false}
-      contentContainerStyle={styles.container}
+      contentContainerStyle={styles.contentContainer}
       renderItem={({ item }) => (
         <FlatList
           data={item.items}
           numColumns={2}
-          style={styles.contentContainer}
+          style={styles.listContainer}
           columnWrapperStyle={styles.columnWrapper}
-          renderItem={({ item }) => <AutomationEventItem item={item} />}
+          renderItem={({ item }) => (
+            <AutomationEventItem item={item} onEventPress={onEventPress} />
+          )}
         />
       )}
       renderSectionHeader={({ section: { title } }) => (
-        <View style={styles.headerContainer}>
-          <CustomText style={styles.headerTitle}>{title}</CustomText>
+        <View style={styles.sectionTitleContainer}>
+          <CustomText style={styles.title}>{title}</CustomText>
         </View>
       )}
     />

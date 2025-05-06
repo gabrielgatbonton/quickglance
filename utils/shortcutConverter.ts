@@ -1,9 +1,10 @@
-import { Action, ShortcutStep } from "@/constants/types";
+import { Action, OrderData, ShortcutStep } from "@/constants/types";
 
 export const actionsToSteps = (actions: Action[]): ShortcutStep[] => {
   return actions.map((action, index) => ({
     id: action.key || index.toString(),
     actionId: action.id,
+    actionName: action.name,
     inputs: action.inputs?.reduce(
       (acc, input) => {
         acc[input.key] = input.value;
@@ -36,4 +37,19 @@ export const stepsToActions = (
       };
     })
     .filter(Boolean) as Action[];
+};
+
+type OrderConfig = {
+  increment?: boolean;
+  decrement?: boolean;
+};
+
+export const orderKeysToArr = (
+  orderData: OrderData,
+  { increment, decrement }: OrderConfig = {},
+) => {
+  return Object.entries(orderData).map(([id, order]) => ({
+    id,
+    order: increment ? order + 1 : decrement ? order - 1 : order,
+  }));
 };

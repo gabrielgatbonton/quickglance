@@ -72,12 +72,12 @@ export default function ShortcutItem({
   });
 
   const handlePress = () => {
-    router.navigate(`/(modal)/run-shortcut/${item.id}`);
+    router.navigate(`/run-shortcut/${item.id}`);
   };
 
   const handleEdit = () => {
     router.navigate({
-      pathname: `/(modal)/add-shortcut`,
+      pathname: `/(app)/(modal)/add-shortcut`,
       params: { shortcut: item.id },
     });
   };

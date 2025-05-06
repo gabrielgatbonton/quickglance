@@ -36,7 +36,9 @@ export default function ShortcutPage({
           entering={ZoomIn.duration(350)
             .easing(Easing.out(Easing.exp))
             .delay(index * 100)}
-          exiting={FadeOut.duration(500).easing(Easing.out(Easing.exp))}
+          exiting={FadeOut.duration(500)
+            .easing(Easing.out(Easing.exp))
+            .delay(100)}
         >
           <ShortcutItem
             item={item}

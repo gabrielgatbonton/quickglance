@@ -2,20 +2,11 @@ import { Colors } from "@/assets/colors";
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  itemContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    justifyContent: "space-between",
-  },
-  itemLabel: {
-    width: "85%",
-  },
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
     columnGap: 5,
+    width: "90%",
   },
   searchContainer: {
     marginHorizontal: 15,
