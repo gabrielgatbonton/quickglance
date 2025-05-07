@@ -7,7 +7,7 @@ import {
   BottomSheetTextInput,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Pressable, StyleProp, TextInput, TextStyle, View } from "react-native";
 import { SymbolView } from "expo-symbols";
 import { Colors } from "@/assets/colors";
@@ -42,16 +42,18 @@ export default function PickerSheet({
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const flatListRef = useRef<BottomSheetFlatListMethods>(null);
 
+  useEffect(() => {
+    // Reset search on mount
+    setSearch("");
+  }, []);
+
   const currentData = useMemo(() => {
     const trimmedSearch = search.toLowerCase().trim();
 
-    // Skip filtering if search is empty
-    const filtered =
-      trimmedSearch === ""
-        ? data
-        : data.filter((item) =>
-            item.label?.toLowerCase().includes(trimmedSearch),
-          );
+    // Filter data based on search input (also resets data if search is empty)
+    const filtered = data.filter((item) =>
+      item.label?.toLowerCase().includes(trimmedSearch),
+    );
 
     // Sort to put selected item at the top
     return filtered.sort((a, b) => {
