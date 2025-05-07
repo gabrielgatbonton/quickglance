@@ -42,7 +42,7 @@ const useAddShortcutStore = create<AddShortcutState & AddShortcutActions>(
     setActions: (actions) => set({ actions }),
     setCurrentShortcut: (shortcut) =>
       set((state) => ({ ...state, currentShortcut: shortcut })),
-    addOrUpdateAction: (action) =>
+    addOrUpdateAction: (action) => {
       set((state) => {
         const existingIndex = state.actions.findIndex(
           (existingAction) => existingAction.key === action.key,
@@ -65,7 +65,16 @@ const useAddShortcutStore = create<AddShortcutState & AddShortcutActions>(
             return existingAction;
           }),
         };
-      }),
+      });
+
+      // If this is the first action, set as initial name
+      set((state) => {
+        if (state.actions.length === 1) {
+          return { details: { ...state.details, name: state.actions[0].name } };
+        }
+        return state;
+      });
+    },
     removeAction: (key: string) =>
       set((state) => ({
         actions: state.actions.filter(
