@@ -7,7 +7,7 @@ import {
   BottomSheetTextInput,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { Pressable, StyleProp, TextInput, TextStyle, View } from "react-native";
 import { SymbolView } from "expo-symbols";
 import { Colors } from "@/assets/colors";
@@ -38,25 +38,32 @@ export default function PickerSheet({
   searchEnabled,
 }: PickerSheetProps) {
   const [search, setSearch] = useState("");
-  const [currentIndex, setCurrentIndex] = useState(0);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const flatListRef = useRef<BottomSheetFlatListMethods>(null);
 
-  useEffect(() => {
-    // Set initial index
-    if (data.length > 0 && value) {
-      const index = data.findIndex((item) => item.value === value);
-      if (index !== -1) {
-        setCurrentIndex(index);
-      }
-    }
-  }, [data, value]);
+  const currentData = useMemo(() => {
+    const trimmedSearch = search.toLowerCase().trim();
+
+    // Skip filtering if search is empty
+    const filtered =
+      trimmedSearch === ""
+        ? data
+        : data.filter((item) =>
+            item.label?.toLowerCase().includes(trimmedSearch),
+          );
+
+    // Sort to put selected item at the top
+    return filtered.sort((a, b) => {
+      if (a.value === value) return -1;
+      if (b.value === value) return 1;
+      return 0;
+    });
+  }, [data, search, value]);
 
   const onOptionPress = useCallback(
-    (option: string, index: number) => {
+    (option: string) => {
       onSelected(option === value ? null : option);
-      setCurrentIndex(index);
 
       bottomSheetModalRef.current?.dismiss();
     },
@@ -64,12 +71,12 @@ export default function PickerSheet({
   );
 
   const renderItem = useCallback(
-    ({ item, index }: { item: PickerItem; index: number }) => (
+    ({ item }: { item: PickerItem }) => (
       <PickerSheetItem
         item={item}
         isSelected={item.value === value}
         selectedColor={color}
-        onOptionPress={() => onOptionPress?.(item.value, index)}
+        onOptionPress={() => onOptionPress?.(item.value)}
         labelStyle={labelStyle}
       />
     ),
@@ -133,15 +140,7 @@ export default function PickerSheet({
 
         <BottomSheetFlatList
           ref={flatListRef}
-          data={data.filter((item) =>
-            item.label?.toLowerCase().includes(search.toLowerCase().trim()),
-          )}
-          initialScrollIndex={currentIndex}
-          onScrollToIndexFailed={({ highestMeasuredFrameIndex }) =>
-            flatListRef.current?.scrollToIndex({
-              index: highestMeasuredFrameIndex,
-            })
-          }
+          data={currentData}
           keyExtractor={(item) => item.value}
           contentContainerStyle={styles.contentContainer}
           renderItem={renderItem}
