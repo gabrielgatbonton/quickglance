@@ -5,9 +5,10 @@ import { FlatList, ScrollView, StyleSheet } from "react-native";
 import useSearch from "@/hooks/useSearch";
 import { getUser, getUserShortcuts } from "@/services/apiService";
 import { useQuery } from "@tanstack/react-query";
+import AndroidSearchBar from "@/components/android-searchbar";
 
 export default function UploadedShortcuts() {
-  const search = useSearch();
+  const { search, setSearchFn, isAndroid } = useSearch();
 
   const { data: user } = useQuery({
     queryKey: ["user"],
@@ -25,6 +26,8 @@ export default function UploadedShortcuts() {
       contentInsetAdjustmentBehavior="automatic"
       style={[globalStyles.container, { paddingTop: 15 }]}
     >
+      {isAndroid && <AndroidSearchBar onSearch={setSearchFn} />}
+
       <FlatList
         data={userShortcuts?.filter((shortcut) =>
           shortcut.name.toLowerCase().includes(search.toLowerCase()),
