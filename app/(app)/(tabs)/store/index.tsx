@@ -5,7 +5,7 @@ import SegmentedControl, {
 } from "@react-native-segmented-control/segmented-control";
 import globalStyles from "@/assets/global-styles";
 import StoreContent from "@/components/store-content";
-import { STORE_KEYS } from "@/constants/storeKeys";
+import { STORE_KEYS, ANDROID_STORE_KEYS } from "@/constants/storeKeys";
 import styles from "./styles";
 import useSearch from "@/hooks/useSearch";
 import { useScrollToTop } from "@react-navigation/native";
@@ -13,6 +13,7 @@ import { HEADER_HEIGHT } from "@/constants/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getPublicShortcuts, getServices } from "@/services/apiService";
 import AndroidSearchBar from "@/components/android-searchbar";
+import AndroidTabControl from "@/components/android-tab-control";
 
 const STORE_TABS = Object.values(STORE_KEYS);
 
@@ -49,16 +50,24 @@ export default function Store() {
       scrollToOverflowEnabled
       ref={scrollViewRef}
     >
-      <SegmentedControl
-        values={STORE_TABS}
-        selectedIndex={selectedIndex}
-        onChange={(
-          event: NativeSyntheticEvent<NativeSegmentedControlIOSChangeEvent>
-        ) => {
-          setSelectedIndex(event.nativeEvent.selectedSegmentIndex);
-        }}
-        style={styles.segmentedControl}
-      />
+      {(isAndroid && (
+        <AndroidTabControl
+          storeTabs={ANDROID_STORE_KEYS}
+          tabIndex={selectedIndex}
+          setTabIndex={setSelectedIndex}
+        />
+      )) || (
+        <SegmentedControl
+          values={STORE_TABS}
+          selectedIndex={selectedIndex}
+          onChange={(
+            event: NativeSyntheticEvent<NativeSegmentedControlIOSChangeEvent>
+          ) => {
+            setSelectedIndex(event.nativeEvent.selectedSegmentIndex);
+          }}
+          style={styles.segmentedControl}
+        />
+      )}
 
       {isAndroid && <AndroidSearchBar onSearch={setSearchFn} />}
 
