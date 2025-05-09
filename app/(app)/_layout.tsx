@@ -16,7 +16,7 @@ export default function RootLayout() {
     useShallow((state) => ({
       token: state.token,
       refreshAuth: state.refreshAuth,
-    })),
+    }))
   );
 
   // Restore token on app start

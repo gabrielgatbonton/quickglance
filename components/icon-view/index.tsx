@@ -3,7 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Platform, StyleProp, TextStyle } from "react-native";
 
 import type { SFSymbol } from "expo-symbols";
-type IoniconName = keyof typeof Ionicons.glyphMap;
+export type IoniconName = keyof typeof Ionicons.glyphMap;
 
 type IconViewProps = {
   name: [symbolName: SFSymbol, ioniconName: IoniconName];

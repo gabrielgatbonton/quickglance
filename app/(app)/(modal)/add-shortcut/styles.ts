@@ -1,5 +1,8 @@
 import { Colors } from "@/assets/colors";
-import { StyleSheet } from "react-native";
+import { DEFAULT_FONT_FAMILY } from "@/components/custom-text/styles";
+import { Platform, StyleSheet } from "react-native";
+
+const isIOS = Platform.OS === "ios" 
 
 const styles = StyleSheet.create({
   container: {
@@ -7,7 +10,7 @@ const styles = StyleSheet.create({
   },
   editDetailsContainer: {
     flex: 1,
-    padding: 20,
+    padding: isIOS ? 20 : 30,
     rowGap: 15,
   },
   inputsContainer: {
@@ -106,7 +109,7 @@ const styles = StyleSheet.create({
     color: "lightgray",
     fontSize: 16,
     padding: "15%",
-  },
+  }
 });
 
 export default styles;

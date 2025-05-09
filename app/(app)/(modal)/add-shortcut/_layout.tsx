@@ -5,6 +5,7 @@ import useAddShortcutStore from "@/stores/useAddShortcutStore";
 import { router, Stack } from "expo-router";
 import { useEffect } from "react";
 import { Platform } from "react-native";
+import { PaperProvider } from "react-native-paper";
 
 export default function AddShortcutLayout() {
   const resetAll = useAddShortcutStore((state) => state.resetAll);
@@ -17,37 +18,40 @@ export default function AddShortcutLayout() {
   }, [resetAll]);
 
   return (
-    <Stack
-      screenOptions={{
-        headerTintColor: Platform.OS === "ios" ? Colors.PRIMARY : "black",
-        headerTitleStyle: { color: "black", fontFamily: DEFAULT_FONT_FAMILY },
-        headerBackTitleStyle: { fontFamily: DEFAULT_FONT_FAMILY },
-        headerTitleAlign: "center",
-      }}
-    >
-      <Stack.Screen
-        name="index"
-        options={{
-          title: "Add Shortcut",
-          ...(Platform.OS === "ios" && {
-            headerLeft: () => (
-              <CustomLink
-                title="Cancel"
-                onPress={() => router.back()}
-                color={Colors.PRIMARY}
-              />
-            ),
-          }),
+    <PaperProvider>
+      <Stack
+        screenOptions={{
+          headerTintColor: Platform.OS === "ios" ? Colors.PRIMARY : "black",
+          headerTitleStyle: { color: "black", fontFamily: DEFAULT_FONT_FAMILY },
+          headerBackTitleStyle: { fontFamily: DEFAULT_FONT_FAMILY },
+          headerTitleAlign: "center",
         }}
-      />
-      <Stack.Screen
-        name="edit-details"
-        options={{
-          title: "Edit Details",
-          presentation: "card",
-          headerBackTitle: "Back",
-        }}
-      />
-    </Stack>
+      >
+        <Stack.Screen
+          name="index"
+          options={{
+            title: Platform.OS === "ios" ? "Add Shortcut" : "Create Shortcut",
+            ...(Platform.OS === "ios" && {
+              headerLeft: () => (
+                <CustomLink
+                  title="Cancel"
+                  onPress={() => router.back()}
+                  color={Colors.PRIMARY}
+                />
+              ),
+            }),
+          }}
+        />
+
+        <Stack.Screen
+          name="edit-details"
+          options={{
+            title: Platform.OS === "ios" ? "Edit Details" : "Create Shortcut",
+            presentation: "card",
+            headerBackTitle: "Back",
+          }}
+        />
+      </Stack>
+    </PaperProvider>
   );
 }
