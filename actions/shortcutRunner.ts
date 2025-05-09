@@ -82,20 +82,23 @@ const resolveInputValues = (
       value.startsWith("{{") &&
       value.endsWith("}}")
     ) {
-      // This is a reference to another step's result
-      const reference = value.substring(2, value.length - 2).trim();
-      const [stepId, ...path] = reference.split(".");
+      // Extract property name from the reference
+      const propertyName = value.substring(2, value.length - 2).trim();
 
-      // Find the referenced step result
-      let current = previousResults[stepId];
-      for (const segment of path.slice(1)) {
-        // Skip 'result'
-        if (current) {
-          current = current[segment];
+      // Look for the property in all previous results
+      const stepIds = Object.keys(previousResults);
+      let found = undefined;
+
+      // Search in reverse order (most recent first)
+      for (let i = stepIds.length - 1; i >= 0; i--) {
+        const stepResult = previousResults[stepIds[i]];
+        if (stepResult && stepResult[propertyName] !== undefined) {
+          found = stepResult[propertyName];
+          break;
         }
       }
 
-      resolvedInputs[key] = current;
+      resolvedInputs[key] = found;
     } else {
       // Regular value
       resolvedInputs[key] = value;
