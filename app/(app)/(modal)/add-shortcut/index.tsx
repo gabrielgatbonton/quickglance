@@ -3,6 +3,7 @@ import {
   Alert,
   FlatList,
   Pressable,
+  TextInput,
   View,
 } from "react-native";
 import {
@@ -53,6 +54,7 @@ import CustomDynamicInput, {
 } from "@/components/custom-dynamic-input";
 import LineSeparator from "@/components/line-separator";
 import { checkValidInputType } from "@/utils/validInputTypeChecker";
+import { KeyboardToolbar } from "react-native-keyboard-controller";
 
 export default function AddShortcut() {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
@@ -63,6 +65,7 @@ export default function AddShortcut() {
     null,
   );
   const [inputsContext, setInputsContext] = useState<Action | null>(null);
+  const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
   const [isMicEnabled, setIsMicEnabled] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
 
@@ -71,6 +74,7 @@ export default function AddShortcut() {
   const previewSheetRef = useRef<BottomSheetModal>(null);
   const actionsSheetRef = useRef<BottomSheetModal>(null);
   const categorySheetRef = useRef<BottomSheetModal>(null);
+  const inputRefs = useRef<Record<string, TextInput>>({});
 
   const { shortcut } = useLocalSearchParams<{ shortcut: string }>();
   const navigation = useNavigation();
@@ -514,6 +518,11 @@ export default function AddShortcut() {
                     return (
                       <CustomDynamicInput
                         {...(inputProps as CustomDynamicInputProps)}
+                        ref={(ref) => {
+                          if (ref && item.type === "text") {
+                            inputRefs.current[key] = ref as TextInput;
+                          }
+                        }}
                         onValueChange={(text) => {
                           setSelectedInputs((prev) => {
                             if (!prev) {
@@ -540,6 +549,7 @@ export default function AddShortcut() {
                         textInputProps={{
                           color: inputsContext.gradientStart,
                           useBottomSheetInput: true,
+                          onFocus: () => setFocusedInputKey(item.key),
                         }}
                         switchProps={{ color: inputsContext.gradientStart }}
                         pickerProps={{ color: inputsContext.gradientStart }}
@@ -631,6 +641,42 @@ export default function AddShortcut() {
           )}
         </BottomSheet>
       </View>
+
+      <KeyboardToolbar
+        content={
+          selectedAction && (
+            <View style={styles.toolbarContainer}>
+              <CustomLink
+                title="Insert Variable"
+                color={selectedAction.gradientStart}
+                onPress={() => {
+                  if (focusedInputKey && selectedInputs) {
+                    // Replace all input with braces for the focused input
+                    setSelectedInputs((prev) => {
+                      if (!prev) return null;
+
+                      return prev.map((input) => {
+                        if (input.key === focusedInputKey) {
+                          return { ...input, value: "{{  }}" };
+                        }
+                        return input;
+                      });
+                    });
+
+                    // Set the cursor position to the center of the braces after render
+                    setTimeout(() => {
+                      const inputRef = inputRefs.current[focusedInputKey];
+                      if (inputRef) {
+                        inputRef.setSelection(3, 3);
+                      }
+                    }, 50);
+                  }
+                }}
+              />
+            </View>
+          )
+        }
+      />
     </BottomSheetModalProvider>
   );
 }

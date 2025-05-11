@@ -107,6 +107,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: "15%",
   },
+  toolbarContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
 });
 
 export default styles;

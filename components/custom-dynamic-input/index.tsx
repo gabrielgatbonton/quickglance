@@ -3,6 +3,7 @@ import CustomTextInput, { CustomTextInputProps } from "../custom-text-input";
 import CustomSwitch, { CustomSwitchProps } from "../custom-switch";
 import CustomPicker, { CustomPickerSelectProps } from "../custom-picker";
 import CustomSlider, { CustomSliderProps } from "../custom-slider";
+import { Ref } from "react";
 
 export type CustomDynamicInputProps = {
   value: any;
@@ -19,6 +20,7 @@ export type CustomDynamicInputProps = {
   switchProps?: Partial<CustomSwitchProps>;
   pickerProps?: Partial<CustomPickerSelectProps>;
   sliderProps?: Partial<CustomSliderProps>;
+  ref: Ref<any>;
 };
 
 export default function CustomDynamicInput({
@@ -35,10 +37,12 @@ export default function CustomDynamicInput({
   switchProps,
   pickerProps,
   sliderProps,
+  ref,
 }: CustomDynamicInputProps) {
   if (type === "text" || type === "number") {
     return (
       <CustomTextInput
+        ref={ref}
         value={value}
         label={label}
         placeholder={placeholder}
