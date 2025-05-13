@@ -13,6 +13,7 @@ import { SymbolView } from "expo-symbols";
 import { Colors } from "@/assets/colors";
 import { PickerItem } from "@/constants/types";
 import styles from "./styles";
+import IconView from "../icon-view";
 
 export type PickerSheetProps = {
   placeholder?: string;
@@ -45,7 +46,7 @@ export default function PickerSheet({
       onSelected(option === value ? null : option);
       bottomSheetModalRef.current?.dismiss();
     },
-    [onSelected, value],
+    [onSelected, value]
   );
 
   const renderItem = useCallback(
@@ -75,17 +76,16 @@ export default function PickerSheet({
           {item.ItemComponent
             ? item.ItemComponent(item)
             : item.value === value && (
-                <SymbolView
-                  name="checkmark"
+                <IconView
+                  name={["checkmark", "checkmark"]}
                   size={20}
-                  tintColor={color}
-                  weight="bold"
+                  color={color}
                 />
               )}
         </Pressable>
       );
     },
-    [color, labelStyle, onOptionPress, value],
+    [color, labelStyle, onOptionPress, value]
   );
 
   return (
@@ -103,12 +103,7 @@ export default function PickerSheet({
             value={data?.find((item) => item.value === value)?.label}
             onChangeText={(destination) => onSelected(destination)}
           />
-          <SymbolView
-            name="chevron.down"
-            size={18}
-            tintColor={color}
-            weight="bold"
-          />
+          <IconView name={["chevron.down", "chevron-down"]} size={18} color={color} />
         </View>
       </Pressable>
 
@@ -127,12 +122,7 @@ export default function PickerSheet({
       >
         {searchEnabled && (
           <BottomSheetView style={styles.searchContainer}>
-            <SymbolView
-              name="magnifyingglass"
-              size={20}
-              tintColor={color}
-              weight="bold"
-            />
+            <IconView name={["magnifyingglass", "search"]} size={20} color={color} />
             <BottomSheetTextInput
               defaultValue={search}
               onChangeText={(text) => setSearch(text)}
@@ -145,7 +135,7 @@ export default function PickerSheet({
 
         <BottomSheetFlatList
           data={data.filter((item) =>
-            item.label?.toLowerCase().includes(search.toLowerCase().trim()),
+            item.label?.toLowerCase().includes(search.toLowerCase().trim())
           )}
           keyExtractor={(item) => item.value}
           contentContainerStyle={styles.contentContainer}

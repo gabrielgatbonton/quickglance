@@ -13,6 +13,7 @@ import pressedOpacity from "@/utils/pressedOpacity";
 import { SymbolView } from "expo-symbols";
 import { Colors } from "@/assets/colors";
 import useAuthStore from "@/stores/useAuthStore";
+import IconView from "@/components/icon-view";
 
 export default function WelcomeLayout() {
   const token = useAuthStore((state) => state.token);
@@ -71,12 +72,13 @@ export default function WelcomeLayout() {
                 style={({ pressed }) => pressedOpacity({ pressed })}
                 onPress={() => router.back()}
               >
-                <SymbolView
+                <IconView name={["chevron.backward", "arrow-back"]} size={25} color={Colors.PRIMARY} />
+                {/* <SymbolView
                   name="chevron.backward"
                   size={25}
                   tintColor={Colors.PRIMARY}
                   weight="semibold"
-                />
+                /> */}
               </Pressable>
             ),
           }}

@@ -151,8 +151,7 @@ export default function ShortcutItem({
             )}
 
             <View style={globalStyles.rowBetween}>
-              <IconView name={[item.icon, "eye"]} color="white" size={30} />
-              {/* <SymbolView name={item.icon} size={30} tintColor="white" /> */}
+              <IconView name={[item.icon, item.androidIcon]} color="white" size={28} />
 
               <Pressable
                 style={({ pressed }) => [
@@ -162,12 +161,6 @@ export default function ShortcutItem({
                 onPress={handleEdit}
               >
                 <IconView name={["slider.vertical.3", "options"]} color="white" size={20} buttonStyle={styles.optionIcon} />
-                {/* <SymbolView
-                  name="slider.vertical.3"
-                  size={20}
-                  tintColor="white"
-                  weight="bold"
-                /> */}
               </Pressable>
             </View>
 

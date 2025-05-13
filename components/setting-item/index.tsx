@@ -6,6 +6,7 @@ import { Colors } from "@/assets/colors";
 import pressedOpacity from "@/utils/pressedOpacity";
 import { SymbolView } from "expo-symbols";
 import CustomText from "../custom-text";
+import IconView from "../icon-view";
 
 export default function SettingItem({ item }: { item: SettingData }) {
   const [isEnabled, setIsEnabled] = useState(false);
@@ -45,7 +46,7 @@ export default function SettingItem({ item }: { item: SettingData }) {
           thumbColor={Platform.OS === "android" ? Colors.PRIMARY : undefined}
         />
       ) : item.type === "list" ? (
-        <SymbolView name="chevron.right" size={15} tintColor="gray" />
+        <IconView name={["chevron.right", "chevron-forward"]} size={15} color="gray" />
       ) : null}
     </Pressable>
   );

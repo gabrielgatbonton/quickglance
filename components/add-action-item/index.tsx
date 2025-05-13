@@ -41,8 +41,7 @@ export default function AddActionItem({
           style={styles.contentContainer}
         >
           <View style={globalStyles.rowBetween}>
-            <IconView name={[item.icon, "eye"]} color="white" size={30} />
-            {/* <SymbolView name={item.icon} size={30} tintColor="white" /> */}
+            <IconView name={[item.icon, item.androidIcon]} color="white" size={30} />
 
             <View style={styles.buttonContainer}>
               {onActionEdit && (
@@ -66,7 +65,7 @@ export default function AddActionItem({
                   onPress={() => onActionDelete(item)}
                 >
                   <IconView name={["xmark", "remove"]} color="white" size={15} />
-                  {/* <SymbolView name="xmark" size={15} tintColor="white" /> */}
+
                 </Pressable>
               )}
             </View>

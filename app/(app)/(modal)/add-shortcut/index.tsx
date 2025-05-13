@@ -443,7 +443,7 @@ export default function AddShortcut() {
                   style={styles.actionPreviewContainer}
                 >
                   <IconView
-                    name={[selectedAction.icon, "eye"]}
+                    name={[selectedAction.icon, selectedAction.androidIcon]}
                     color={selectedAction.gradientStart}
                     size={80}
                   />

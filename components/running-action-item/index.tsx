@@ -36,18 +36,12 @@ export default function RunningActionItem({ item }: RunningActionItemProps) {
   return (
     <View style={styles.actionContainer}>
       <Animated.View style={[styles.actionContentContainer, animatedStyles]}>
-        <IconView name={[item.icon, "eye"]} color={Colors.PRIMARY} size={30} />
-        {/* <SymbolView name={item.icon} size={30} tintColor={Colors.PRIMARY} /> */}
+        <IconView name={[item.icon, item.androidIcon]} color={Colors.PRIMARY} size={30} />
         <CustomText style={styles.name}>{item.name}</CustomText>
       </Animated.View>
 
       {item.isCompleted ? (
         <IconView name={["checkmark.circle.fill", "checkmark-circle"]} color={Colors.SUCCESS} size={36} />
-        // <SymbolView
-        //   name="checkmark.circle.fill"
-        //   size={36}
-        //   tintColor={Colors.SUCCESS}
-        // />
       ) : (
         <ActivityIndicator size="large" animating={item.isCurrent} color={Colors.PRIMARY} />
       )}

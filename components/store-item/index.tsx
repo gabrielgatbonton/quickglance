@@ -1,7 +1,6 @@
 import pressedOpacity from "@/utils/pressedOpacity";
 import { ActivityIndicator, Alert, Pressable, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { SymbolView } from "expo-symbols";
 import styles from "./styles";
 import globalStyles from "@/assets/global-styles";
 import { Shortcut } from "@/constants/types";
@@ -56,8 +55,7 @@ export default function StoreItem({ item }: { item: Shortcut }) {
             style={styles.contentContainer}
           >
             <View style={globalStyles.rowBetween}>
-            <IconView name={[item.icon, "eye"]} color="white" size={30} />
-              {/* <SymbolView name={item.icon} size={30} tintColor="white" /> */}
+            <IconView name={[item.icon, item.androidIcon]} color="white" size={33} />
 
               {isInstalling ? (
                 <View style={globalStyles.transparentButton}>
@@ -88,14 +86,7 @@ export default function StoreItem({ item }: { item: Shortcut }) {
                   }}
                 >
                   <IconView name={["square.and.arrow.down" , "checkmark-circle-outline"]} color="white" />
-                  {/* <SymbolView
-                    name="checkmark.icloud.fill"
-                    size={25}
-                    tintColor="white"
-                    resizeMode="top"
-                    scale="large"
-                    weight="bold"
-                  /> */}
+
                 </Pressable>
               ) : (
                 <Pressable
@@ -106,14 +97,7 @@ export default function StoreItem({ item }: { item: Shortcut }) {
                   onPress={() => shortcutInstall()}
                 >
                   <IconView name={["square.and.arrow.down" , "download-outline"]} color="white" />
-                  {/* <SymbolView
-                    name="square.and.arrow.down"
-                    size={25}
-                    tintColor="white"
-                    resizeMode="top"
-                    scale="large"
-                    weight="bold"
-                  /> */}
+
                 </Pressable>
               )}
             </View>

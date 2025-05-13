@@ -4,6 +4,7 @@ import { SymbolView } from "expo-symbols";
 import { useWindowDimensions, View } from "react-native";
 import styles from "./styles";
 import CustomText from "../custom-text";
+import IconView from "../icon-view";
 
 export default function ReorderShortcutItem({ item }: { item: Shortcut }) {
   const { height } = useWindowDimensions();
@@ -16,7 +17,7 @@ export default function ReorderShortcutItem({ item }: { item: Shortcut }) {
         style={styles.container}
       >
         <View style={styles.contentContainer}>
-          <SymbolView name={item.icon} size={30} tintColor="white" />
+          <IconView name={[item.icon, item.androidIcon]} color="white" size={30} />
           <CustomText style={styles.label}>{item.name}</CustomText>
         </View>
 

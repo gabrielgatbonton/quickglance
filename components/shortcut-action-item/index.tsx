@@ -39,8 +39,7 @@ export default function ShortcutActionItem({
         ]}
       >
         <View style={globalStyles.rowBetween}>
-          <IconView name={[item.icon, "eye"]} color="white" size={30} />
-          {/* <SymbolView name={item.icon} size={30} tintColor="white" /> */}
+          <IconView name={[item.icon, item.androidIcon]} color="white" size={30} />
           <Pressable
             style={({ pressed }) => [
               globalStyles.transparentButton,

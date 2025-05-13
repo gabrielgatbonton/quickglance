@@ -6,7 +6,7 @@ import type { SFSymbol } from "expo-symbols";
 export type IoniconName = keyof typeof Ionicons.glyphMap;
 
 type IconViewProps = {
-  name: [symbolName: SFSymbol, ioniconName: IoniconName];
+  name: [symbolName: SFSymbol | undefined, ioniconName: IoniconName | undefined];
   color: string;
   size?: number;
   buttonStyle?: StyleProp<TextStyle>;

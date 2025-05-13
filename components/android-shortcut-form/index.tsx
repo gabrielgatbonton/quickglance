@@ -8,6 +8,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import IconView, { IoniconName } from "../icon-view";
 import { LinearGradient } from "expo-linear-gradient";
+import { Colors } from "@/assets/colors";
 
 type AndroidShortcutFormProps = {
   handleShortcutDetails: (item: object) => void;
@@ -89,7 +90,7 @@ export default function AndroidShortcutForm({
           </CustomText>
         </View>
 
-        <Switch onValueChange={() => handleToggle()} value={isToggled} />
+        <Switch onValueChange={() => handleToggle()} value={isToggled} color={Colors.PRIMARY} />
       </View>
     </>
   );

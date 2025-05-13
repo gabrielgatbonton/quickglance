@@ -45,8 +45,8 @@ export type Shortcut = {
   id: string;
   name: string;
   description: string;
-  icon?: SFSymbol;
-  androidIcon?: IoniconName;
+  icon: SFSymbol;
+  androidIcon: IoniconName;
   gradientStart: string;
   gradientEnd: string;
   steps: ShortcutStep[];
@@ -75,7 +75,7 @@ export type Action = {
   key?: string;
   id: string;
   name: string;
-  icon: SFSymbol;
+  icon?: SFSymbol;
   androidIcon?: IoniconName;
   gradientStart: string;
   gradientEnd: string;

@@ -1,7 +1,6 @@
 import { Colors } from "@/assets/colors";
 import pressedOpacity from "@/utils/pressedOpacity";
 import { router, useLocalSearchParams, useNavigation } from "expo-router";
-import { SymbolView } from "expo-symbols";
 import { useLayoutEffect } from "react";
 import { ActivityIndicator, Pressable, ScrollView, View } from "react-native";
 import * as Linking from "expo-linking";
@@ -13,7 +12,6 @@ import CustomButton from "@/components/custom-button";
 import styles from "./styles";
 import { useQuery } from "@tanstack/react-query";
 import { getShortcut } from "@/services/apiService";
-import CustomLink from "@/components/custom-link";
 import globalStyles from "@/assets/global-styles";
 import useInstallShortcut from "@/hooks/useInstallShortcut";
 import IconView from "@/components/icon-view";
@@ -62,12 +60,8 @@ export default function ShortcutInstaller() {
             <IconView
               name={["square.and.arrow.up", "eye"]}
               color={Colors.PRIMARY}
-            />
-            {/* <SymbolView
-              name="square.and.arrow.up"
               size={25}
-              tintColor={Colors.PRIMARY}
-            /> */}
+            />
           </Pressable>
         ),
       });
@@ -79,7 +73,7 @@ export default function ShortcutInstaller() {
       headerLeft: () => (
         <>
           <Pressable onPress={() => router.back()} style={({pressed}) => pressedOpacity({pressed})} >
-            <IconView name={["", "arrow-back"]} color={Colors.PRIMARY} />
+            <IconView name={["", "arrow-back"]} color={Colors.PRIMARY} size={25} />
           </Pressable>
           {/* <CustomLink
             title={isInstalled ? "Done" : "Cancel"}
@@ -120,15 +114,10 @@ export default function ShortcutInstaller() {
             style={styles.iconContentContainer}
           >
             <IconView
-              name={[currentShortcut.icon, "eye"]}
+              name={[currentShortcut.icon, currentShortcut.androidIcon]}
               color="white"
               size={50}
             />
-            {/* <SymbolView
-              name={currentShortcut.icon}
-              size={50}
-              tintColor="white"
-            /> */}
           </LinearGradient>
         </View>
 
@@ -159,11 +148,6 @@ export default function ShortcutInstaller() {
                 color={Colors.PRIMARY}
                 size={30}
               />
-              {/* <SymbolView
-                name="arrow.down.circle.fill"
-                size={30}
-                tintColor={currentShortcut.gradientStart}
-              /> */}
               <CustomText style={{ fontSize: 16, color: Colors.SECONDARY }}>
                 Installed!
               </CustomText>
