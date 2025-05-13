@@ -23,6 +23,13 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "permissions": [
+        "android.permission.WRITE_SETTINGS",
+        "android.permission.ACCESS_WIFI_STATE",
+        "android.permission.BLUETOOTH",
+        "android.permission.CHANGE_WIFI_STATE",
+        "android.permission.BLUETOOTH_ADMIN"
+      ],
       "package": "com.melmatx.QuickGlance"
     },
     "web": {
