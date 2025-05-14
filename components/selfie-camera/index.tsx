@@ -1,6 +1,5 @@
-import { SymbolView } from "expo-symbols";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ActivityIndicator, Alert } from "react-native";
+import { ActivityIndicator, Alert, View } from "react-native";
 import { Colors } from "@/assets/colors";
 import {
   Camera,
@@ -377,23 +376,23 @@ export default function SelfieCamera({
   }
 
   return (
-    <Camera
-      {...cameraProps}
-      isActive={isActive}
-      device={device}
-      format={format}
-      frameProcessor={frameProcessor}
-      style={
-        isVisible && [
-          {
-            height: size,
-            width: size,
-            borderRadius: size / 2,
-          },
-          styles.camera,
-          cameraProps?.style,
-        ]
-      }
-    />
+    <View style={[{ borderRadius: size / 2 }, styles.camera]}>
+      <Camera
+        {...cameraProps}
+        isActive={isActive}
+        device={device}
+        format={format}
+        frameProcessor={frameProcessor}
+        style={
+          isVisible && [
+            {
+              height: size,
+              width: size,
+            },
+            cameraProps?.style,
+          ]
+        }
+      />
+    </View>
   );
 }

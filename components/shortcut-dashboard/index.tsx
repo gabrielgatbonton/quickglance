@@ -17,6 +17,7 @@ import PageControl from "../page-control";
 import { SymbolView } from "expo-symbols";
 import ShortcutPage from "../shortcut-page";
 import CustomText from "../custom-text";
+import { Platform } from "react-native";
 
 const SHORTCUTS_PER_SCREEN = 6;
 const SHORTCUTS_PER_ROW = 2;
@@ -31,6 +32,8 @@ type ShortcutDashboardProps = {
 
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
+const ANDROID_TOP_PADDING = 50;
+
 export default function ShortcutDashboard({
   shortcuts,
   turnDirection,
@@ -41,7 +44,7 @@ export default function ShortcutDashboard({
   const { AnimatedPagerView, activePage, setPage, ...rest } = usePagerView();
   const { width, height } = useWindowDimensions();
   const isShortcutRunning = useShortcutRunnerStore(
-    (state) => state.isShortcutRunning,
+    (state) => state.isShortcutRunning
   );
 
   const shortcutsHeight = height * 0.46;
@@ -57,7 +60,7 @@ export default function ShortcutDashboard({
       shortcuts?.length
         ? Math.ceil(shortcuts.length / SHORTCUTS_PER_SCREEN)
         : 0,
-    [shortcuts?.length],
+    [shortcuts?.length]
   );
 
   const focusedShortcut = useMemo((): Shortcut | null => {
@@ -129,6 +132,7 @@ export default function ShortcutDashboard({
           style={[
             styles.gradientContainer,
             { width: gradientWidth },
+            Platform.OS === "android" && { top: ANDROID_TOP_PADDING },
             turnDirection === "left" && styles.leftGradient,
             turnDirection === "right" && styles.rightGradient,
           ]}
