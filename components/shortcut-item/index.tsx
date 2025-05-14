@@ -16,7 +16,6 @@ import CustomText from "../custom-text";
 import { BlurView } from "expo-blur";
 import Animated, {
   Easing,
-  FadingTransition,
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
@@ -100,10 +99,7 @@ export default function ShortcutItem({
   };
 
   return (
-    <Animated.View
-      layout={FadingTransition}
-      style={[styles.container, animatedViewStyle]}
-    >
+    <Animated.View style={[styles.container, animatedViewStyle]}>
       <Pressable
         style={({ pressed }) => pressedOpacity({ pressed, opacity: 0.6 })}
         onPress={handlePress}
