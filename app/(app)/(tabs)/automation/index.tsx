@@ -1,6 +1,6 @@
 import globalStyles from "@/assets/global-styles";
 import AutomationItem from "@/components/automation-item";
-import { Pressable, ScrollView } from "react-native";
+import { ActivityIndicator, Pressable, ScrollView } from "react-native";
 import styles from "./styles";
 import { useLayoutEffect, useRef } from "react";
 import { router, useNavigation } from "expo-router";
@@ -10,17 +10,19 @@ import pressedOpacity from "@/utils/pressedOpacity";
 import { useScrollToTop } from "@react-navigation/native";
 import { HEADER_HEIGHT } from "@/constants/navigation";
 import Animated, {
+  BounceIn,
   Easing,
   FadingTransition,
   ZoomIn,
 } from "react-native-reanimated";
 import { useQuery } from "@tanstack/react-query";
 import { getAutomations } from "@/services/apiService";
+import CustomText from "@/components/custom-text";
 
 export default function Automation() {
   const navigation = useNavigation();
 
-  const { data: automations } = useQuery({
+  const { data: automations, isPending } = useQuery({
     queryKey: ["automations", "user"],
     queryFn: getAutomations,
   });
@@ -69,6 +71,23 @@ export default function Automation() {
         itemLayoutAnimation={FadingTransition}
         contentContainerStyle={styles.contentContainer}
         scrollEnabled={false}
+        ListEmptyComponent={
+          <Animated.View
+            entering={BounceIn.duration(300)}
+            style={styles.emptyContainer}
+          >
+            {isPending ? (
+              <ActivityIndicator size="large" color={Colors.PRIMARY} />
+            ) : (
+              <>
+                <SymbolView name="gearshape.2" size={80} tintColor="gray" />
+                <CustomText style={styles.emptyText}>
+                  No automations available.
+                </CustomText>
+              </>
+            )}
+          </Animated.View>
+        }
       />
     </ScrollView>
   );
