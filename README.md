@@ -95,7 +95,7 @@ EXPO_PUBLIC_OPENAI_API_KEY="ENTER_API_KEY_HERE"
 
 | **file/folder name** | **description** |
 | --- | --- |
-| handler | Handles the codes that runs for each category of actions (connectivity, data, AI actions, etc.) |
+| handler | Handles the codes which runs the actions, separated for each category of actions (connectivity, data, AI actions, etc.) |
 | actionHandlers.ts | Contains a dictionary that maps the id of the action to the handler of the code which runs the action. |
 | shortcutRunner.ts | Has 2 functions:<br>1. **runShortcut** - runs the shortcut using its id<br>2. **resolveInputValues** - retrieves the inputs of the action when running the shortcut |
 
