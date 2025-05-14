@@ -87,8 +87,8 @@ EXPO_PUBLIC_OPENAI_API_KEY="ENTER_API_KEY_HERE"
 | components | Contains the components that is used in the app. These are reusable code that can be used across the app. |
 | constants | Contains sample data that is used for testing, as well as, global constants and types. |
 | hooks | Contains [React hooks](https://react.dev/reference/react/hooks) that is used to encapsulate complex setup into a reusable functions or hooks. |
-| services | Contains the api functions and the Axios API wrapper that can be used to access the backend. |
-| stores | Contains various Zustand stores that handles the global state management and storage. |
+| services | Contains the api functions and the [Axios](https://axios-http.com/docs/intro) API wrapper that can be used to access the backend. |
+| stores | Contains various [Zustand](https://github.com/pmndrs/zustand) stores that handles the global state management and storage. |
 | utils | Bite-sized utilities that is used for minor inconveniences and functionalities |
 
 ### **actions folder**
