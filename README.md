@@ -9,10 +9,11 @@ QuickGlance is a mobile assistive platform that transforms natural movements int
 
 ## Features
 
-- [x]  Eye-tracking for precise shortcut selection
+- [ ]  Eye-tracking for precise shortcut selection
 - [x]  Head movements (left/right/up/down) for navigation and selection of elements
 - [x]  Emotion tracking to automate certain shortcuts based on emotions
 - [x]  App Store-like gallery for shortcut sharing (with installable shortcuts)
+- [x]  User accounts to store shortcuts on the cloud
 - [ ]  Scheduling and automation of shortcuts based on time or events
 - [ ]  Integration with IoT and wearable technologies
 - [ ]  AI Integration for personalized assistance with PWDs
