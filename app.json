@@ -30,6 +30,7 @@
         "android.permission.CHANGE_WIFI_STATE",
         "android.permission.BLUETOOTH_ADMIN"
       ],
+      "edgeToEdgeEnabled": false,
       "package": "com.melmatx.QuickGlance"
     },
     "web": {
