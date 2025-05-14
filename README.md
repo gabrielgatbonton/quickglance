@@ -5,7 +5,7 @@
 
 ## Introduction
 
-QuickGlance is a mobile assistive platform that transforms natural movements into automated shortcuts for persons with disabilities (PWDs). By combining eye-tracking, head gestures, and emotion recognition, the app enables hands-free device control and automation for those that need it the most. With a community-driven ecosystem for sharing customized accessibility shortcuts, the app becomes a central digital hub for the community of PWDs nationwide.
+QuickGlance is a mobile assistive platform that transforms natural movements into automated shortcuts for persons with disabilities (PWDs). By combining eye-tracking, head gestures, and emotion recognition, the app enables hands-free device control and automation for those that need it the most. With a community-driven ecosystem for sharing customized accessibility shortcuts with integration of various NGOs, the app becomes a central digital hub for the community of PWDs in the Philippines.
 
 ## Features
 
