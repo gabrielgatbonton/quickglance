@@ -20,7 +20,7 @@ export type CustomDynamicInputProps = {
   switchProps?: Partial<CustomSwitchProps>;
   pickerProps?: Partial<CustomPickerSelectProps>;
   sliderProps?: Partial<CustomSliderProps>;
-  ref: Ref<any>;
+  ref?: Ref<any>;
 };
 
 export default function CustomDynamicInput({
@@ -42,7 +42,7 @@ export default function CustomDynamicInput({
   if (type === "text" || type === "number") {
     return (
       <CustomTextInput
-        ref={ref}
+        ref={ref!}
         value={value}
         label={label}
         placeholder={placeholder}
