@@ -1,5 +1,5 @@
 <h1 align="center">QuickGlance</h1>
-<h3 align="center">A Community Shortcuts App for Hands-Free Automation via Eye, Head, and Emotion Recognition</h3>
+<p align="center">A Community Shortcuts App for Hands-Free Automation via Eye, Head, and Emotion Recognition</p>
 
 ![QUICKGLANCE](https://github.com/user-attachments/assets/ff91ac8b-0e3b-4084-bf83-c6dbac88a984)
 
@@ -44,10 +44,10 @@ EXPO_PUBLIC_OPENAI_API_KEY="ENTER_API_KEY_HERE"
 
 ## Install and Build
 
-- `npm install`
+1. `npm install`
     - If using Bun: `bun install`
-- `npx expo prebuild --clean`
-- `npx expo run`
+2. `npx expo prebuild --clean`
+3. `npx expo run`
     - For iOS: `npx expo run:ios`
     - For Android: `npx expo run:android`
     - Note: add `--device` to select a specific device
@@ -60,21 +60,22 @@ EXPO_PUBLIC_OPENAI_API_KEY="ENTER_API_KEY_HERE"
 
 ## Build remotely through EAS
 
-- `npm install -g eas-cli`
-- `eas login` (enter your Expo account or if you dont have yet, [create one](https://expo.dev/signup))
-- For Android: `eas build --platform android --profile development`
-- For iOS: `eas build --platform ios --profile development`
-   - Note: add `--local` to build locally but still using the same EAS profile
-- After building, install the **apk** file or **app** file in your device and then run it as above.
+1. `npm install -g eas-cli`
+2. `eas login` (enter your Expo account or if you dont have yet, [create one](https://expo.dev/signup))
+3. Build the app with eas:
+    - For Android: `eas build --platform android --profile development`
+    - For iOS: `eas build --platform ios --profile development`
+        - Note: add `--local` to build locally but still using the same EAS profile
+4. After building, install the **apk** file or **app** file in your device and then run it as above.
 
 ## Access the app anywhere with Expo Go and EAS Updates
 
-- `npm install -g eas-cli`
-- `eas login`
-- `eas update`
-- Select or create a branch then setup the configuration and the update message.
-- After saving as update, install [Expo Go](https://expo.dev/go) on your device then login your account.
-- Open the app, and then you can see all your updates in the app, which you can select and run.
+1. `npm install -g eas-cli`
+2. `eas login`
+3. `eas update`
+4. Select or create a branch then setup the configuration and the update message.
+5. After saving as update, install [Expo Go](https://expo.dev/go) on your device then login your account.
+6. Open the app, and then you can see all your updates in the app, which you can select and run.
 
 ## Project Structure
 
