@@ -19,6 +19,18 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 15,
   },
+  indexContainer: {
+    borderRadius: 15,
+    width: 25,
+    height: 25,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  index: {
+    fontWeight: "bold",
+    color: "white",
+    paddingBottom: 1,
+  },
 });
 
 export default styles;
