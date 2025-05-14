@@ -1,11 +1,14 @@
 import { Colors } from "@/assets/colors";
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
+
+const isIOS = Platform.OS === "ios"
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
     columnGap: 5,
+    paddingHorizontal: isIOS ? 0 : 13
   },
   iconContainer: {
     width: "15%",
@@ -15,13 +18,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   label: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: "bold",
     lineHeight: 25,
+    color: isIOS ? "" : Colors.PRIMARY,
   },
   description: {
+    marginTop: 8,
     fontSize: 15,
-    color: Colors.SECONDARY,
+    color: 'black',
+    fontFamily: "Satoshi-light",
     lineHeight: 20,
   },
 });

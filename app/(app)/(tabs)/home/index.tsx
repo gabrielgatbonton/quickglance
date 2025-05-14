@@ -27,6 +27,7 @@ import { Face } from "react-native-vision-camera-face-detector";
 import { useQuery } from "@tanstack/react-query";
 import { getUser, getUserShortcuts } from "@/services/apiService";
 import EmotionPopover from "@/components/emotion-popover";
+import IconView from "@/components/icon-view";
 
 export default function Home() {
   const [currentShortcuts, setCurrentShortcuts] = useState<Shortcut[] | null>(
@@ -150,10 +151,10 @@ export default function Home() {
           style={({ pressed }) => pressedOpacity({ pressed })}
           onPress={() => router.navigate("/(modal)/reorder-shortcuts")}
         >
-          <SymbolView
-            name="circle.grid.3x3.circle"
-            size={30}
-            tintColor={Colors.PRIMARY}
+          <IconView
+            name={["circle.grid.3x3.circle", "apps"]}
+            color={Colors.PRIMARY}
+            size={23}
           />
         </Pressable>
       ),

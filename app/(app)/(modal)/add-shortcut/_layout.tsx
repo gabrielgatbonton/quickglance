@@ -1,11 +1,13 @@
 import { Colors } from "@/assets/colors";
 import CustomLink from "@/components/custom-link";
 import { DEFAULT_FONT_FAMILY } from "@/components/custom-text/styles";
+import IconView from "@/components/icon-view";
 import useAddShortcutStore from "@/stores/useAddShortcutStore";
 import { router, Stack } from "expo-router";
 import { useEffect } from "react";
-import { Platform } from "react-native";
+import { Platform, Pressable } from "react-native";
 import { PaperProvider } from "react-native-paper";
+import pressedOpacity from "@/utils/pressedOpacity";
 
 export default function AddShortcutLayout() {
   const resetAll = useAddShortcutStore((state) => state.resetAll);
@@ -31,15 +33,21 @@ export default function AddShortcutLayout() {
           name="index"
           options={{
             title: Platform.OS === "ios" ? "Add Shortcut" : "Create Shortcut",
-            ...(Platform.OS === "ios" && {
-              headerLeft: () => (
+            headerLeft: () =>
+              Platform.OS === "ios" ? (
                 <CustomLink
                   title="Cancel"
                   onPress={() => router.back()}
                   color={Colors.PRIMARY}
                 />
+              ) : (
+                <Pressable
+                  style={({ pressed }) => pressedOpacity({ pressed })}
+                  onPress={() => router.back()}
+                >
+                  <IconView name={[, "arrow-back"]} color={Colors.SECONDARY} />
+                </Pressable>
               ),
-            }),
           }}
         />
 

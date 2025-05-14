@@ -28,11 +28,6 @@ export default function SelfieView({
             color={turnDirection === "left" ? "gray" : "lightgray"}
             size={60}
           />
-          {/* <SymbolView
-            name="arrow.backward.circle"
-            size={60}
-            tintColor={turnDirection === "left" ? "gray" : "lightgray"}
-          /> */}
         </Animated.View>
       )}
 
@@ -44,11 +39,6 @@ export default function SelfieView({
           exiting={FadeOut.duration(300)}
         >
           <IconView name={["arrow.right.circle", "arrow-forward-circle"]} color={turnDirection === "right" ? "gray" : "lightgray"} size={60} />
-          {/* <SymbolView
-            name="arrow.right.circle"
-            size={60}
-            tintColor={turnDirection === "right" ? "gray" : "lightgray"}
-          /> */}
         </Animated.View>
       )}
     </View>

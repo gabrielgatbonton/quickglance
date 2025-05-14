@@ -65,7 +65,7 @@ export default function WelcomeLayout() {
           options={{
             presentation: "card",
             title: "",
-            headerShown: true,
+            headerShown: false,
             headerTransparent: Platform.OS === "ios",
             headerLeft: () => (
               <Pressable
@@ -73,12 +73,6 @@ export default function WelcomeLayout() {
                 onPress={() => router.back()}
               >
                 <IconView name={["chevron.backward", "arrow-back"]} size={25} color={Colors.PRIMARY} />
-                {/* <SymbolView
-                  name="chevron.backward"
-                  size={25}
-                  tintColor={Colors.PRIMARY}
-                  weight="semibold"
-                /> */}
               </Pressable>
             ),
           }}

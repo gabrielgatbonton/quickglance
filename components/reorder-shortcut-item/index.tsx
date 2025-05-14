@@ -8,7 +8,7 @@ import IconView from "../icon-view";
 
 export default function ReorderShortcutItem({ item }: { item: Shortcut }) {
   const { height } = useWindowDimensions();
-  const itemHeight = height * 0.1;
+  const itemHeight = height * 0.14;
 
   return (
     <View style={{ height: itemHeight }}>

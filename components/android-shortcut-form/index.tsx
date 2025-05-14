@@ -48,7 +48,7 @@ export default function AndroidShortcutForm({
           style={styles.linearGradient}
         >
           <IconView
-            name={["", icon ? icon : "help"]}
+            name={[undefined, icon ? icon : "help"]}
             color="white"
             size={100}
             buttonStyle={styles.icon}

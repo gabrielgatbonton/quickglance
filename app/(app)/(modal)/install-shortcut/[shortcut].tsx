@@ -75,12 +75,6 @@ export default function ShortcutInstaller() {
           <Pressable onPress={() => router.back()} style={({pressed}) => pressedOpacity({pressed})} >
             <IconView name={["", "arrow-back"]} color={Colors.PRIMARY} size={25} />
           </Pressable>
-          {/* <CustomLink
-            title={isInstalled ? "Done" : "Cancel"}
-            bold={isInstalled}
-            onPress={() => router.back()}
-            color={Colors.PRIMARY}
-          /> */}
         </>
       ),
     });
