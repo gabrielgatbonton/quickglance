@@ -50,7 +50,7 @@ export default function Home() {
   const { data: userShortcuts } = useQuery({
     queryKey: ["shortcuts", "user"],
     queryFn: getUserShortcuts,
-    enabled: Boolean(user),
+    // enabled: Boolean(user),
   });
 
   useEffect(() => {
