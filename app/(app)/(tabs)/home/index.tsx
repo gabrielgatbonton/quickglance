@@ -10,6 +10,11 @@ import pressedOpacity from "@/utils/pressedOpacity";
 import CustomLink from "@/components/custom-link";
 import ShortcutDashboard from "@/components/shortcut-dashboard";
 import AndroidSearchBar from "@/components/android-searchbar";
+import Animated, {
+  useAnimatedStyle,
+  withTiming,
+  useSharedValue,
+} from "react-native-reanimated";
 import {
   Emotion,
   NodDirection,
@@ -155,6 +160,19 @@ export default function Home() {
     });
   }, [navigation]);
 
+  // Hide the header when the user is in the onboarding screen
+  const opacity = useSharedValue(isStarted ? 0 : 1);
+
+  useEffect(() => {
+    opacity.value = withTiming(isStarted ? 0 : 1, { duration: 200 });
+  }, [isStarted]);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: opacity.value,
+    };
+  });
+
   return (
     <ScrollView
       contentInsetAdjustmentBehavior="automatic"
@@ -162,10 +180,12 @@ export default function Home() {
       scrollEnabled={false}
     >
       {isAndroid && (
-        <AndroidSearchBar
-          style={{ paddingHorizontal: 14 }}
-          onSearch={setSearchFn}
-        />
+        <Animated.View style={[animatedStyle]}>
+          <AndroidSearchBar
+            style={{ paddingHorizontal: 14 }}
+            onSearch={setSearchFn}
+          />
+        </Animated.View>
       )}
 
       <ShortcutDashboard
