@@ -1,6 +1,8 @@
 import {
   Action,
   Automation,
+  AutomationCondition,
+  AutomationStep,
   Category,
   Service,
   Shortcut,
@@ -34,8 +36,10 @@ type SaveServiceParams = Omit<Service, "id" | "shortcuts"> & {
   shortcuts: Pick<Shortcut, "id">[];
 };
 
-type SaveAutomationParams = Omit<Automation, "id" | "shortcuts"> & {
-  shortcuts: Pick<Shortcut, "id">[];
+type SaveAutomationParams = {
+  title: Automation["title"];
+  automationConditionId: string;
+  shortcuts: Pick<AutomationStep, "id" | "order">[];
 };
 
 type InstallShortcutParams = {
@@ -309,6 +313,19 @@ export const getAutomations = async (): Promise<Automation[]> => {
     throw error;
   }
 };
+export const getAutomationConditions = async (): Promise<
+  AutomationCondition[]
+> => {
+  try {
+    const {
+      data: { automationConditions },
+    } = await QuickGlanceAPI.get("/automation/create");
+    return automationConditions;
+  } catch (error: any) {
+    console.log("Error fetching automation conditions", error.response);
+    throw error;
+  }
+};
 export const saveAutomation = async (params: SaveAutomationParams) => {
   try {
     const {
@@ -317,6 +334,17 @@ export const saveAutomation = async (params: SaveAutomationParams) => {
     return message;
   } catch (error: any) {
     console.log("Error saving automation", error.response);
+    throw error;
+  }
+};
+export const deleteAutomation = async (id: string) => {
+  try {
+    const {
+      data: { message },
+    } = await QuickGlanceAPI.delete(`/automation/${id}`);
+    return message;
+  } catch (error: any) {
+    console.log("Error deleting automation", error.response);
     throw error;
   }
 };

@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     flex: 1,
     rowGap: 3,
   },
-  label: {
+  name: {
     fontSize: 16,
   },
   description: {

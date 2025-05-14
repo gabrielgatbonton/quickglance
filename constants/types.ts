@@ -105,10 +105,30 @@ export type Service = {
   shortcuts: Shortcut[];
 };
 
+export type AutomationStep = {
+  id: string;
+  shortcutId: string;
+  shortcutName: string;
+  order: number;
+};
+
 export type Automation = {
   id: string;
+  title: string;
+  steps: AutomationStep[];
+};
+
+export type AutomationCondition = {
+  id: string;
   name: string;
-  shortcuts: Shortcut[];
+  description: string;
+  emoji: string;
+  type: string;
+};
+
+export type AutomationCategory = {
+  title: string;
+  data: [{ items: AutomationCondition[] }];
 };
 
 export type PickerItem = {
@@ -119,17 +139,6 @@ export type PickerItem = {
 
 export type EditDetailData = Omit<CustomDynamicInputProps, "value"> & {
   key: keyof AddShortcutState["details"];
-};
-
-export type AutomationEvent = {
-  label: string;
-  description: string;
-  emoji: string;
-};
-
-export type AutomationEventCategory = {
-  title: string;
-  data: [{ items: AutomationEvent[] }];
 };
 
 export type OrderData = Record<string, number>;

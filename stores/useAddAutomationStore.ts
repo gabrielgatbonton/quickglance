@@ -1,25 +1,25 @@
-import { AutomationEvent, OrderData } from "@/constants/types";
+import { AutomationCondition, OrderData } from "@/constants/types";
 import { create } from "zustand";
 
 export type AddAutomationState = {
-  event: AutomationEvent | null;
+  condition: AutomationCondition | null;
   orderData: OrderData;
 };
 
 export type AddAutomationActions = {
-  setEvent: (event: AutomationEvent) => void;
+  setCondition: (condition: AutomationCondition) => void;
   setOrderData: (orderData: OrderData) => void;
   resetAll: () => void;
 };
 
 const useAddAutomationStore = create<AddAutomationState & AddAutomationActions>(
   (set) => ({
-    event: null,
+    condition: null,
     orderData: {},
-    setEvent: (event) => set((state) => ({ ...state, event })),
+    setCondition: (condition) => set((state) => ({ ...state, condition })),
     setOrderData: (orderData) => set((state) => ({ ...state, orderData })),
-    resetAll: () => set({ event: null, orderData: {} }),
-  })
+    resetAll: () => set({ condition: null, orderData: {} }),
+  }),
 );
 
 export default useAddAutomationStore;

@@ -1,14 +1,14 @@
 import CustomText from "@/components/custom-text";
 import OrderShortcutItem from "@/components/order-shortcut-item";
-import { getUserShortcuts } from "@/services/apiService";
-import { useQuery } from "@tanstack/react-query";
+import { getUserShortcuts, saveAutomation } from "@/services/apiService";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useLayoutEffect } from "react";
-import { Alert, FlatList, Pressable, View } from "react-native";
+import { ActivityIndicator, FlatList, Pressable, View } from "react-native";
 import styles from "./styles";
 import { router, useNavigation } from "expo-router";
 import CustomLink from "@/components/custom-link";
 import { Colors } from "@/assets/colors";
-import { OrderData } from "@/constants/types";
+import { AutomationCondition, OrderData } from "@/constants/types";
 import useAddAutomationStore, {
   AddAutomationActions,
   AddAutomationState,
@@ -19,29 +19,46 @@ import pressedOpacity from "@/utils/pressedOpacity";
 import { orderKeysToArr } from "@/utils/shortcutConverter";
 
 export default function EditShortcuts() {
-  const { event, orderData, setOrderData, resetAll } = useAddAutomationStore<
-    Pick<AddAutomationState, "event" | "orderData"> &
-      Pick<AddAutomationActions, "setOrderData" | "resetAll">
+  const { condition, orderData, setOrderData } = useAddAutomationStore<
+    Pick<AddAutomationState, "condition" | "orderData"> &
+      Pick<AddAutomationActions, "setOrderData">
   >(
     useShallow((state) => ({
-      event: state.event,
+      condition: state.condition,
       orderData: state.orderData,
       setOrderData: state.setOrderData,
-      resetAll: state.resetAll,
     })),
   );
+  const navigation = useNavigation();
+  const queryClient = useQueryClient();
 
   const { data: userShortcuts } = useQuery({
     queryKey: ["shortcuts", "user"],
     queryFn: getUserShortcuts,
   });
-  const navigation = useNavigation();
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["addAutomation"],
+    mutationFn: saveAutomation,
+    onSuccess: async (data) => {
+      console.log(data);
+
+      await queryClient.invalidateQueries({
+        queryKey: ["automations", "user"],
+      });
+
+      router.dismissAll();
+      router.back();
+    },
+  });
 
   const toggleShortcut = (id: string) => {
+    // If the shortcut is already ordered, remove it from the order data
     const keys = orderData[id]
       ? Object.keys(orderData).filter((key) => key !== id)
       : [...Object.keys(orderData), id];
 
+    // If the shortcut is not selected, add it to the order data
     const newData = keys.reduce((acc, key, index) => {
       acc[key] = index + 1;
       return acc;
@@ -50,28 +67,58 @@ export default function EditShortcuts() {
     setOrderData(newData);
   };
 
+  const getAutomationTitle = (condition: AutomationCondition) => {
+    let title = "";
+    const conditionName = condition.name.toLowerCase();
+
+    switch (condition.type) {
+      case "emotion":
+        title = `When the user is ${conditionName} ${condition.emoji}`;
+        break;
+      case "time":
+        title = `When the time is ${conditionName} ${condition.emoji}`;
+        break;
+      case "device":
+        title = `When the device is ${conditionName} ${condition.emoji}`;
+        break;
+      case "location":
+        title = `When the user is at ${conditionName} ${condition.emoji}`;
+        break;
+      default:
+        title = `When the condition is ${conditionName} ${condition.emoji}`;
+    }
+    return title;
+  };
+
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => (
-        <CustomLink
-          title="Done"
-          onPress={() => {
-            Alert.alert("Automation", "Shortcuts saved successfully!", [
-              { text: "OK" },
-            ]);
-            console.log({ event, orderData: orderKeysToArr(orderData) });
+      headerRight: () =>
+        isPending ? (
+          <ActivityIndicator />
+        ) : (
+          <CustomLink
+            title="Done"
+            onPress={() => {
+              console.log({ condition, orderData: orderKeysToArr(orderData) });
 
-            resetAll();
-            router.dismissAll();
-            router.back();
-          }}
-          color={Colors.PRIMARY}
-          disabled={Object.keys(orderData).length === 0}
-          bold
-        />
-      ),
+              if (!condition) {
+                console.log("No condition selected");
+                return;
+              }
+
+              mutate({
+                title: getAutomationTitle(condition),
+                automationConditionId: condition.id,
+                shortcuts: orderKeysToArr(orderData),
+              });
+            }}
+            color={Colors.PRIMARY}
+            disabled={Object.keys(orderData).length === 0}
+            bold
+          />
+        ),
     });
-  }, [event, navigation, orderData, resetAll]);
+  }, [condition, isPending, mutate, navigation, orderData]);
 
   return (
     <View style={styles.container}>
