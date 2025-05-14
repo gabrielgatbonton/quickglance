@@ -78,6 +78,10 @@ EXPO_PUBLIC_OPENAI_API_KEY="ENTER_API_KEY_HERE"
 5. After saving as update, install [Expo Go](https://expo.dev/go) on your device then login your account.
 6. Open the app, and then you can see all your saved updates in the app, which you can select and run.
 
+## Build APK file for Android
+- `eas build -p android --profile preview`, which will upload the apk to your Expo account where you can download it. Make sure you logged in your account.
+    - Note: add `--local` to store in your local project instead
+
 ## Project Structure
 
 | **Folder Name** | **Description** |
