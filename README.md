@@ -81,7 +81,7 @@ EXPO_PUBLIC_OPENAI_API_KEY="ENTER_API_KEY_HERE"
 
 | **Folder Name** | **Description** |
 | --- | --- |
-| actions | Contains all files and directories related to running the actions for the shortcuts (See [table](https://github.com/smart-innogen-2025/quickglance/edit/main/README.md#actions-folder) below for more details) |
+| actions | Contains all files and directories related to running the actions for the shortcuts (See [table](#actions-folder) below for more details) |
 | app | Main directory of the mobile app, contains the modals, screens and tabs of the app. Contains layout, styles, and index files for each screen.<br>- **Layout files** define the structure of the navigation and is the root of the screen.<br>- **Style files** define the styling for each screens.<br>- **Index files** is the initial screen of the specific folder/navigation, can also just redirect to a specific screen. |
 | assets | Contains the fonts, images, ML models, colors, and the global styles of the app. Currently there is only one model which is for emotion recognition. |
 | components | Contains the components that is used in the app. These are reusable code that can be used across the app. |
