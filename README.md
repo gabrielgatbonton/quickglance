@@ -66,7 +66,7 @@ EXPO_PUBLIC_OPENAI_API_KEY="ENTER_API_KEY_HERE"
     - For Android: `eas build --platform android --profile development`
     - For iOS: `eas build --platform ios --profile development`
         - Note: add `--local` to build locally but still using the same EAS profile
-4. After building, install the **apk** file or **app** file in your device and then run it as above.
+4. After building, install the **apk** file or **app** file in your device and then run it as [above](https://github.com/smart-innogen-2025/quickglance/tree/main?tab=readme-ov-file#run-the-app).
 
 ## Access the app anywhere with Expo Go and EAS Updates
 
