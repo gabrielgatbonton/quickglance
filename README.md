@@ -75,7 +75,7 @@ EXPO_PUBLIC_OPENAI_API_KEY="ENTER_API_KEY_HERE"
 3. `eas update`
 4. Select or create a branch then setup the configuration and the update message.
 5. After saving as update, install [Expo Go](https://expo.dev/go) on your device then login your account.
-6. Open the app, and then you can see all your updates in the app, which you can select and run.
+6. Open the app, and then you can see all your saved updates in the app, which you can select and run.
 
 ## Project Structure
 
