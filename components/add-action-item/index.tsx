@@ -3,7 +3,6 @@ import { Pressable, useWindowDimensions, View } from "react-native";
 import Animated, { Easing, ZoomIn, ZoomOut } from "react-native-reanimated";
 import styles from "./styles";
 import { LinearGradient } from "expo-linear-gradient";
-import { SymbolView } from "expo-symbols";
 import globalStyles from "@/assets/global-styles";
 import pressedOpacity from "@/utils/pressedOpacity";
 import CustomText from "../custom-text";

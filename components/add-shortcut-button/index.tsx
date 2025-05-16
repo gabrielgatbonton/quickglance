@@ -1,6 +1,5 @@
 import pressedOpacity from "@/utils/pressedOpacity";
 import { router } from "expo-router";
-import { SymbolView } from "expo-symbols";
 import { Pressable, PressableProps } from "react-native";
 import styles from "./styles";
 import IconView from "../icon-view";

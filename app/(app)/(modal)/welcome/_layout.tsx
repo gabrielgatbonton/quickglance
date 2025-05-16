@@ -10,7 +10,6 @@ import styles from "./styles";
 import useSignUpStore from "@/stores/useSignUpStore";
 import { useEffect, useRef } from "react";
 import pressedOpacity from "@/utils/pressedOpacity";
-import { SymbolView } from "expo-symbols";
 import { Colors } from "@/assets/colors";
 import useAuthStore from "@/stores/useAuthStore";
 import IconView from "@/components/icon-view";
@@ -72,7 +71,7 @@ export default function WelcomeLayout() {
                 style={({ pressed }) => pressedOpacity({ pressed })}
                 onPress={() => router.back()}
               >
-                <IconView name={["chevron.backward", "arrow-back"]} size={25} color={Colors.PRIMARY} />
+                <IconView name={["chevron.backward", "arrow-back"]} size={25} color={Colors.SECONDARY} />
               </Pressable>
             ),
           }}

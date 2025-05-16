@@ -5,7 +5,6 @@ import { FlatList, Pressable, ScrollView } from "react-native";
 import styles from "./styles";
 import { useLayoutEffect, useRef } from "react";
 import { router, useNavigation } from "expo-router";
-import { SymbolView } from "expo-symbols";
 import { Colors } from "@/assets/colors";
 import pressedOpacity from "@/utils/pressedOpacity";
 import { useScrollToTop } from "@react-navigation/native";
@@ -31,11 +30,6 @@ export default function Automation() {
           onPress={() => router.navigate("/(modal)/add-automation")}
         >
           <IconView name={["plus.circle.fill", "add-circle"]} size={30} color={Colors.PRIMARY} />
-          {/* <SymbolView
-            name="plus.circle.fill"
-            size={30}
-            tintColor={Colors.PRIMARY}
-          /> */}
         </Pressable>
       ),
     });

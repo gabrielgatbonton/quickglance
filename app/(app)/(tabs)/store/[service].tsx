@@ -5,13 +5,13 @@ import { useLayoutEffect } from "react";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { Colors } from "@/assets/colors";
 import globalStyles from "@/assets/global-styles";
-import { SymbolView } from "expo-symbols";
 import pressedOpacity from "@/utils/pressedOpacity";
 import * as WebBrowser from "expo-web-browser";
 import useSearch from "@/hooks/useSearch";
 import { useQuery } from "@tanstack/react-query";
 import { getService } from "@/services/apiService";
 import AndroidSearchBar from "@/components/android-searchbar";
+import IconView from "@/components/icon-view";
 
 export default function ServiceStore() {
   const { service } = useLocalSearchParams<{ service: string }>();
@@ -41,11 +41,7 @@ export default function ServiceStore() {
               ])
             }
           >
-            <SymbolView
-              name="info.circle"
-              size={25}
-              tintColor={Colors.PRIMARY}
-            />
+            <IconView name={["info.circle", "information-circle"]} size={25} color={Colors.PRIMARY} />
           </Pressable>
         ),
       });

@@ -1,6 +1,5 @@
 import { Action } from "@/constants/types";
 import { LinearGradient } from "expo-linear-gradient";
-import { SymbolView } from "expo-symbols";
 import { Pressable, useWindowDimensions, View } from "react-native";
 import styles from "./styles";
 import pressedOpacity from "@/utils/pressedOpacity";
@@ -48,7 +47,6 @@ export default function ShortcutActionItem({
             onPress={() => onActionAdd?.(item)}
           >
             <IconView name={["plus", "add"]} color="white" size={18} />
-            {/* <SymbolView name="plus" size={18} tintColor="white" weight="bold" /> */}
           </Pressable>
         </View>
 

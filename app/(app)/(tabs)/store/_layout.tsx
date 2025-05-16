@@ -1,4 +1,4 @@
-import { Colors } from "@/assets/colors";
+  import { Colors } from "@/assets/colors";
 import { DEFAULT_FONT_FAMILY } from "@/components/custom-text/styles";
 import { Stack } from "expo-router";
 import { Platform } from "react-native";

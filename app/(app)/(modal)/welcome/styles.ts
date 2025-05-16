@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     paddingTop: "6%",
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
     rowGap: 14,
   },
   hint: {

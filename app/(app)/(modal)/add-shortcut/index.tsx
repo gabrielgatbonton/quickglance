@@ -18,7 +18,6 @@ import BottomSheet, {
   BottomSheetModalProvider,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
-import { SymbolView } from "expo-symbols";
 import pressedOpacity from "@/utils/pressedOpacity";
 import styles from "./styles";
 import ShortcutCategoryItem from "@/components/shortcut-category-item";
@@ -274,376 +273,360 @@ export default function AddShortcut() {
   }, [navigation, shortcut]);
 
   return (
-      <BottomSheetModalProvider>
-        <View style={styles.container}>
-          <View style={styles.shortcutsContainer}>
-            {addedActions.length > 0 ? (
-              <Animated.ScrollView
-                onScrollBeginDrag={() => {
-                  inputSheetRef.current?.collapse();
-                  previewSheetRef.current?.collapse();
-                  actionsSheetRef.current?.collapse();
-                }}
-                contentContainerStyle={styles.shortcutsGrid}
-                ref={scrollViewRef}
-              >
-                <Sortable.Grid
-                  data={addedActions}
-                  onDragEnd={({ data }) => setAddedActions(data)}
-                  keyExtractor={(item) => item.key!}
-                  renderItem={renderItem}
-                  rowGap={10}
-                  columnGap={10}
-                  scrollableRef={scrollViewRef}
-                />
-              </Animated.ScrollView>
-            ) : shortcut && isShortcutPending ? (
-              <View style={globalStyles.modalLoading}>
-                <ActivityIndicator size="large" color={Colors.PRIMARY} />
-              </View>
-            ) : (
-              <Pressable
-                style={({ pressed }) => [
-                  pressedOpacity({ pressed, opacity: 0.6 }),
-                  styles.noShortcutsContainer,
-                ]}
-                onPress={() => categorySheetRef.current?.expand()}
-              >
-                <CustomText style={styles.dropText}>
-                  Add an action by selecting a category!
-                </CustomText>
-              </Pressable>
-            )}
-          </View>
-
-          {selectedCategory ? (
-            <BottomSheet
-              snapPoints={["35%", "70%"]}
-              index={selectedAction || justAdded ? 0 : 1}
-              enableDynamicSizing={false}
-              onChange={() => setJustAdded(false)}
-              ref={actionsSheetRef}
+    <BottomSheetModalProvider>
+      <View style={styles.container}>
+        <View style={styles.shortcutsContainer}>
+          {addedActions.length > 0 ? (
+            <Animated.ScrollView
+              onScrollBeginDrag={() => {
+                inputSheetRef.current?.collapse();
+                previewSheetRef.current?.collapse();
+                actionsSheetRef.current?.collapse();
+              }}
+              contentContainerStyle={styles.shortcutsGrid}
+              ref={scrollViewRef}
             >
-              <BottomSheetView style={styles.sheetHeaderContainer}>
-                <Pressable
-                  style={({ pressed }) => pressedOpacity({ pressed })}
-                  onPress={() => {
-                    actionsSheetRef.current?.close();
-                    setSelectedCategory(null);
-                  }}
-                >
-                  <IconView
-                    name={["arrow.backward.circle", "arrow-back-circle"]}
-                    color="lightgray"
-                    size={33}
-                  />
-                  {/* <SymbolView
-                  name="arrow.backward.circle"
-                  tintColor="lightgray"
-                  size={40}
-                /> */}
-                </Pressable>
-                <CustomText style={styles.sheetHeaderTitle}>
-                  Select an action
-                </CustomText>
-                <Pressable
-                  style={({ pressed }) => pressedOpacity({ pressed })}
-                  onPress={() => setIsMicEnabled((prev) => !prev)}
-                >
-                  <SymbolView
-                    name={
-                      isMicEnabled
-                        ? "microphone.circle"
-                        : "microphone.slash.circle"
-                    }
-                    tintColor={isMicEnabled ? Colors.SECONDARY : "lightgray"}
-                    size={40}
-                  />
-                </Pressable>
-              </BottomSheetView>
-
-              {isActionsPending ? (
-                <View style={globalStyles.modalLoading}>
-                  <ActivityIndicator />
-                </View>
-              ) : (
-                <BottomSheetFlatList
-                  data={
-                    categories?.find(
-                      (category) => category.id === selectedCategory.id
-                    )?.actions
-                  }
-                  renderItem={({ item }) => (
-                    <Animated.View entering={ZoomIn.duration(100)}>
-                      <ShortcutActionItem
-                        item={item}
-                        onActionPress={onActionPress}
-                        onActionAdd={onActionAddOrUpdate}
-                      />
-                    </Animated.View>
-                  )}
-                  contentContainerStyle={styles.contentContainer}
-                  columnWrapperStyle={styles.columnWrapper}
-                  numColumns={2}
-                  ListEmptyComponent={() => (
-                    <CustomText style={styles.emptyText}>
-                      No actions available.
-                    </CustomText>
-                  )}
-                />
-              )}
-            </BottomSheet>
-          ) : null}
-
-          {selectedAction ? (
-            <BottomSheet
-              snapPoints={["35%", "70%"]}
-              index={1}
-              enableDynamicSizing={false}
-              ref={previewSheetRef}
+              <Sortable.Grid
+                data={addedActions}
+                onDragEnd={({ data }) => setAddedActions(data)}
+                keyExtractor={(item) => item.key!}
+                renderItem={renderItem}
+                rowGap={10}
+                columnGap={10}
+                scrollableRef={scrollViewRef}
+              />
+            </Animated.ScrollView>
+          ) : shortcut && isShortcutPending ? (
+            <View style={globalStyles.modalLoading}>
+              <ActivityIndicator size="large" color={Colors.PRIMARY} />
+            </View>
+          ) : (
+            <Pressable
+              style={({ pressed }) => [
+                pressedOpacity({ pressed, opacity: 0.6 }),
+                styles.noShortcutsContainer,
+              ]}
+              onPress={() => categorySheetRef.current?.expand()}
             >
-              <BottomSheetView style={styles.sheetHeaderContainer}>
-                <Pressable
-                  style={({ pressed }) => pressedOpacity({ pressed })}
-                  onPress={() => {
-                    previewSheetRef.current?.close();
-                    setSelectedAction(null);
-                  }}
-                >
-                  <IconView
-                    name={["arrow.backward.circle", "arrow-back-circle"]}
-                    color="lightgray"
-                    size={33}
-                  />
-                </Pressable>
-                <CustomText style={styles.sheetHeaderTitle}>
-                  Action Preview
-                </CustomText>
-                <Pressable
-                  style={({ pressed }) => pressedOpacity({ pressed })}
-                  onPress={() => setIsMicEnabled((prev) => !prev)}
-                >
-                  <SymbolView
-                    name={
-                      isMicEnabled
-                        ? "microphone.circle"
-                        : "microphone.slash.circle"
-                    }
-                    tintColor={
-                      isMicEnabled ? selectedAction.gradientStart : "lightgray"
-                    }
-                    size={40}
-                  />
-                </Pressable>
-              </BottomSheetView>
+              <CustomText style={styles.dropText}>
+                Add an action by selecting a category!
+              </CustomText>
+            </Pressable>
+          )}
+        </View>
 
-              <View style={styles.actionContainer}>
-                <Animated.View
-                  entering={FadeIn.duration(150)}
-                  style={styles.actionPreviewContainer}
-                >
-                  <IconView
-                    name={[selectedAction.icon, selectedAction.androidIcon]}
-                    color={selectedAction.gradientStart}
-                    size={80}
-                  />
-                  {/* <SymbolView
-                  name={selectedAction.icon}
-                  size={80}
-                  tintColor={selectedAction.gradientStart}
-                /> */}
-                  <CustomText style={styles.actionPreviewText}>
-                    {selectedAction.name}
-                  </CustomText>
-                </Animated.View>
-
-                <CustomButton
-                  title="Add"
-                  color={selectedAction.gradientStart}
-                  onPress={() => onActionAddOrUpdate(selectedAction)}
-                />
-              </View>
-            </BottomSheet>
-          ) : null}
-
-          {selectedInputs && inputsContext ? (
-            <BottomSheet
-              snapPoints={["35%", "70%"]}
-              index={1}
-              enableDynamicSizing={false}
-              keyboardBlurBehavior="restore"
-              ref={inputSheetRef}
-            >
-              <BottomSheetView style={styles.sheetHeaderContainer}>
-                <Pressable
-                  style={({ pressed }) => pressedOpacity({ pressed })}
-                  onPress={() => {
-                    // If there are no category selected yet, open the category sheet
-                    if (!selectedCategory) {
-                      categorySheetRef.current?.expand();
-                    }
-
-                    inputSheetRef.current?.close();
-                    setSelectedInputs(null);
-                    setInputsContext(null);
-                  }}
-                >
-                  <IconView
-                    name={["arrow.backward.circle", "arrow-back-circle"]}
-                    color="lightgray"
-                    size={33}
-                  />
-                  {/* <SymbolView
-                  name="arrow.backward.circle"
-                  tintColor="lightgray"
-                  size={40}
-                /> */}
-                </Pressable>
-                <CustomText style={styles.sheetHeaderTitle}>
-                  Configure Inputs
-                </CustomText>
-                <Pressable
-                  style={({ pressed }) => pressedOpacity({ pressed })}
-                  onPress={() => setIsMicEnabled((prev) => !prev)}
-                >
-                  <SymbolView
-                    name={
-                      isMicEnabled
-                        ? "microphone.circle"
-                        : "microphone.slash.circle"
-                    }
-                    tintColor={
-                      isMicEnabled ? inputsContext.gradientStart : "lightgray"
-                    }
-                    size={40}
-                  />
-                </Pressable>
-              </BottomSheetView>
-
-              <View style={[styles.actionContainer, { marginBottom: 10 }]}>
-                <View
-                  style={[styles.actionInputsContainer, { marginBottom: 20 }]}
-                >
-                  <FlatList
-                    data={selectedInputs}
-                    renderItem={({ item }) => {
-                      const { key, ...inputProps } = item;
-                      return (
-                        <CustomDynamicInput
-                          {...(inputProps as CustomDynamicInputProps)}
-                          onValueChange={(text) => {
-                            setSelectedInputs((prev) => {
-                              if (!prev) {
-                                return null;
-                              }
-                              return prev.map((prevInput) => {
-                                if (prevInput.key === item.key) {
-                                  return { ...prevInput, value: text };
-                                }
-
-                                return prevInput;
-                              });
-                            });
-                          }}
-                          label={item.required ? `${item.label}*` : item.label}
-                          placeholder={
-                            item.placeholder ??
-                            `Enter ${item.label.toLowerCase()} here`
-                          }
-                          options={item.options?.map((option) => ({
-                            label: option,
-                            value: option,
-                          }))}
-                          textInputProps={{
-                            color: inputsContext.gradientStart,
-                            useBottomSheetInput: true,
-                          }}
-                          switchProps={{ color: inputsContext.gradientStart }}
-                          pickerProps={{ color: inputsContext.gradientStart }}
-                          sliderProps={{ color: inputsContext.gradientStart }}
-                        />
-                      );
-                    }}
-                    ItemSeparatorComponent={() => (
-                      <LineSeparator leading={20} width="90%" />
-                    )}
-                    ListEmptyComponent={() => (
-                      <CustomText style={styles.emptyText}>
-                        No supported inputs.
-                      </CustomText>
-                    )}
-                  />
-                </View>
-
-                <View style={styles.actionInputsContainer}>
-                  {isSaveDisabled && doesInputsHaveValue && (
-                    <Animated.View
-                      entering={FadeIn.duration(150)}
-                      exiting={FadeOut.duration(100)}
-                    >
-                      <CustomText style={styles.actionErrorText}>
-                        Make sure all required fields with (*) are filled.
-                      </CustomText>
-                    </Animated.View>
-                  )}
-
-                  <CustomButton
-                    title="Save"
-                    color={inputsContext.gradientStart}
-                    onPress={() =>
-                      onActionAddOrUpdate(inputsContext, selectedInputs)
-                    }
-                    disabled={isSaveDisabled}
-                  />
-                </View>
-              </View>
-            </BottomSheet>
-          ) : null}
-
+        {selectedCategory ? (
           <BottomSheet
-            snapPoints={["4%", "35%"]}
-            index={selectedCategory ? 0 : 1}
+            snapPoints={["35%", "70%"]}
+            index={selectedAction || justAdded ? 0 : 1}
             enableDynamicSizing={false}
-            enableContentPanningGesture={false}
-            onChange={(index) => {
-              // Prevents the sheet from not being opened again
-              if (index === 0 && !selectedCategory && !selectedInputs) {
-                categorySheetRef.current?.expand();
-              }
-            }}
-            style={styles.categorySheet}
-            ref={categorySheetRef}
+            onChange={() => setJustAdded(false)}
+            ref={actionsSheetRef}
           >
             <BottomSheetView style={styles.sheetHeaderContainer}>
+              <Pressable
+                style={({ pressed }) => pressedOpacity({ pressed })}
+                onPress={() => {
+                  actionsSheetRef.current?.close();
+                  setSelectedCategory(null);
+                }}
+              >
+                <IconView
+                  name={["arrow.backward.circle", "arrow-back-circle"]}
+                  color="lightgray"
+                  size={30}
+                />
+              </Pressable>
               <CustomText style={styles.sheetHeaderTitle}>
-                Select a category
+                Select an action
               </CustomText>
+              <Pressable
+                style={({ pressed }) => pressedOpacity({ pressed })}
+                onPress={() => setIsMicEnabled((prev) => !prev)}
+              >
+                <IconView
+                  name={[
+                    isMicEnabled
+                      ? "microphone.circle"
+                      : "microphone.slash.circle",
+                    isMicEnabled ? "mic" : "mic-off",
+                  ]}
+                  color={isMicEnabled ? Colors.SECONDARY : "lightgray"}
+                  size={30}
+                />
+              </Pressable>
             </BottomSheetView>
 
-            {isCategoriesPending ? (
+            {isActionsPending ? (
               <View style={globalStyles.modalLoading}>
                 <ActivityIndicator />
               </View>
-            ) : categories?.length === 0 ? (
-              <CustomText style={styles.emptyText}>
-                No categories available.
-              </CustomText>
             ) : (
               <BottomSheetFlatList
-                data={categories}
+                data={
+                  categories?.find(
+                    (category) => category.id === selectedCategory.id
+                  )?.actions
+                }
                 renderItem={({ item }) => (
-                  <ShortcutCategoryItem
-                    item={item}
-                    onCategoryPress={onCategoryPress}
-                  />
+                  <Animated.View entering={ZoomIn.duration(100)}>
+                    <ShortcutActionItem
+                      item={item}
+                      onActionPress={onActionPress}
+                      onActionAdd={onActionAddOrUpdate}
+                    />
+                  </Animated.View>
                 )}
                 contentContainerStyle={styles.contentContainer}
-                showsHorizontalScrollIndicator={false}
-                horizontal
+                columnWrapperStyle={styles.columnWrapper}
+                numColumns={2}
+                ListEmptyComponent={() => (
+                  <CustomText style={styles.emptyText}>
+                    No actions available.
+                  </CustomText>
+                )}
               />
             )}
           </BottomSheet>
-        </View>
-      </BottomSheetModalProvider>
+        ) : null}
+
+        {selectedAction ? (
+          <BottomSheet
+            snapPoints={["35%", "70%"]}
+            index={1}
+            enableDynamicSizing={false}
+            ref={previewSheetRef}
+          >
+            <BottomSheetView style={styles.sheetHeaderContainer}>
+              <Pressable
+                style={({ pressed }) => pressedOpacity({ pressed })}
+                onPress={() => {
+                  previewSheetRef.current?.close();
+                  setSelectedAction(null);
+                }}
+              >
+                <IconView
+                  name={["arrow.backward.circle", "arrow-back-circle"]}
+                  color="lightgray"
+                  size={30}
+                />
+              </Pressable>
+              <CustomText style={styles.sheetHeaderTitle}>
+                Action Preview
+              </CustomText>
+              <Pressable
+                style={({ pressed }) => pressedOpacity({ pressed })}
+                onPress={() => setIsMicEnabled((prev) => !prev)}
+              >
+                <IconView
+                  name={[
+                    isMicEnabled
+                      ? "microphone.circle"
+                      : "microphone.slash.circle",
+                    isMicEnabled ? "mic" : "mic-off",
+                  ]}
+                  color={isMicEnabled ? Colors.SECONDARY : "lightgray"}
+                  size={30}
+                />
+              </Pressable>
+            </BottomSheetView>
+
+            <View style={styles.actionContainer}>
+              <Animated.View
+                entering={FadeIn.duration(150)}
+                style={styles.actionPreviewContainer}
+              >
+                <IconView
+                  name={[selectedAction.icon, selectedAction.androidIcon]}
+                  color={selectedAction.gradientStart}
+                  size={80}
+                />
+                <CustomText style={styles.actionPreviewText}>
+                  {selectedAction.name}
+                </CustomText>
+              </Animated.View>
+
+              <CustomButton
+                title="Add"
+                color={selectedAction.gradientStart}
+                onPress={() => onActionAddOrUpdate(selectedAction)}
+              />
+            </View>
+          </BottomSheet>
+        ) : null}
+
+        {selectedInputs && inputsContext ? (
+          <BottomSheet
+            snapPoints={["35%", "70%"]}
+            index={1}
+            enableDynamicSizing={false}
+            keyboardBlurBehavior="restore"
+            ref={inputSheetRef}
+          >
+            <BottomSheetView style={styles.sheetHeaderContainer}>
+              <Pressable
+                style={({ pressed }) => pressedOpacity({ pressed })}
+                onPress={() => {
+                  // If there are no category selected yet, open the category sheet
+                  if (!selectedCategory) {
+                    categorySheetRef.current?.expand();
+                  }
+
+                  inputSheetRef.current?.close();
+                  setSelectedInputs(null);
+                  setInputsContext(null);
+                }}
+              >
+                <IconView
+                  name={["arrow.backward.circle", "arrow-back-circle"]}
+                  color="lightgray"
+                  size={30}
+                />
+              </Pressable>
+              <CustomText style={styles.sheetHeaderTitle}>
+                Configure Inputs
+              </CustomText>
+              <Pressable
+                style={({ pressed }) => pressedOpacity({ pressed })}
+                onPress={() => setIsMicEnabled((prev) => !prev)}
+              >
+                <IconView
+                  name={[
+                    isMicEnabled
+                      ? "microphone.circle"
+                      : "microphone.slash.circle",
+                    isMicEnabled ? "mic" : "mic-off",
+                  ]}
+                  color={isMicEnabled ? Colors.SECONDARY : "lightgray"}
+                  size={30}
+                />
+              </Pressable>
+            </BottomSheetView>
+
+            <View style={[styles.actionContainer, { marginBottom: 10 }]}>
+              <View
+                style={[styles.actionInputsContainer, { marginBottom: 20 }]}
+              >
+                <FlatList
+                  data={selectedInputs}
+                  renderItem={({ item }) => {
+                    const { key, ...inputProps } = item;
+                    return (
+                      <CustomDynamicInput
+                        {...(inputProps as CustomDynamicInputProps)}
+                        onValueChange={(text) => {
+                          setSelectedInputs((prev) => {
+                            if (!prev) {
+                              return null;
+                            }
+                            return prev.map((prevInput) => {
+                              if (prevInput.key === item.key) {
+                                return { ...prevInput, value: text };
+                              }
+
+                              return prevInput;
+                            });
+                          });
+                        }}
+                        label={item.required ? `${item.label}*` : item.label}
+                        placeholder={
+                          item.placeholder ??
+                          `Enter ${item.label.toLowerCase()} here`
+                        }
+                        options={item.options?.map((option) => ({
+                          label: option,
+                          value: option,
+                        }))}
+                        textInputProps={{
+                          color: inputsContext.gradientStart,
+                          useBottomSheetInput: true,
+                        }}
+                        switchProps={{ color: inputsContext.gradientStart }}
+                        pickerProps={{ color: inputsContext.gradientStart }}
+                        sliderProps={{ color: inputsContext.gradientStart }}
+                      />
+                    );
+                  }}
+                  ItemSeparatorComponent={() => (
+                    <LineSeparator leading={20} width="90%" />
+                  )}
+                  ListEmptyComponent={() => (
+                    <CustomText style={styles.emptyText}>
+                      No supported inputs.
+                    </CustomText>
+                  )}
+                />
+              </View>
+
+              <View style={styles.actionInputsContainer}>
+                {isSaveDisabled && doesInputsHaveValue && (
+                  <Animated.View
+                    entering={FadeIn.duration(150)}
+                    exiting={FadeOut.duration(100)}
+                  >
+                    <CustomText style={styles.actionErrorText}>
+                      Make sure all required fields with (*) are filled.
+                    </CustomText>
+                  </Animated.View>
+                )}
+
+                <CustomButton
+                  title="Save"
+                  color={inputsContext.gradientStart}
+                  onPress={() =>
+                    onActionAddOrUpdate(inputsContext, selectedInputs)
+                  }
+                  disabled={isSaveDisabled}
+                />
+              </View>
+            </View>
+          </BottomSheet>
+        ) : null}
+
+        <BottomSheet
+          snapPoints={["4%", "35%"]}
+          index={selectedCategory ? 0 : 1}
+          enableDynamicSizing={false}
+          enableContentPanningGesture={false}
+          onChange={(index) => {
+            // Prevents the sheet from not being opened again
+            if (index === 0 && !selectedCategory && !selectedInputs) {
+              categorySheetRef.current?.expand();
+            }
+          }}
+          style={styles.categorySheet}
+          ref={categorySheetRef}
+        >
+          <BottomSheetView style={styles.sheetHeaderContainer}>
+            <CustomText style={styles.sheetHeaderTitle}>
+              Select a category
+            </CustomText>
+          </BottomSheetView>
+
+          {isCategoriesPending ? (
+            <View style={globalStyles.modalLoading}>
+              <ActivityIndicator />
+            </View>
+          ) : categories?.length === 0 ? (
+            <CustomText style={styles.emptyText}>
+              No categories available.
+            </CustomText>
+          ) : (
+            <BottomSheetFlatList
+              data={categories}
+              renderItem={({ item }) => (
+                <ShortcutCategoryItem
+                  item={item}
+                  onCategoryPress={onCategoryPress}
+                />
+              )}
+              contentContainerStyle={styles.contentContainer}
+              showsHorizontalScrollIndicator={false}
+              horizontal
+            />
+          )}
+        </BottomSheet>
+      </View>
+    </BottomSheetModalProvider>
   );
 }

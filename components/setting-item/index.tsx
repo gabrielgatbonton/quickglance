@@ -4,7 +4,6 @@ import styles from "./styles";
 import { useState } from "react";
 import { Colors } from "@/assets/colors";
 import pressedOpacity from "@/utils/pressedOpacity";
-import { SymbolView } from "expo-symbols";
 import CustomText from "../custom-text";
 import IconView from "../icon-view";
 

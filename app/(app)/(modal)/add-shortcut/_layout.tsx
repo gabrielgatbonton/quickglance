@@ -54,7 +54,7 @@ export default function AddShortcutLayout() {
         <Stack.Screen
           name="edit-details"
           options={{
-            title: Platform.OS === "ios" ? "Edit Details" : "Create Shortcut",
+            title: Platform.OS === "ios" ? "Edit Details" : "Shortcut Details",
             presentation: "card",
             headerBackTitle: "Back",
           }}

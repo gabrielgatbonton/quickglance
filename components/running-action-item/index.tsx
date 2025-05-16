@@ -6,7 +6,6 @@ import Animated, {
 } from "react-native-reanimated";
 import styles from "./styles";
 import CustomText from "../custom-text";
-import { SymbolView } from "expo-symbols";
 import { Colors } from "@/assets/colors";
 import convertHexToRGBA from "@/utils/colorConverter";
 import IconView from "../icon-view";

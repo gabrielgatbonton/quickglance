@@ -1,6 +1,5 @@
 import { Platform, TextInput, View } from "react-native";
 import styles from "./styles";
-import { SymbolView } from "expo-symbols";
 import { Colors } from "@/assets/colors";
 import { router } from "expo-router";
 import CustomButton from "@/components/custom-button";

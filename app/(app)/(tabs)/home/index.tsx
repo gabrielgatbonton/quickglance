@@ -5,7 +5,6 @@ import OnboardingView from "@/components/onboarding-view";
 import SelfieView from "@/components/selfie-view";
 import useSearch from "@/hooks/useSearch";
 import { router, useNavigation } from "expo-router";
-import { SymbolView } from "expo-symbols";
 import pressedOpacity from "@/utils/pressedOpacity";
 import CustomLink from "@/components/custom-link";
 import ShortcutDashboard from "@/components/shortcut-dashboard";

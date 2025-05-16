@@ -14,10 +14,10 @@ import styles from "./styles";
 import { useEffect, useMemo } from "react";
 import useShortcutRunnerStore from "@/stores/useShortcutRunnerStore";
 import PageControl from "../page-control";
-import { SymbolView } from "expo-symbols";
 import ShortcutPage from "../shortcut-page";
 import CustomText from "../custom-text";
 import { Platform } from "react-native";
+import IconView from "../icon-view";
 
 const SHORTCUTS_PER_SCREEN = 6;
 const SHORTCUTS_PER_ROW = 2;
@@ -112,7 +112,7 @@ export default function ShortcutDashboard({
         entering={BounceIn.duration(300)}
         style={[styles.emptyContainer, { height: shortcutsHeight }]}
       >
-        <SymbolView name="square.grid.2x2" size={80} tintColor="gray" />
+        <IconView name={["square.grid.2x2", "layers"]} size={80} color="gray" />
         <CustomText style={styles.emptyText}>
           No shortcuts available.
         </CustomText>

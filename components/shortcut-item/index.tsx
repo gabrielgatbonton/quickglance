@@ -1,6 +1,5 @@
 import pressedOpacity from "@/utils/pressedOpacity";
 import { LinearGradient } from "expo-linear-gradient";
-import { SymbolView } from "expo-symbols";
 import {
   Alert,
   Pressable,

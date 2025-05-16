@@ -1,7 +1,7 @@
 import { Shortcut } from "@/constants/types";
 import { LinearGradient } from "expo-linear-gradient";
 import { SymbolView } from "expo-symbols";
-import { useWindowDimensions, View } from "react-native";
+import { Platform, useWindowDimensions, View } from "react-native";
 import styles from "./styles";
 import CustomText from "../custom-text";
 import IconView from "../icon-view";
@@ -17,11 +17,16 @@ export default function ReorderShortcutItem({ item }: { item: Shortcut }) {
         style={styles.container}
       >
         <View style={styles.contentContainer}>
-          <IconView name={[item.icon, item.androidIcon]} color="white" size={30} />
+          <IconView
+            name={[item.icon, item.androidIcon]}
+            color="white"
+            size={30}
+          />
           <CustomText style={styles.label}>{item.name}</CustomText>
         </View>
-
-        <SymbolView name="line.3.horizontal" tintColor="white" />
+        {Platform.OS === "ios" && (
+          <SymbolView name="line.3.horizontal" tintColor="white" />
+        )}
       </LinearGradient>
     </View>
   );

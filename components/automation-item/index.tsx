@@ -4,20 +4,15 @@ import pressedOpacity from "@/utils/pressedOpacity";
 import styles from "./styles";
 import { Automation } from "@/constants/types";
 import ContextMenu from "react-native-context-menu-view";
-import { SymbolView } from "expo-symbols";
 import CustomText from "../custom-text";
+import IconView from "../icon-view";
 
 export default function AutomationItem({ item }: { item: Automation }) {
   return (
     <Pressable style={({ pressed }) => pressedOpacity({ pressed })}>
       <View style={styles.nameContainer}>
         <CustomText style={styles.name}>{item.name}</CustomText>
-        <SymbolView
-          name="chevron.right"
-          size={15}
-          tintColor="gray"
-          weight="bold"
-        />
+        <IconView name={["chevron.right", "arrow-back"]} color="gray" />
       </View>
 
       <ContextMenu

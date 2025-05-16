@@ -1,4 +1,3 @@
-import { SymbolView } from "expo-symbols";
 import SelfieCamera, { SelfieCameraProps } from "../selfie-camera";
 import styles from "./styles";
 import { TurnDirection } from "@/constants/types";

@@ -367,11 +367,6 @@ export default function SelfieCamera({
         size={DEFAULT_SIZE * 0.7}
         color={Colors.ERROR}
       />
-      // <SymbolView
-      //   name="exclamationmark.triangle.fill"
-      //   size={DEFAULT_SIZE * 0.7}
-      //   tintColor={Colors.ERROR}
-      // />
     );
   }
 

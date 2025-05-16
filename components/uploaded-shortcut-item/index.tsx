@@ -1,5 +1,4 @@
 import { Shortcut } from "@/constants/types";
-import { SymbolView } from "expo-symbols";
 import { Pressable } from "react-native";
 import styles from "./styles";
 import pressedBgColor from "@/utils/pressedBgColor";
@@ -13,7 +12,6 @@ export default function UploadedShortcutItem({ item }: { item: Shortcut }) {
     >
       <CustomText>{item.name}</CustomText>
       <IconView name={["chevron.right", "chevron-forward"]} color="gray" size={12} />
-      {/* <SymbolView name="chevron.right" size={12} tintColor="gray" /> */}
     </Pressable>
   );
 }

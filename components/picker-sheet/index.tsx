@@ -9,7 +9,6 @@ import {
 import { useCallback, useRef, useState } from "react";
 import { Pressable, StyleProp, TextInput, TextStyle, View } from "react-native";
 import CustomText from "../custom-text";
-import { SymbolView } from "expo-symbols";
 import { Colors } from "@/assets/colors";
 import { PickerItem } from "@/constants/types";
 import styles from "./styles";

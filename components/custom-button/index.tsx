@@ -22,7 +22,7 @@ type CustomButtonProps = PressableProps & {
   loading?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
-  buttonIcons?: [symbolName: SFSymbol, ioniconName: IoniconName];
+  buttonIcons?: [symbolName: SFSymbol | undefined, ioniconName: IoniconName | undefined];
 };
 
 export default function CustomButton({

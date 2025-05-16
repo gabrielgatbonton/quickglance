@@ -5,8 +5,8 @@ import { STORE_KEYS } from "@/constants/storeKeys";
 import styles from "./styles";
 import ServiceItem from "../service-item";
 import { Service, Shortcut } from "@/constants/types";
-import { SymbolView } from "expo-symbols";
 import CustomText from "../custom-text";
+import IconView from "../icon-view";
 
 type StoreContentProps = {
   storeKey: string;
@@ -35,10 +35,10 @@ export default function StoreContent({
               entering={BounceIn.duration(300)}
               style={styles.emptyContainer}
             >
-              <SymbolView
-                name="square.on.square.dashed"
+              <IconView
+                name={["square.on.square.dashed", "layers"]}
+                color="gray"
                 size={80}
-                tintColor="gray"
               />
               <CustomText style={styles.emptyText}>
                 No shortcuts available.
@@ -65,10 +65,10 @@ export default function StoreContent({
               entering={BounceIn.duration(300)}
               style={styles.emptyContainer}
             >
-              <SymbolView
-                name="building.2.crop.circle"
+              <IconView
+                name={["building.2.crop.circle", "business"]}
                 size={80}
-                tintColor="gray"
+                color="gray"
               />
               <CustomText style={styles.emptyText}>
                 No services available.

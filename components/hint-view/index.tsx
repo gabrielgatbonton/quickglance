@@ -1,5 +1,6 @@
-import { SFSymbol, SymbolView } from "expo-symbols";
+import { SFSymbol } from "expo-symbols";
 import {
+  Platform,
   Pressable,
   StyleProp,
   useWindowDimensions,
@@ -12,6 +13,7 @@ import pressedOpacity from "@/utils/pressedOpacity";
 import { useState } from "react";
 import { Colors } from "@/assets/colors";
 import styles from "./styles";
+import IconView from "../icon-view";
 
 type HintViewProps = {
   icon: SFSymbol;
@@ -43,7 +45,9 @@ export default function HintView({
         exiting={SlideOutDown}
         style={[styles.animatedContainer, containerStyle]}
       >
-        <SymbolView name={icon} size={35} tintColor={Colors.PRIMARY} />
+        {Platform.OS === "ios" && (
+          <IconView name={[icon, undefined]} color={Colors.PRIMARY} size={30} />
+        )}
         <View style={styles.contentContainer}>
           <CustomText style={styles.title}>{title}</CustomText>
           <CustomText style={styles.description}>{description}</CustomText>
@@ -52,10 +56,10 @@ export default function HintView({
           style={({ pressed }) => pressedOpacity({ pressed })}
           onPress={() => setIsHintVisible(false)}
         >
-          <SymbolView
-            name="xmark.circle.fill"
+          <IconView
+            name={["xmark.circle.fill", "close"]}
+            color="white"
             size={30}
-            tintColor={Colors.SECONDARY}
           />
         </Pressable>
       </Animated.View>

@@ -3,7 +3,6 @@ import { DEFAULT_FONT_FAMILY } from "@/components/custom-text/styles";
 import IconView from "@/components/icon-view";
 import pressedOpacity from "@/utils/pressedOpacity";
 import { router, Stack } from "expo-router";
-import { SymbolView } from "expo-symbols";
 import { Platform, Pressable } from "react-native";
 
 export default function ChangePasswordLayout() {

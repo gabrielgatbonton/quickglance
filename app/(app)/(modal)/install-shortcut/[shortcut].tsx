@@ -72,8 +72,15 @@ export default function ShortcutInstaller() {
     navigation.setOptions({
       headerLeft: () => (
         <>
-          <Pressable onPress={() => router.back()} style={({pressed}) => pressedOpacity({pressed})} >
-            <IconView name={["", "arrow-back"]} color={Colors.PRIMARY} size={25} />
+          <Pressable
+            onPress={() => router.back()}
+            style={({ pressed }) => pressedOpacity({ pressed })}
+          >
+            <IconView
+              name={[, "arrow-back"]}
+              color={Colors.SECONDARY}
+              size={25}
+            />
           </Pressable>
         </>
       ),
@@ -153,7 +160,7 @@ export default function ShortcutInstaller() {
                 color={currentShortcut.gradientStart}
                 onPress={() => shortcutInstall()}
                 containerStyle={styles.installButtonContainer}
-                buttonIcons={["", "eye"]}
+                buttonIcons={[, "eye"]}
               />
             </View>
           )}

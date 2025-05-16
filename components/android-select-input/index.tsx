@@ -59,6 +59,7 @@ export default function AndroidSelectInput<T>({
           mode="outlined"
           label={label}
           activeOutlineColor={Colors.PRIMARY}
+          outlineColor="lightgray"
           onFocus={() => {
             handleModal(true);
           }}
