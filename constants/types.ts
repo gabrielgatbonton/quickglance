@@ -38,6 +38,8 @@ export type UserPasswordErrors =
 export type ShortcutStep = {
   id: string;
   actionId: string;
+  actionName: string;
+  mobileKey?: string;
   inputs?: Record<string, any>;
 };
 
@@ -85,6 +87,7 @@ export type Action = {
 export type RunningAction = Action & {
   isCurrent: boolean;
   isCompleted: boolean;
+  isFailed: boolean;
 };
 
 export type Category = {
@@ -105,10 +108,30 @@ export type Service = {
   shortcuts: Shortcut[];
 };
 
+export type AutomationStep = {
+  id: string;
+  shortcutId: string;
+  shortcutName: string;
+  order: number;
+};
+
 export type Automation = {
   id: string;
+  title: string;
+  steps: AutomationStep[];
+};
+
+export type AutomationCondition = {
+  id: string;
   name: string;
-  actions: string[];
+  description: string;
+  emoji: string;
+  type: string;
+};
+
+export type AutomationCategory = {
+  title: string;
+  data: [{ items: AutomationCondition[] }];
 };
 
 export type PickerItem = {
@@ -120,6 +143,8 @@ export type PickerItem = {
 export type EditDetailData = Omit<CustomDynamicInputProps, "value"> & {
   key: keyof AddShortcutState["details"];
 };
+
+export type OrderData = Record<string, number>;
 
 export type SettingData = {
   label: string;

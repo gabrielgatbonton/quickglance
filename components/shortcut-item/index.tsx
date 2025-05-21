@@ -15,7 +15,6 @@ import CustomText from "../custom-text";
 import { BlurView } from "expo-blur";
 import Animated, {
   Easing,
-  FadingTransition,
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
@@ -72,12 +71,12 @@ export default function ShortcutItem({
   });
 
   const handlePress = () => {
-    router.navigate(`/(modal)/run-shortcut/${item.id}`);
+    router.navigate(`/run-shortcut/${item.id}`);
   };
 
   const handleEdit = () => {
     router.navigate({
-      pathname: `/(modal)/add-shortcut`,
+      pathname: `/(app)/(modal)/add-shortcut`,
       params: { shortcut: item.id },
     });
   };
@@ -100,10 +99,7 @@ export default function ShortcutItem({
   };
 
   return (
-    <Animated.View
-      layout={FadingTransition}
-      style={[styles.container, animatedViewStyle]}
-    >
+    <Animated.View style={[styles.container, animatedViewStyle]}>
       <Pressable
         style={({ pressed }) => pressedOpacity({ pressed, opacity: 0.6 })}
         onPress={handlePress}

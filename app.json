@@ -12,7 +12,10 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.melmatx.QuickGlance",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "UIBackgroundModes": [
+          "audio"
+        ]
       }
     },
     "android": {
@@ -20,7 +23,14 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "android.permission.WRITE_SETTINGS",
+        "android.permission.ACCESS_WIFI_STATE",
+        "android.permission.BLUETOOTH",
+        "android.permission.CHANGE_WIFI_STATE",
+        "android.permission.BLUETOOTH_ADMIN"
+      ],
+      "edgeToEdgeEnabled": false,
       "package": "com.melmatx.QuickGlance"
     },
     "web": {

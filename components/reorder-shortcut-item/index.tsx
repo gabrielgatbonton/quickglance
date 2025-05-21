@@ -6,7 +6,13 @@ import styles from "./styles";
 import CustomText from "../custom-text";
 import IconView from "../icon-view";
 
-export default function ReorderShortcutItem({ item }: { item: Shortcut }) {
+type ReorderShortcutItemProps = {
+  item: Shortcut;
+};
+
+export default function ReorderShortcutItem({
+  item,
+}: ReorderShortcutItemProps) {
   const { height } = useWindowDimensions();
   const itemHeight = height * 0.14;
 

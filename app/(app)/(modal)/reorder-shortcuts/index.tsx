@@ -11,6 +11,7 @@ import ReorderShortcutItem from "@/components/reorder-shortcut-item";
 import CustomLink from "@/components/custom-link";
 import { useQuery } from "@tanstack/react-query";
 import { getUserShortcuts } from "@/services/apiService";
+import { orderKeysToArr } from "@/utils/shortcutConverter";
 
 export default function ReorderShortcuts() {
   const [shortcuts, setShortcuts] = useState<Shortcut[]>([]);
@@ -66,10 +67,9 @@ export default function ReorderShortcuts() {
       >
         <Sortable.Grid
           data={shortcuts}
-          onDragEnd={({ data, indexToKey, keyToIndex }) => {
-            console.log({ indexToKey });
-            console.log({ keyToIndex });
+          onDragEnd={({ data, keyToIndex }) => {
             setShortcuts(data);
+            console.log(orderKeysToArr(keyToIndex, { increment: true }));
           }}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}

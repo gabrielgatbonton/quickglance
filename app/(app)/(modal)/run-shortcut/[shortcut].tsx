@@ -16,6 +16,7 @@ import {
 } from "react";
 import {
   ActivityIndicator,
+  Alert,
   FlatList,
   ScrollView,
   StyleSheet,
@@ -32,18 +33,23 @@ import { useQuery } from "@tanstack/react-query";
 import { getActions, getShortcut } from "@/services/apiService";
 import { Colors } from "@/assets/colors";
 import globalStyles from "@/assets/global-styles";
+import { runShortcut } from "@/actions/shortcutRunner";
+import { useShallow } from "zustand/react/shallow";
 
 export default function ShortcutRunner() {
   const [currentActions, setCurrentActions] = useState<RunningAction[]>([]);
   const [isShortcutCompleted, setIsShortcutCompleted] = useState(false);
   const [countdownTimer, setCountdownTimer] = useState(3);
 
-  const stepInterval = useRef<number>(null);
+  // const stepInterval = useRef<number>(null);
   const countdownInterval = useRef<number>(null);
 
   const { shortcut } = useLocalSearchParams<{ shortcut: string }>();
-  const setIsShortcutRunning = useShortcutRunnerStore(
-    (state) => state.setIsShortcutRunning,
+  const { isShortcutRunning, setIsShortcutRunning } = useShortcutRunnerStore(
+    useShallow((state) => ({
+      isShortcutRunning: state.isShortcutRunning,
+      setIsShortcutRunning: state.setIsShortcutRunning,
+    })),
   );
   const navigation = useNavigation();
 
@@ -59,6 +65,7 @@ export default function ShortcutRunner() {
   });
 
   useEffect(() => {
+    // Transform the steps to actions
     if (currentShortcut && actions) {
       const convertedActions = stepsToActions(
         currentShortcut.steps ?? [],
@@ -67,6 +74,7 @@ export default function ShortcutRunner() {
         ...action,
         isCurrent: index === 0,
         isCompleted: false,
+        isFailed: false,
       })) as RunningAction[];
 
       setCurrentActions(convertedActions);
@@ -74,75 +82,85 @@ export default function ShortcutRunner() {
   }, [actions, currentShortcut]);
 
   useEffect(() => {
-    // Move current to the next index every 2 seconds
-    stepInterval.current = setInterval(() => {
-      setCurrentActions((prevActions) => {
-        let hasCurrent = false;
-
-        const newActions = prevActions.map((action) => {
-          if (action.isCurrent) {
-            return {
-              ...action,
-              isCurrent: false,
-              isCompleted: true,
-            };
-          } else if (!hasCurrent && !action.isCompleted) {
-            hasCurrent = true;
-            return {
-              ...action,
-              isCurrent: true,
-            };
-          }
-          return action;
-        });
-
-        return newActions;
-      });
-    }, 2000);
-
-    return () => clearInterval(stepInterval.current!);
-  }, []);
-
-  useEffect(() => {
-    // Check if all actions are completed
-    if (
-      currentActions.length > 0 &&
-      !currentActions.find((action) => action.isCurrent)
-    ) {
-      console.log("Completed all actions");
-      clearInterval(stepInterval.current!);
-      setIsShortcutCompleted(true);
-
-      // Show notification that the shortcut is completed
-      if (currentShortcut) {
-        Notifications.scheduleNotificationAsync({
-          content: {
-            title: "Shortcut Completed",
-            body: `${currentShortcut.name} has been completed.`,
-            data: {
-              shortcutId: currentShortcut.id,
-              type: "shortcut",
-              action: "completed",
-            },
-          },
-          trigger: null,
-        });
-      }
-
-      countdownInterval.current = setInterval(() => {
-        setCountdownTimer((prevTimer) => {
-          if (prevTimer <= 1) {
-            clearInterval(countdownInterval.current!);
-            router.back();
-            return 0;
-          }
-          return prevTimer - 1;
-        });
-      }, 1000);
+    if (currentActions.length === 0 || !currentShortcut || isShortcutRunning) {
+      return;
     }
 
+    // Run the shortcut when the component mounts
+    setIsShortcutRunning(true);
+
+    runShortcut(currentShortcut, currentActions, (updatedActions) =>
+      setCurrentActions(updatedActions),
+    ).then((result) => {
+      if (result.error) {
+        // Show error to user
+        Alert.alert(
+          "Error",
+          `An error occurred while running the shortcut: ${result.error}`,
+        );
+        console.log(result.error);
+
+        // Update action with error icon
+        setCurrentActions((prev) =>
+          prev.map((a, idx) => ({
+            ...a,
+            isFailed: idx === result.cause,
+          })),
+        );
+      }
+
+      // Mark all actions as completed
+      setIsShortcutCompleted(true);
+      console.log("Completed all actions");
+    });
+  }, [
+    currentActions,
+    currentShortcut,
+    isShortcutRunning,
+    setIsShortcutRunning,
+  ]);
+
+  useEffect(() => {
+    if (!currentShortcut || !isShortcutCompleted) {
+      return;
+    }
+
+    // Show notification that the shortcut is completed
+    Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Shortcut Completed",
+        body: `${currentShortcut.name} has been completed.`,
+        data: {
+          shortcutId: currentShortcut.id,
+          type: "shortcut",
+          action: "completed",
+        },
+      },
+      trigger: null,
+    });
+
+    // Start the countdown timer
+    countdownInterval.current = setInterval(() => {
+      setCountdownTimer((prevTimer) => {
+        if (prevTimer <= 1) {
+          clearInterval(countdownInterval.current!);
+          router.back();
+          return 0;
+        }
+        return prevTimer - 1;
+      });
+    }, 1000);
+
     return () => clearInterval(countdownInterval.current!);
-  }, [currentActions, currentShortcut]);
+  }, [currentShortcut, isShortcutCompleted]);
+
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        setIsShortcutRunning(false);
+      };
+    }, [setIsShortcutRunning]),
+  );
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -153,20 +171,6 @@ export default function ShortcutRunner() {
       ),
     });
   }, [currentShortcut?.name, navigation]);
-
-  useFocusEffect(
-    useCallback(() => {
-      setIsShortcutRunning(true);
-    }, [setIsShortcutRunning]),
-  );
-
-  useFocusEffect(
-    useCallback(() => {
-      return () => {
-        setIsShortcutRunning(false);
-      };
-    }, [setIsShortcutRunning]),
-  );
 
   if (!currentShortcut || !actions) {
     return (

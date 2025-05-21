@@ -41,6 +41,8 @@ export default function RunningActionItem({ item }: RunningActionItemProps) {
 
       {item.isCompleted ? (
         <IconView name={["checkmark.circle.fill", "checkmark-circle"]} color={Colors.SUCCESS} size={36} />
+      ) : item.isFailed ? (
+        <IconView name={["exclamationmark.triangle.fill", "warning"]} color={Colors.ERROR} size={36} />
       ) : (
         <ActivityIndicator size="large" animating={item.isCurrent} color={Colors.PRIMARY} />
       )}

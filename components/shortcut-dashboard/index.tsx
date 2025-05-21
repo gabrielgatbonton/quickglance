@@ -93,7 +93,7 @@ export default function ShortcutDashboard({
     if (blinkDuration! > 600 && !isShortcutRunning) {
       // Run the shortcut if it exists
       if (focusedShortcut) {
-        router.navigate(`/(modal)/run-shortcut/${focusedShortcut.id}`);
+        router.navigate(`/run-shortcut/${focusedShortcut.id}`);
       }
     }
   }, [blinkDuration, focusedShortcut, isShortcutRunning]);

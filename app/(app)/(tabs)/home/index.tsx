@@ -56,7 +56,7 @@ export default function Home() {
   const { data: userShortcuts } = useQuery({
     queryKey: ["shortcuts", "user"],
     queryFn: getUserShortcuts,
-    enabled: Boolean(user),
+    // enabled: Boolean(user),
   });
 
   useEffect(() => {
@@ -65,6 +65,7 @@ export default function Home() {
 
       if (!search) {
         setCurrentShortcuts(userShortcuts);
+        console.log("No search term, showing all shortcuts");
         return;
       }
 
@@ -82,7 +83,7 @@ export default function Home() {
     }
   }, [user]);
 
-  const handleStart = (isStarted: boolean) => {
+  const handleStart = (isStarted: boolean): void => {
     setIsStarted(isStarted);
     setTurnDirection("center");
     setNodDirection("center");
@@ -94,7 +95,7 @@ export default function Home() {
     }, 500);
   };
 
-  const handleFaceDetectReset = (face: Face | null) => {
+  const handleFaceDetectReset = (face: Face | null): void => {
     if (!isStarted) {
       return;
     }
@@ -111,7 +112,7 @@ export default function Home() {
     }
   };
 
-  const handleFaceCenterReset = (direction: TurnDirection) => {
+  const handleFaceCenterReset = (direction: TurnDirection): void => {
     if (!isStarted) {
       return;
     }
@@ -148,7 +149,7 @@ export default function Home() {
       headerRight: () => (
         <Pressable
           style={({ pressed }) => pressedOpacity({ pressed })}
-          onPress={() => router.navigate("/(modal)/reorder-shortcuts")}
+          onPress={() => router.navigate("/(app)/(modal)/reorder-shortcuts")}
         >
           <IconView
             name={["circle.grid.3x3.circle", "apps"]}

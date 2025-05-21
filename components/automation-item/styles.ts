@@ -2,6 +2,9 @@ import { Colors } from "@/assets/colors";
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   nameContainer: {
     padding: 15,
     margin: 10,
@@ -28,7 +31,7 @@ const styles = StyleSheet.create({
     rowGap: 10,
     width: "95%",
   },
-  action: {
+  shortcutText: {
     fontSize: 15,
     fontWeight: "500",
   },

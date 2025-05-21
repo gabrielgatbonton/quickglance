@@ -25,7 +25,7 @@ export default function TabLayout() {
   // Redirect to welcome screen if no token
   useEffect(() => {
     if (isTokenLoaded && !token) {
-      router.navigate("/(modal)/welcome");
+      router.navigate("/(app)/(modal)/welcome");
     }
   }, [isTokenLoaded, token]);
 
