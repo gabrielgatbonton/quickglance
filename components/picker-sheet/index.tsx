@@ -9,11 +9,11 @@ import {
 } from "@gorhom/bottom-sheet";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Pressable, StyleProp, TextInput, TextStyle, View } from "react-native";
-import { SymbolView } from "expo-symbols";
 import { Colors } from "@/assets/colors";
 import { PickerItem } from "@/constants/types";
 import styles from "./styles";
 import PickerSheetItem from "../picker-sheet-item";
+import IconView from "../icon-view";
 
 export type PickerSheetProps = {
   placeholder?: string;
@@ -69,7 +69,7 @@ export default function PickerSheet({
 
       bottomSheetModalRef.current?.dismiss();
     },
-    [onSelected, value],
+    [onSelected, value]
   );
 
   const renderItem = useCallback(
@@ -100,12 +100,7 @@ export default function PickerSheet({
             value={data?.find((item) => item.value === value)?.label}
             onChangeText={(destination) => onSelected(destination)}
           />
-          <SymbolView
-            name="chevron.down"
-            size={18}
-            tintColor={color}
-            weight="bold"
-          />
+          <IconView name={["chevron.down", "chevron-down"]} size={18} color={color} />
         </View>
       </Pressable>
 
@@ -124,12 +119,7 @@ export default function PickerSheet({
       >
         {searchEnabled && (
           <BottomSheetView style={styles.searchContainer}>
-            <SymbolView
-              name="magnifyingglass"
-              size={20}
-              tintColor={color}
-              weight="bold"
-            />
+            <IconView name={["magnifyingglass", "search"]} size={20} color={color} />
             <BottomSheetTextInput
               defaultValue={search}
               onChangeText={(text) => setSearch(text)}

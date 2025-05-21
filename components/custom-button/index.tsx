@@ -11,6 +11,10 @@ import {
 import styles from "./styles";
 import { Colors } from "@/assets/colors";
 import CustomText from "../custom-text";
+import IconView from "../icon-view";
+import { Ionicons } from "@expo/vector-icons";
+import type { SFSymbol } from "expo-symbols";
+type IoniconName = keyof typeof Ionicons.glyphMap;
 
 type CustomButtonProps = PressableProps & {
   title: string;
@@ -18,6 +22,7 @@ type CustomButtonProps = PressableProps & {
   loading?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
+  buttonIcons?: [symbolName: SFSymbol | undefined, ioniconName: IoniconName | undefined];
 };
 
 export default function CustomButton({
@@ -28,6 +33,7 @@ export default function CustomButton({
   disabled,
   containerStyle = {},
   textStyle = {},
+  buttonIcons,
   ...buttonProps
 }: CustomButtonProps) {
   return (
@@ -47,7 +53,12 @@ export default function CustomButton({
         {loading ? (
           <ActivityIndicator color="white" />
         ) : (
-          <CustomText style={[styles.title, textStyle]}>{title}</CustomText>
+          <>
+            {buttonIcons && (
+              <IconView name={[buttonIcons[0], buttonIcons[1]]} color="white" buttonStyle={styles.icon} />
+            )}
+            <CustomText style={[styles.title, textStyle]}>{title}</CustomText>
+          </>
         )}
       </View>
     </Pressable>

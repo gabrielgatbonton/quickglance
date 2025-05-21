@@ -2,6 +2,7 @@ import { Colors } from "@/assets/colors";
 import { useNavigation } from "expo-router";
 import { useLayoutEffect, useState } from "react";
 import { NativeSyntheticEvent, TextInputFocusEventData } from "react-native";
+import { Platform } from "react-native";
 
 type useSearchProps = {
   placeholder?: string;
@@ -17,16 +18,23 @@ export default function useSearch({
   const navigation = useNavigation();
 
   useLayoutEffect(() => {
-    navigation.setOptions({
-      headerSearchBarOptions: {
-        placeholder,
-        tintColor: Colors.PRIMARY,
-        onChangeText: (event: NativeSyntheticEvent<TextInputFocusEventData>) =>
-          setSearch(event.nativeEvent.text),
-        ...searchOptions,
-      },
-    });
+    if (Platform.OS === "ios") {
+      navigation.setOptions({
+        headerSearchBarOptions: {
+          placeholder,
+          tintColor: Colors.PRIMARY,
+          onChangeText: (
+            event: NativeSyntheticEvent<TextInputFocusEventData>,
+          ) => setSearch(event.nativeEvent.text),
+          ...searchOptions,
+        },
+      });
+    }
   }, [navigation, placeholder, searchOptions]);
 
-  return search;
+  return {
+    search,
+    setSearchFn: setSearch,
+    isAndroid: Platform.OS === "android",
+  };
 }

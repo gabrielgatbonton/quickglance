@@ -1,12 +1,14 @@
 import { create } from "zustand";
 import { Action, Shortcut } from "@/constants/types";
 import { SFSymbol } from "expo-symbols";
+import { IoniconName } from "@/components/icon-view";
 
 export type AddShortcutState = {
   details: {
     name: string;
     description: string;
-    icon: SFSymbol;
+    icon?: SFSymbol;
+    androidIcon?: IoniconName;
     isUpload: boolean;
     gradientStart: string;
     gradientEnd: string;
@@ -27,7 +29,8 @@ export type AddShortcutActions = {
 const initialDetailState: AddShortcutState["details"] = {
   name: "",
   description: "",
-  icon: "" as SFSymbol,
+  icon: undefined,
+  androidIcon: undefined,
   isUpload: false,
   gradientStart: "",
   gradientEnd: "",
@@ -45,7 +48,7 @@ const useAddShortcutStore = create<AddShortcutState & AddShortcutActions>(
     addOrUpdateAction: (action) => {
       set((state) => {
         const existingIndex = state.actions.findIndex(
-          (existingAction) => existingAction.key === action.key,
+          (existingAction) => existingAction.key === action.key
         );
 
         // If action doesn't exist, add it to the array
@@ -78,7 +81,7 @@ const useAddShortcutStore = create<AddShortcutState & AddShortcutActions>(
     removeAction: (key: string) =>
       set((state) => ({
         actions: state.actions.filter(
-          (existingAction) => existingAction.key !== key,
+          (existingAction) => existingAction.key !== key
         ),
       })),
     resetAll: () =>
@@ -87,7 +90,7 @@ const useAddShortcutStore = create<AddShortcutState & AddShortcutActions>(
         actions: [],
         currentShortcut: undefined,
       }),
-  }),
+  })
 );
 
 export default useAddShortcutStore;

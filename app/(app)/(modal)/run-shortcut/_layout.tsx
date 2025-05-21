@@ -1,4 +1,5 @@
 import { Colors } from "@/assets/colors";
+import IconView from "@/components/icon-view";
 import pressedOpacity from "@/utils/pressedOpacity";
 import { router, Stack } from "expo-router";
 import { SymbolView } from "expo-symbols";
@@ -21,11 +22,12 @@ export default function RunShortcutLayout() {
               style={({ pressed }) => pressedOpacity({ pressed })}
               onPress={() => router.back()}
             >
-              <SymbolView
+              <IconView name={["xmark.circle.fill", "close-circle"]} size={30} color={Colors.SECONDARY} />
+              {/* <SymbolView
                 name="xmark.circle.fill"
                 size={30}
                 tintColor={Colors.SECONDARY}
-              />
+              /> */}
             </Pressable>
           ),
         }}

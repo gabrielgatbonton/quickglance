@@ -1,7 +1,6 @@
 import pressedOpacity from "@/utils/pressedOpacity";
 import { ActivityIndicator, Alert, Pressable, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { SymbolView } from "expo-symbols";
 import styles from "./styles";
 import globalStyles from "@/assets/global-styles";
 import { Shortcut } from "@/constants/types";
@@ -10,6 +9,7 @@ import CustomText from "../custom-text";
 import { router } from "expo-router";
 import Animated, { Easing, ZoomIn } from "react-native-reanimated";
 import useInstallShortcut from "@/hooks/useInstallShortcut";
+import IconView from "../icon-view";
 
 export default function StoreItem({ item }: { item: Shortcut }) {
   const owner = item.userName || item.serviceName;
@@ -55,7 +55,7 @@ export default function StoreItem({ item }: { item: Shortcut }) {
             style={styles.contentContainer}
           >
             <View style={globalStyles.rowBetween}>
-              <SymbolView name={item.icon} size={30} tintColor="white" />
+            <IconView name={[item.icon, item.androidIcon]} color="white" size={33} />
 
               {isInstalling ? (
                 <View style={globalStyles.transparentButton}>
@@ -85,14 +85,8 @@ export default function StoreItem({ item }: { item: Shortcut }) {
                     );
                   }}
                 >
-                  <SymbolView
-                    name="checkmark.icloud.fill"
-                    size={25}
-                    tintColor="white"
-                    resizeMode="top"
-                    scale="large"
-                    weight="bold"
-                  />
+                  <IconView name={["square.and.arrow.down" , "checkmark-circle-outline"]} color="white" />
+
                 </Pressable>
               ) : (
                 <Pressable
@@ -102,14 +96,8 @@ export default function StoreItem({ item }: { item: Shortcut }) {
                   ]}
                   onPress={() => shortcutInstall()}
                 >
-                  <SymbolView
-                    name="square.and.arrow.down"
-                    size={25}
-                    tintColor="white"
-                    resizeMode="top"
-                    scale="large"
-                    weight="bold"
-                  />
+                  <IconView name={["square.and.arrow.down" , "download-outline"]} color="white" />
+
                 </Pressable>
               )}
             </View>

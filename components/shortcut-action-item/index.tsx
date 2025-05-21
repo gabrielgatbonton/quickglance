@@ -1,11 +1,11 @@
 import { Action } from "@/constants/types";
 import { LinearGradient } from "expo-linear-gradient";
-import { SymbolView } from "expo-symbols";
 import { Pressable, useWindowDimensions, View } from "react-native";
 import styles from "./styles";
 import pressedOpacity from "@/utils/pressedOpacity";
 import globalStyles from "@/assets/global-styles";
 import CustomText from "../custom-text";
+import IconView from "../icon-view";
 
 type ShortcutActionItemProps = {
   item: Action;
@@ -38,7 +38,7 @@ export default function ShortcutActionItem({
         ]}
       >
         <View style={globalStyles.rowBetween}>
-          <SymbolView name={item.icon} size={30} tintColor="white" />
+          <IconView name={[item.icon, item.androidIcon]} color="white" size={30} />
           <Pressable
             style={({ pressed }) => [
               globalStyles.transparentButton,
@@ -46,7 +46,7 @@ export default function ShortcutActionItem({
             ]}
             onPress={() => onActionAdd?.(item)}
           >
-            <SymbolView name="plus" size={18} tintColor="white" weight="bold" />
+            <IconView name={["plus", "add"]} color="white" size={18} />
           </Pressable>
         </View>
 

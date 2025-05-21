@@ -1,6 +1,5 @@
 import pressedOpacity from "@/utils/pressedOpacity";
 import { LinearGradient } from "expo-linear-gradient";
-import { SymbolView } from "expo-symbols";
 import {
   Alert,
   Pressable,
@@ -22,6 +21,7 @@ import Animated, {
 import { router } from "expo-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteShortcut } from "@/services/apiService";
+import IconView from "../icon-view";
 
 type ShortcutItemProps = {
   item: Shortcut;
@@ -146,7 +146,7 @@ export default function ShortcutItem({
             )}
 
             <View style={globalStyles.rowBetween}>
-              <SymbolView name={item.icon} size={30} tintColor="white" />
+              <IconView name={[item.icon, item.androidIcon]} color="white" size={28} />
 
               <Pressable
                 style={({ pressed }) => [
@@ -155,12 +155,7 @@ export default function ShortcutItem({
                 ]}
                 onPress={handleEdit}
               >
-                <SymbolView
-                  name="slider.vertical.3"
-                  size={20}
-                  tintColor="white"
-                  weight="bold"
-                />
+                <IconView name={["slider.vertical.3", "options"]} color="white" size={20} buttonStyle={styles.optionIcon} />
               </Pressable>
             </View>
 

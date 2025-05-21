@@ -1,4 +1,4 @@
-import { Colors } from "@/assets/colors";
+  import { Colors } from "@/assets/colors";
 import { DEFAULT_FONT_FAMILY } from "@/components/custom-text/styles";
 import { Stack } from "expo-router";
 import { Platform } from "react-native";
@@ -16,6 +16,8 @@ export default function StoreLayout() {
           headerTitleStyle: { fontFamily: DEFAULT_FONT_FAMILY },
           headerTintColor: "black",
           contentStyle: { backgroundColor: "white" },
+          headerShadowVisible: Platform.OS === "ios",
+          headerTitleAlign: Platform.OS === "ios" ? "left" : "center",
         }}
       />
       <Stack.Screen

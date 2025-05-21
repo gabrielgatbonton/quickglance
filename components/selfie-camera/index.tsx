@@ -1,6 +1,5 @@
-import { SymbolView } from "expo-symbols";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ActivityIndicator, Alert } from "react-native";
+import { ActivityIndicator, Alert, View } from "react-native";
 import { Colors } from "@/assets/colors";
 import {
   Camera,
@@ -28,6 +27,7 @@ import {
 } from "@/constants/types";
 import * as Device from "expo-device";
 import styles from "./styles";
+import IconView from "../icon-view";
 
 export type SelfieCameraProps = {
   isActive?: boolean;
@@ -96,7 +96,7 @@ export default function SelfieCamera({
           [
             { text: "Retry", onPress: () => requestPermission() },
             { text: "Cancel", style: "cancel" },
-          ],
+          ]
         );
       }
       setIsGranted(isGranted);
@@ -108,7 +108,7 @@ export default function SelfieCamera({
     if (!device && Device.isDevice) {
       Alert.alert(
         "Camera Not Found",
-        "We couldn't find the camera on your device. Please check your device settings.",
+        "We couldn't find the camera on your device. Please check your device settings."
       );
     }
   }, [device]);
@@ -159,7 +159,7 @@ export default function SelfieCamera({
 
       lastTurnDirection.value = direction;
     },
-    [directionChanges, lastTurnDirection, onHeadShake],
+    [directionChanges, lastTurnDirection, onHeadShake]
   );
 
   const handleFaceTurn = useCallback(
@@ -183,7 +183,7 @@ export default function SelfieCamera({
       onFaceTurn?.({ angle: turnAngle, direction });
       handleHeadShake(direction);
     },
-    [handleHeadShake, onFaceTurn, onHeadShake],
+    [handleHeadShake, onFaceTurn, onHeadShake]
   );
 
   const handleFaceNod = useCallback(
@@ -206,7 +206,7 @@ export default function SelfieCamera({
 
       onFaceNod({ angle: nodAngle, direction });
     },
-    [onFaceNod],
+    [onFaceNod]
   );
 
   const handleEyeBlink = useCallback(
@@ -272,7 +272,7 @@ export default function SelfieCamera({
         blinkDuration: blinkDuration.value,
       });
     },
-    [blinkCount, blinkDuration, blinkStartTime, onBlinkDetected],
+    [blinkCount, blinkDuration, blinkStartTime, onBlinkDetected]
   );
 
   const handleSmile = useCallback(
@@ -289,7 +289,7 @@ export default function SelfieCamera({
         emotion: isSmiling ? "happy" : "neutral",
       });
     },
-    [onEmotionDetected],
+    [onEmotionDetected]
   );
 
   const handleDetectedFace = Worklets.createRunOnJS((face: Face | null) => {
@@ -334,7 +334,7 @@ export default function SelfieCamera({
       //   handleDetectedEmotions(emotionData);
       // });
     },
-    [handleDetectedFace, isFrameProcessorEnabled],
+    [handleDetectedFace, isFrameProcessorEnabled]
   );
 
   useEffect(() => {
@@ -363,32 +363,32 @@ export default function SelfieCamera({
     }
 
     return (
-      <SymbolView
-        name="exclamationmark.triangle.fill"
+      <IconView
+        name={["exclamationmark.triangle.fill", "warning"]}
         size={DEFAULT_SIZE * 0.7}
-        tintColor={Colors.ERROR}
+        color={Colors.ERROR}
       />
     );
   }
 
   return (
-    <Camera
-      {...cameraProps}
-      isActive={isActive}
-      device={device}
-      format={format}
-      frameProcessor={frameProcessor}
-      style={
-        isVisible && [
-          {
-            height: size,
-            width: size,
-            borderRadius: size / 2,
-          },
-          styles.camera,
-          cameraProps?.style,
-        ]
-      }
-    />
+    <View style={[{ borderRadius: size / 2 }, styles.camera]}>
+      <Camera
+        {...cameraProps}
+        isActive={isActive}
+        device={device}
+        format={format}
+        frameProcessor={frameProcessor}
+        style={
+          isVisible && [
+            {
+              height: size,
+              width: size,
+            },
+            cameraProps?.style,
+          ]
+        }
+      />
+    </View>
   );
 }

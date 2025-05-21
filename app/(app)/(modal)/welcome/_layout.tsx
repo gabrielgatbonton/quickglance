@@ -10,9 +10,9 @@ import styles from "./styles";
 import useSignUpStore from "@/stores/useSignUpStore";
 import { useEffect, useRef } from "react";
 import pressedOpacity from "@/utils/pressedOpacity";
-import { SymbolView } from "expo-symbols";
 import { Colors } from "@/assets/colors";
 import useAuthStore from "@/stores/useAuthStore";
+import IconView from "@/components/icon-view";
 
 export default function WelcomeLayout() {
   const token = useAuthStore((state) => state.token);
@@ -64,19 +64,14 @@ export default function WelcomeLayout() {
           options={{
             presentation: "card",
             title: "",
-            headerShown: true,
+            headerShown: false,
             headerTransparent: Platform.OS === "ios",
             headerLeft: () => (
               <Pressable
                 style={({ pressed }) => pressedOpacity({ pressed })}
                 onPress={() => router.back()}
               >
-                <SymbolView
-                  name="chevron.backward"
-                  size={25}
-                  tintColor={Colors.PRIMARY}
-                  weight="semibold"
-                />
+                <IconView name={["chevron.backward", "arrow-back"]} size={25} color={Colors.SECONDARY} />
               </Pressable>
             ),
           }}

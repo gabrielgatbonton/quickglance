@@ -4,10 +4,10 @@ import pressedOpacity from "@/utils/pressedOpacity";
 import styles from "./styles";
 import { Automation } from "@/constants/types";
 import ContextMenu from "react-native-context-menu-view";
-import { SymbolView } from "expo-symbols";
 import CustomText from "../custom-text";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteAutomation } from "@/services/apiService";
+import IconView from "../icon-view";
 
 export default function AutomationItem({ item }: { item: Automation }) {
   const queryClient = useQueryClient();
@@ -49,18 +49,11 @@ export default function AutomationItem({ item }: { item: Automation }) {
   };
 
   return (
-    <View style={styles.container}>
-      <Pressable style={({ pressed }) => pressedOpacity({ pressed })}>
-        <View style={styles.nameContainer}>
-          <CustomText style={styles.name}>{item.title}</CustomText>
-          <SymbolView
-            name="chevron.right"
-            size={15}
-            tintColor="gray"
-            weight="bold"
-          />
-        </View>
-      </Pressable>
+    <Pressable style={({ pressed }) => pressedOpacity({ pressed })}>
+      <View style={styles.nameContainer}>
+        <CustomText style={styles.name}>{item.name}</CustomText>
+        <IconView name={["chevron.right", "arrow-back"]} color="gray" />
+      </View>
 
       <ContextMenu
         actions={[

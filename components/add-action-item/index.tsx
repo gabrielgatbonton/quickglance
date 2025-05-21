@@ -3,10 +3,10 @@ import { Pressable, useWindowDimensions, View } from "react-native";
 import Animated, { Easing, ZoomIn, ZoomOut } from "react-native-reanimated";
 import styles from "./styles";
 import { LinearGradient } from "expo-linear-gradient";
-import { SymbolView } from "expo-symbols";
 import globalStyles from "@/assets/global-styles";
 import pressedOpacity from "@/utils/pressedOpacity";
 import CustomText from "../custom-text";
+import IconView from "../icon-view";
 
 type AddActionItemProps = {
   item: Action;
@@ -40,7 +40,7 @@ export default function AddActionItem({
           style={styles.contentContainer}
         >
           <View style={globalStyles.rowBetween}>
-            <SymbolView name={item.icon} size={30} tintColor="white" />
+            <IconView name={[item.icon, item.androidIcon]} color="white" size={30} />
 
             <View style={styles.buttonContainer}>
               {onActionEdit && (
@@ -51,7 +51,7 @@ export default function AddActionItem({
                   ]}
                   onPress={() => onActionEdit(item)}
                 >
-                  <SymbolView name="pencil" size={15} tintColor="white" />
+                  <IconView name={["pencil", "pencil"]} color="white" size={15} />
                 </Pressable>
               )}
 
@@ -63,7 +63,8 @@ export default function AddActionItem({
                   ]}
                   onPress={() => onActionDelete(item)}
                 >
-                  <SymbolView name="xmark" size={15} tintColor="white" />
+                  <IconView name={["xmark", "remove"]} color="white" size={15} />
+
                 </Pressable>
               )}
             </View>

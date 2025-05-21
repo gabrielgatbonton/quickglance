@@ -1,8 +1,8 @@
 import { Colors } from "@/assets/colors";
 import { DEFAULT_FONT_FAMILY } from "@/components/custom-text/styles";
+import IconView from "@/components/icon-view";
 import pressedOpacity from "@/utils/pressedOpacity";
 import { router, Stack } from "expo-router";
-import { SymbolView } from "expo-symbols";
 import { Platform, Pressable } from "react-native";
 
 export default function EditProfileLayout() {
@@ -23,12 +23,7 @@ export default function EditProfileLayout() {
               style={({ pressed }) => pressedOpacity({ pressed })}
               onPress={() => router.back()}
             >
-              <SymbolView
-                name="xmark"
-                size={21}
-                tintColor={Colors.PRIMARY}
-                weight="semibold"
-              />
+              <IconView name={["xmark", "close"]} size={21} color={Colors.PRIMARY} /> 
             </Pressable>
           ),
         }}

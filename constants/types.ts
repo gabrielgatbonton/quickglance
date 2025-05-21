@@ -1,4 +1,5 @@
 import { CustomDynamicInputProps } from "@/components/custom-dynamic-input";
+import { IoniconName } from "@/components/icon-view";
 import { AddShortcutState } from "@/stores/useAddShortcutStore";
 import { SFSymbol } from "expo-symbols";
 import { ImageRequireSource } from "react-native";
@@ -47,6 +48,7 @@ export type Shortcut = {
   name: string;
   description: string;
   icon: SFSymbol;
+  androidIcon: IoniconName;
   gradientStart: string;
   gradientEnd: string;
   steps: ShortcutStep[];
@@ -75,7 +77,8 @@ export type Action = {
   key?: string;
   id: string;
   name: string;
-  icon: SFSymbol;
+  icon?: SFSymbol;
+  androidIcon?: IoniconName;
   gradientStart: string;
   gradientEnd: string;
   inputs?: ActionInput[];

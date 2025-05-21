@@ -19,15 +19,16 @@ const styles = StyleSheet.create({
     rowGap: 10,
   },
   headerText: {
-    fontSize: 35,
+    fontSize: 45,
     fontWeight: "bold",
     textAlign: "center",
   },
   subHeaderText: {
     color: Colors.SECONDARY,
-    fontSize: 16,
+    fontSize: 18,
     textAlign: "center",
     lineHeight: 20,
+    fontFamily: "Satoshi-light"
   },
   headerImage: {
     height: 65,
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     paddingTop: "6%",
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
     rowGap: 14,
   },
   hint: {

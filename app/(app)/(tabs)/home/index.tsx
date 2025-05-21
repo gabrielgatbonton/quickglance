@@ -5,10 +5,15 @@ import OnboardingView from "@/components/onboarding-view";
 import SelfieView from "@/components/selfie-view";
 import useSearch from "@/hooks/useSearch";
 import { router, useNavigation } from "expo-router";
-import { SymbolView } from "expo-symbols";
 import pressedOpacity from "@/utils/pressedOpacity";
 import CustomLink from "@/components/custom-link";
 import ShortcutDashboard from "@/components/shortcut-dashboard";
+import AndroidSearchBar from "@/components/android-searchbar";
+import Animated, {
+  useAnimatedStyle,
+  withTiming,
+  useSharedValue,
+} from "react-native-reanimated";
 import {
   Emotion,
   NodDirection,
@@ -21,10 +26,11 @@ import { Face } from "react-native-vision-camera-face-detector";
 import { useQuery } from "@tanstack/react-query";
 import { getUser, getUserShortcuts } from "@/services/apiService";
 import EmotionPopover from "@/components/emotion-popover";
+import IconView from "@/components/icon-view";
 
 export default function Home() {
   const [currentShortcuts, setCurrentShortcuts] = useState<Shortcut[] | null>(
-    null,
+    null
   );
   const [isStarted, setIsStarted] = useState(false);
   const [isFrameProcessorEnabled, setIsFrameProcessorEnabled] = useState(true);
@@ -40,7 +46,7 @@ export default function Home() {
 
   const isFocused = useIsFocused();
   const navigation = useNavigation();
-  const search = useSearch();
+  const { search, setSearchFn, isAndroid } = useSearch();
 
   const { data: user } = useQuery({
     queryKey: ["user"],
@@ -65,8 +71,8 @@ export default function Home() {
 
       setCurrentShortcuts(
         userShortcuts.filter((shortcut) =>
-          shortcut.name.toLowerCase().includes(search.toLowerCase()),
-        ),
+          shortcut.name.toLowerCase().includes(search.toLowerCase())
+        )
       );
     }
   }, [search, userShortcuts]);
@@ -145,15 +151,28 @@ export default function Home() {
           style={({ pressed }) => pressedOpacity({ pressed })}
           onPress={() => router.navigate("/(app)/(modal)/reorder-shortcuts")}
         >
-          <SymbolView
-            name="circle.grid.3x3.circle"
-            size={30}
-            tintColor={Colors.PRIMARY}
+          <IconView
+            name={["circle.grid.3x3.circle", "apps"]}
+            color={Colors.PRIMARY}
+            size={23}
           />
         </Pressable>
       ),
     });
   }, [navigation]);
+
+  // Hide the header when the user is in the onboarding screen
+  const opacity = useSharedValue(isStarted ? 0 : 1);
+
+  useEffect(() => {
+    opacity.value = withTiming(isStarted ? 0 : 1, { duration: 200 });
+  }, [isStarted]);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: opacity.value,
+    };
+  });
 
   return (
     <ScrollView
@@ -161,6 +180,15 @@ export default function Home() {
       contentContainerStyle={styles.container}
       scrollEnabled={false}
     >
+      {isAndroid && (
+        <Animated.View style={[animatedStyle]}>
+          <AndroidSearchBar
+            style={{ paddingHorizontal: 14 }}
+            onSearch={setSearchFn}
+          />
+        </Animated.View>
+      )}
+
       <ShortcutDashboard
         shortcuts={currentShortcuts}
         turnDirection={isStarted ? turnDirection : undefined}

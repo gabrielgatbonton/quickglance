@@ -46,11 +46,10 @@ export default function PickerSheetItem({
       {item.ItemComponent
         ? item.ItemComponent(item)
         : isSelected && (
-            <SymbolView
-              name="checkmark"
+            <IconView
+              name={["checkmark", "checkmark"]}
               size={20}
-              tintColor={selectedColor}
-              weight="bold"
+              color={color}
             />
           )}
     </Pressable>

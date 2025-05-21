@@ -1,7 +1,6 @@
 import { Colors } from "@/assets/colors";
 import pressedOpacity from "@/utils/pressedOpacity";
 import { router, useLocalSearchParams, useNavigation } from "expo-router";
-import { SymbolView } from "expo-symbols";
 import { useLayoutEffect } from "react";
 import { ActivityIndicator, Pressable, ScrollView, View } from "react-native";
 import * as Linking from "expo-linking";
@@ -13,9 +12,9 @@ import CustomButton from "@/components/custom-button";
 import styles from "./styles";
 import { useQuery } from "@tanstack/react-query";
 import { getShortcut } from "@/services/apiService";
-import CustomLink from "@/components/custom-link";
 import globalStyles from "@/assets/global-styles";
 import useInstallShortcut from "@/hooks/useInstallShortcut";
+import IconView from "@/components/icon-view";
 
 export default function ShortcutInstaller() {
   const { shortcut } = useLocalSearchParams<{ shortcut: string }>();
@@ -39,7 +38,7 @@ export default function ShortcutInstaller() {
             onPress={() => {
               try {
                 const url = Linking.createURL(
-                  `install-shortcut/${currentShortcut.id}`,
+                  `install-shortcut/${currentShortcut.id}`
                 );
                 const title = currentShortcut.name;
 
@@ -58,10 +57,10 @@ export default function ShortcutInstaller() {
               }
             }}
           >
-            <SymbolView
-              name="square.and.arrow.up"
+            <IconView
+              name={["square.and.arrow.up", "eye"]}
+              color={Colors.PRIMARY}
               size={25}
-              tintColor={Colors.PRIMARY}
             />
           </Pressable>
         ),
@@ -72,12 +71,18 @@ export default function ShortcutInstaller() {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <CustomLink
-          title={isInstalled ? "Done" : "Cancel"}
-          bold={isInstalled}
-          onPress={() => router.back()}
-          color={Colors.PRIMARY}
-        />
+        <>
+          <Pressable
+            onPress={() => router.back()}
+            style={({ pressed }) => pressedOpacity({ pressed })}
+          >
+            <IconView
+              name={[, "arrow-back"]}
+              color={Colors.SECONDARY}
+              size={25}
+            />
+          </Pressable>
+        </>
       ),
     });
   }, [isInstalled, navigation]);
@@ -109,10 +114,10 @@ export default function ShortcutInstaller() {
             ]}
             style={styles.iconContentContainer}
           >
-            <SymbolView
-              name={currentShortcut.icon}
+            <IconView
+              name={[currentShortcut.icon, currentShortcut.androidIcon]}
+              color="white"
               size={50}
-              tintColor="white"
             />
           </LinearGradient>
         </View>
@@ -127,7 +132,7 @@ export default function ShortcutInstaller() {
         <View style={styles.actionContainer}>
           {isInstalling ? (
             <View style={styles.pendingContainer}>
-              <ActivityIndicator />
+              <ActivityIndicator size="large" color={Colors.PRIMARY} />
               <CustomText
                 style={{
                   fontSize: 16,
@@ -139,22 +144,25 @@ export default function ShortcutInstaller() {
             </View>
           ) : isInstalled ? (
             <View style={styles.installedContainer}>
-              <SymbolView
-                name="arrow.down.circle.fill"
+              <IconView
+                name={["arrow.down.circle.fill", "arrow-down-circle"]}
+                color={Colors.PRIMARY}
                 size={30}
-                tintColor={currentShortcut.gradientStart}
               />
               <CustomText style={{ fontSize: 16, color: Colors.SECONDARY }}>
                 Installed!
               </CustomText>
             </View>
           ) : (
-            <CustomButton
-              title="Install Shortcut"
-              color={currentShortcut.gradientStart}
-              onPress={() => shortcutInstall()}
-              containerStyle={styles.installButtonContainer}
-            />
+            <View>
+              <CustomButton
+                title="Install"
+                color={currentShortcut.gradientStart}
+                onPress={() => shortcutInstall()}
+                containerStyle={styles.installButtonContainer}
+                buttonIcons={[, "eye"]}
+              />
+            </View>
           )}
         </View>
       </ScrollView>

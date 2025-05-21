@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
   },
   panelStyle: {
     borderRadius: 16,
-
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -35,7 +34,6 @@ const styles = StyleSheet.create({
   sliderStyle: {
     borderRadius: 20,
     marginTop: 25,
-
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -45,6 +43,8 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
   },
   previewTxtContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingTop: 20,
     marginTop: 20,
     borderTopWidth: 1,

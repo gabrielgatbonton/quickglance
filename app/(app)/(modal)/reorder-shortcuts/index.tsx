@@ -2,7 +2,7 @@ import { Colors } from "@/assets/colors";
 import { Shortcut } from "@/constants/types";
 import { router, useNavigation } from "expo-router";
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
-import { useWindowDimensions, View } from "react-native";
+import { Platform, useWindowDimensions, View } from "react-native";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import Sortable from "react-native-sortables";
 import { SortableGridRenderItemInfo } from "react-native-sortables/dist/typescript/types";
@@ -21,7 +21,7 @@ export default function ReorderShortcuts() {
   const { width } = useWindowDimensions();
   const navigation = useNavigation();
 
-  const snapOffsetX = width * 0.9;
+  const snapOffsetX = width * 0.2;
 
   const { data: userShortcuts } = useQuery({
     queryKey: ["shortcuts", "user"],
@@ -38,14 +38,14 @@ export default function ReorderShortcuts() {
     ({ item }: SortableGridRenderItemInfo<Shortcut>) => (
       <ReorderShortcutItem item={item} />
     ),
-    [],
+    []
   );
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <CustomLink
-          title="Done"
+          title={Platform.OS === "ios" ? "Done" : "Save"}
           bold
           onPress={() => {
             router.back();
@@ -73,6 +73,7 @@ export default function ReorderShortcuts() {
           }}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
+          columns={2}
           rowGap={10}
           columnGap={10}
           snapOffsetX={snapOffsetX}

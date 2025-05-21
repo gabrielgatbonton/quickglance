@@ -19,7 +19,6 @@ import BottomSheet, {
   BottomSheetModalProvider,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
-import { SymbolView } from "expo-symbols";
 import pressedOpacity from "@/utils/pressedOpacity";
 import styles from "./styles";
 import ShortcutCategoryItem from "@/components/shortcut-category-item";
@@ -55,14 +54,15 @@ import CustomDynamicInput, {
 import LineSeparator from "@/components/line-separator";
 import { checkValidInputType } from "@/utils/validInputTypeChecker";
 import { KeyboardToolbar } from "react-native-keyboard-controller";
+import IconView from "@/components/icon-view";
 
 export default function AddShortcut() {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
-    null,
+    null
   );
   const [selectedAction, setSelectedAction] = useState<Action | null>(null);
   const [selectedInputs, setSelectedInputs] = useState<ActionInput[] | null>(
-    null,
+    null
   );
   const [inputsContext, setInputsContext] = useState<Action | null>(null);
   const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
@@ -80,7 +80,7 @@ export default function AddShortcut() {
   const navigation = useNavigation();
 
   const isSaveDisabled = selectedInputs?.some(
-    (input) => input.required && !input.value,
+    (input) => input.required && !input.value
   );
   const doesInputsHaveValue = selectedInputs?.some((input) => input.value);
 
@@ -107,7 +107,7 @@ export default function AddShortcut() {
       setCurrentShortcut: state.setCurrentShortcut,
       addOrUpdateAction: state.addOrUpdateAction,
       removeAction: state.removeAction,
-    })),
+    }))
   );
 
   const { data: currentShortcut, isLoading: isShortcutLoading } = useQuery({
@@ -149,7 +149,7 @@ export default function AddShortcut() {
     if (currentShortcut && actions) {
       const convertedActions = stepsToActions(
         currentShortcut.steps ?? [],
-        actions ?? [],
+        actions ?? []
       ).map((action) => ({ ...action, key: Crypto.randomUUID() }));
 
       setAddedActions(convertedActions);
@@ -219,10 +219,10 @@ export default function AddShortcut() {
             onPress: () => removeAction(action.key!),
           },
           { text: "Cancel", style: "cancel" },
-        ],
+        ]
       );
     },
-    [removeAction],
+    [removeAction]
   );
 
   const onActionPress = (action: Action) => {
@@ -252,7 +252,7 @@ export default function AddShortcut() {
         onActionDelete={onActionDelete}
       />
     ),
-    [onActionDelete, onActionEdit],
+    [onActionDelete, onActionEdit]
   );
 
   useLayoutEffect(() => {
@@ -335,10 +335,10 @@ export default function AddShortcut() {
                   setSelectedCategory(null);
                 }}
               >
-                <SymbolView
-                  name="arrow.backward.circle"
-                  tintColor="lightgray"
-                  size={40}
+                <IconView
+                  name={["arrow.backward.circle", "arrow-back-circle"]}
+                  color="lightgray"
+                  size={30}
                 />
               </Pressable>
               <CustomText style={styles.sheetHeaderTitle}>
@@ -348,14 +348,15 @@ export default function AddShortcut() {
                 style={({ pressed }) => pressedOpacity({ pressed })}
                 onPress={() => setIsMicEnabled((prev) => !prev)}
               >
-                <SymbolView
-                  name={
+                <IconView
+                  name={[
                     isMicEnabled
                       ? "microphone.circle"
-                      : "microphone.slash.circle"
-                  }
-                  tintColor={isMicEnabled ? Colors.SECONDARY : "lightgray"}
-                  size={40}
+                      : "microphone.slash.circle",
+                    isMicEnabled ? "mic" : "mic-off",
+                  ]}
+                  color={isMicEnabled ? Colors.SECONDARY : "lightgray"}
+                  size={30}
                 />
               </Pressable>
             </BottomSheetView>
@@ -368,7 +369,7 @@ export default function AddShortcut() {
               <BottomSheetFlatList
                 data={
                   categories?.find(
-                    (category) => category.id === selectedCategory.id,
+                    (category) => category.id === selectedCategory.id
                   )?.actions
                 }
                 renderItem={({ item }) => (
@@ -408,10 +409,10 @@ export default function AddShortcut() {
                   setSelectedAction(null);
                 }}
               >
-                <SymbolView
-                  name="arrow.backward.circle"
-                  tintColor="lightgray"
-                  size={40}
+                <IconView
+                  name={["arrow.backward.circle", "arrow-back-circle"]}
+                  color="lightgray"
+                  size={30}
                 />
               </Pressable>
               <CustomText style={styles.sheetHeaderTitle}>
@@ -421,16 +422,15 @@ export default function AddShortcut() {
                 style={({ pressed }) => pressedOpacity({ pressed })}
                 onPress={() => setIsMicEnabled((prev) => !prev)}
               >
-                <SymbolView
-                  name={
+                <IconView
+                  name={[
                     isMicEnabled
                       ? "microphone.circle"
-                      : "microphone.slash.circle"
-                  }
-                  tintColor={
-                    isMicEnabled ? selectedAction.gradientStart : "lightgray"
-                  }
-                  size={40}
+                      : "microphone.slash.circle",
+                    isMicEnabled ? "mic" : "mic-off",
+                  ]}
+                  color={isMicEnabled ? Colors.SECONDARY : "lightgray"}
+                  size={30}
                 />
               </Pressable>
             </BottomSheetView>
@@ -440,10 +440,10 @@ export default function AddShortcut() {
                 entering={FadeIn.duration(150)}
                 style={styles.actionPreviewContainer}
               >
-                <SymbolView
-                  name={selectedAction.icon}
+                <IconView
+                  name={[selectedAction.icon, selectedAction.androidIcon]}
+                  color={selectedAction.gradientStart}
                   size={80}
-                  tintColor={selectedAction.gradientStart}
                 />
                 <CustomText style={styles.actionPreviewText}>
                   {selectedAction.name}
@@ -480,10 +480,10 @@ export default function AddShortcut() {
                   setInputsContext(null);
                 }}
               >
-                <SymbolView
-                  name="arrow.backward.circle"
-                  tintColor="lightgray"
-                  size={40}
+                <IconView
+                  name={["arrow.backward.circle", "arrow-back-circle"]}
+                  color="lightgray"
+                  size={30}
                 />
               </Pressable>
               <CustomText style={styles.sheetHeaderTitle}>
@@ -493,16 +493,15 @@ export default function AddShortcut() {
                 style={({ pressed }) => pressedOpacity({ pressed })}
                 onPress={() => setIsMicEnabled((prev) => !prev)}
               >
-                <SymbolView
-                  name={
+                <IconView
+                  name={[
                     isMicEnabled
                       ? "microphone.circle"
-                      : "microphone.slash.circle"
-                  }
-                  tintColor={
-                    isMicEnabled ? inputsContext.gradientStart : "lightgray"
-                  }
-                  size={40}
+                      : "microphone.slash.circle",
+                    isMicEnabled ? "mic" : "mic-off",
+                  ]}
+                  color={isMicEnabled ? Colors.SECONDARY : "lightgray"}
+                  size={30}
                 />
               </Pressable>
             </BottomSheetView>

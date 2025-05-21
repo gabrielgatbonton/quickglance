@@ -12,13 +12,13 @@ import ColorPicker, {
   ColorFormatsObject,
 } from "reanimated-color-picker";
 import styles from "./styles";
-import { Modal, Pressable, ScrollView, View } from "react-native";
+import { Modal, Platform, Pressable, ScrollView, View } from "react-native";
 import { BlurView } from "expo-blur";
 import pressedOpacity from "@/utils/pressedOpacity";
-import { SymbolView } from "expo-symbols";
 import CustomButton from "../custom-button";
 import { useEffect } from "react";
 import { Colors } from "@/assets/colors";
+import IconView from "../icon-view";
 
 type CustomColorPickerProps = {
   label: string;
@@ -40,6 +40,8 @@ const CUSTOM_SWATCHES = [
   "#7F8C8D", // Gray
   "#FF9500", // Amber
 ];
+
+const isIOS = Platform.OS === "ios";
 
 export default function CustomColorPicker({
   label,
@@ -117,42 +119,69 @@ export default function CustomColorPicker({
                 />
               </ScrollView>
               <View style={styles.previewTxtContainer}>
+                {!isIOS && (
+                  <Pressable
+                    style={({ pressed }) => pressedOpacity({ pressed })}
+                    onPress={() => onVisibilityChange(false)}
+                  >
+                    <IconView
+                      name={["xmark.circle", "close-circle"]}
+                      color={Colors.SECONDARY}
+                      size={35}
+                    />
+                  </Pressable>
+                )}
                 <PreviewText style={styles.previewTxt} />
+                {!isIOS && (
+                  <Pressable
+                    style={({ pressed }) => pressedOpacity({ pressed })}
+                    onPress={() => {
+                      onVisibilityChange(false);
+                      onColorChange(selectedColor.get());
+                    }}
+                  >
+                    <IconView
+                      name={["checkmark.circle", "checkmark-circle"]}
+                      color={Colors.PRIMARY}
+                      size={35}
+                    />
+                  </Pressable>
+                )}
               </View>
             </ColorPicker>
           </Animated.View>
 
-          <Animated.View
-            entering={FadeIn.delay(200)}
-            style={styles.buttonContainer}
-          >
-            <Pressable
-              style={({ pressed }) => pressedOpacity({ pressed })}
-              onPress={() => onVisibilityChange(false)}
+          {isIOS && (
+            <Animated.View
+              entering={FadeIn.delay(200)}
+              style={styles.buttonContainer}
             >
-              <SymbolView
-                name="xmark.circle"
-                size={50}
-                tintColor={Colors.SECONDARY}
-                weight="light"
-              />
-            </Pressable>
+              <Pressable
+                style={({ pressed }) => pressedOpacity({ pressed })}
+                onPress={() => onVisibilityChange(false)}
+              >
+                <IconView
+                  name={["xmark.circle", "close-circle"]}
+                  color={Colors.SECONDARY}
+                  size={35}
+                />
+              </Pressable>
 
-            <Pressable
-              style={({ pressed }) => pressedOpacity({ pressed })}
-              onPress={() => {
-                onVisibilityChange(false);
-                onColorChange(selectedColor.get());
-              }}
-            >
-              <SymbolView
-                name="checkmark.circle"
-                size={50}
-                tintColor={Colors.PRIMARY}
-                weight="regular"
-              />
-            </Pressable>
-          </Animated.View>
+              <Pressable
+                style={({ pressed }) => pressedOpacity({ pressed })}
+                onPress={() => {
+                  onVisibilityChange(false);
+                  onColorChange(selectedColor.get());
+                }}
+              >
+                <IconView
+                  name={["checkmark.circle", "checkmark-circle"]}
+                  color={Colors.PRIMARY}
+                  size={35}
+                />
+              </Pressable>
+            </Animated.View>
+          )}
         </BlurView>
       </Modal>
     </>

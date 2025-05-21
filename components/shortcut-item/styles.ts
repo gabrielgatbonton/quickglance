@@ -19,6 +19,13 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 15,
   },
+  optionIcon: {
+    transform: [
+      {
+        rotate: "90deg",
+      },
+    ],
+  },
 });
 
 export default styles;

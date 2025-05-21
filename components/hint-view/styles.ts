@@ -1,4 +1,5 @@
-import { StyleSheet } from "react-native";
+import { Colors } from "@/assets/colors";
+import { Platform, StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
@@ -12,11 +13,10 @@ const styles = StyleSheet.create({
   animatedContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: Platform.OS === "android" ? Colors.PRIMARY : "",
     borderRadius: 18,
     padding: 20,
     columnGap: 20,
-
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -31,10 +31,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: "bold",
-    fontSize: 16,
+    fontSize: 18,
+    color: 'white'
   },
   description: {
     fontSize: 15,
+    color: 'white',
+    fontFamily: 'satoshi-light'
   },
 });
 

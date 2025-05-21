@@ -4,7 +4,6 @@ import { ActivityIndicator, Pressable, ScrollView } from "react-native";
 import styles from "./styles";
 import { useLayoutEffect, useRef } from "react";
 import { router, useNavigation } from "expo-router";
-import { SymbolView } from "expo-symbols";
 import { Colors } from "@/assets/colors";
 import pressedOpacity from "@/utils/pressedOpacity";
 import { useScrollToTop } from "@react-navigation/native";
@@ -18,6 +17,7 @@ import Animated, {
 import { useQuery } from "@tanstack/react-query";
 import { getAutomations } from "@/services/apiService";
 import CustomText from "@/components/custom-text";
+import IconView from "@/components/icon-view";
 
 export default function Automation() {
   const navigation = useNavigation();
@@ -41,11 +41,7 @@ export default function Automation() {
           style={({ pressed }) => pressedOpacity({ pressed })}
           onPress={() => router.navigate("/(app)/(modal)/add-automation")}
         >
-          <SymbolView
-            name="plus.circle.fill"
-            size={30}
-            tintColor={Colors.PRIMARY}
-          />
+          <IconView name={["plus.circle.fill", "add-circle"]} size={30} color={Colors.PRIMARY} />
         </Pressable>
       ),
     });

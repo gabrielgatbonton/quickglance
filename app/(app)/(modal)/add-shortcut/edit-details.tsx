@@ -1,6 +1,6 @@
 import CustomColorPicker from "@/components/custom-color-picker";
 import { useLayoutEffect, useState } from "react";
-import { ActivityIndicator, FlatList, View } from "react-native";
+import { ActivityIndicator, FlatList, Platform, View } from "react-native";
 import styles from "./styles";
 import LineSeparator from "@/components/line-separator";
 import { EditDetailData, Shortcut } from "@/constants/types";
@@ -21,6 +21,9 @@ import { actionsToSteps } from "@/utils/shortcutConverter";
 import CustomDynamicInput from "@/components/custom-dynamic-input";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { saveShortcut, updateShortcut } from "@/services/apiService";
+import AndroidShortcutForm from "@/components/android-shortcut-form";
+
+const isIOS = Platform.OS === "ios";
 
 const DETAILS_DATA: EditDetailData[] = [
   { key: "name", label: "Name", placeholder: "Enter Name", type: "text" },
@@ -33,7 +36,7 @@ const DETAILS_DATA: EditDetailData[] = [
   {
     key: "icon",
     label: "SF Symbol",
-    placeholder: "Select SF Symbol",
+    placeholder: "Select an icon",
     type: "select",
     pickerProps: {
       searchEnabled: true,
@@ -50,7 +53,11 @@ const DETAILS_DATA: EditDetailData[] = [
       ),
     })),
   },
-  { key: "isUpload", label: "Upload to Gallery?", type: "switch" },
+  {
+    key: "isUpload",
+    label: "Upload to Gallery?",
+    type: "switch",
+  },
 ];
 
 export default function EditDetails() {
@@ -68,7 +75,7 @@ export default function EditDetails() {
       details: state.details,
       setDetails: state.setDetails,
       currentShortcut: state.currentShortcut,
-    })),
+    }))
   );
   const navigation = useNavigation();
   const queryClient = useQueryClient();
@@ -101,20 +108,24 @@ export default function EditDetails() {
             onPress={() => {
               console.log({ actions, details });
 
+              isIOS ? delete details.androidIcon : delete details.icon;
+
               const shortcut: Shortcut = {
                 id: "new-shortcut",
                 ...details,
                 steps: actionsToSteps(actions),
               };
 
+              console.log(shortcut)
+
               mutate(shortcut);
             }}
             disabled={
-              !details.name ||
-              !details.description ||
-              !details.icon ||
-              !details.gradientStart ||
-              !details.gradientEnd
+              !details.name || !details.description || isIOS
+                ? !details.icon
+                : !details.androidIcon ||
+                  !details.gradientStart ||
+                  !details.gradientEnd
             }
             color={Colors.PRIMARY}
           />
@@ -122,57 +133,83 @@ export default function EditDetails() {
     });
   }, [actions, details, isPending, mutate, navigation]);
 
+  const gradientColorComponents = () => {
+    return (
+      <View style={styles.gradientsContainer}>
+        <CustomColorPicker
+          label="Start Gradient"
+          value={details.gradientStart}
+          isVisible={isGradientStartModalVisible}
+          onVisibilityChange={(isVisible) =>
+            setIsGradientStartModalVisible(isVisible)
+          }
+          onColorChange={(color) => setDetails({ gradientStart: color })}
+        />
+        <CustomColorPicker
+          label="End Gradient"
+          value={
+            details.gradientEnd === details.gradientStart
+              ? ""
+              : details.gradientEnd
+          }
+          isVisible={isGradientEndModalVisible}
+          onVisibilityChange={(isVisible) =>
+            setIsGradientEndModalVisible(isVisible)
+          }
+          onColorChange={(color) => {
+            setDetails({ gradientEnd: color });
+          }}
+        />
+      </View>
+    );
+  };
+
   return (
     <GestureHandlerRootView>
       <BottomSheetModalProvider>
         <View style={styles.editDetailsContainer}>
-          <View style={styles.inputsContainer}>
-            <FlatList
-              data={DETAILS_DATA}
-              renderItem={({ item }) => (
-                <CustomDynamicInput
-                  {...item}
-                  key={item.key}
-                  value={details[item.key]}
-                  onValueChange={(value) => setDetails({ [item.key]: value })}
+          {isIOS ? (
+            <>
+              <View style={styles.inputsContainer}>
+                <FlatList
+                  data={DETAILS_DATA}
+                  renderItem={({ item }) => (
+                    <CustomDynamicInput
+                      {...item}
+                      key={item.key}
+                      value={details[item.key]}
+                      onValueChange={(value) =>
+                        setDetails({ [item.key]: value })
+                      }
+                    />
+                  )}
+                  ItemSeparatorComponent={() => <LineSeparator leading={20} />}
+                  scrollEnabled={false}
                 />
-              )}
-              ItemSeparatorComponent={() => <LineSeparator leading={20} />}
-              scrollEnabled={false}
-            />
-          </View>
+              </View>
 
-          <View style={styles.hintContainer}>
-            <CustomText style={styles.hint}>
-              Note: By uploading to the shortcut gallery, you agree to share
-              your works with others.
-            </CustomText>
-          </View>
+              <View style={styles.hintContainer}>
+                <CustomText style={styles.hint}>
+                  Note: By uploading to the shortcut gallery, you agree to share
+                  your works with others.
+                </CustomText>
+              </View>
 
-          <View style={styles.gradientsContainer}>
-            <CustomColorPicker
-              label="Start Gradient"
-              value={details.gradientStart}
-              isVisible={isGradientStartModalVisible}
-              onVisibilityChange={(isVisible) =>
-                setIsGradientStartModalVisible(isVisible)
-              }
-              onColorChange={(color) => setDetails({ gradientStart: color })}
-            />
-            <CustomColorPicker
-              label="End Gradient"
-              value={
+              {gradientColorComponents}
+            </>
+          ) : (
+            <AndroidShortcutForm
+              handleShortcutDetails={(value) => setDetails(value)}
+              gradientStart={details.gradientStart}
+              gradientEnd={
                 details.gradientEnd === details.gradientStart
                   ? ""
                   : details.gradientEnd
               }
-              isVisible={isGradientEndModalVisible}
-              onVisibilityChange={(isVisible) =>
-                setIsGradientEndModalVisible(isVisible)
-              }
-              onColorChange={(color) => setDetails({ gradientEnd: color })}
-            />
-          </View>
+            >
+              {gradientColorComponents()}
+            </AndroidShortcutForm>
+          )}
         </View>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>

@@ -1,9 +1,10 @@
 import { Shortcut } from "@/constants/types";
 import { LinearGradient } from "expo-linear-gradient";
 import { SymbolView } from "expo-symbols";
-import { useWindowDimensions, View } from "react-native";
+import { Platform, useWindowDimensions, View } from "react-native";
 import styles from "./styles";
 import CustomText from "../custom-text";
+import IconView from "../icon-view";
 
 type ReorderShortcutItemProps = {
   item: Shortcut;
@@ -13,7 +14,7 @@ export default function ReorderShortcutItem({
   item,
 }: ReorderShortcutItemProps) {
   const { height } = useWindowDimensions();
-  const itemHeight = height * 0.1;
+  const itemHeight = height * 0.14;
 
   return (
     <View style={{ height: itemHeight }}>
@@ -22,11 +23,16 @@ export default function ReorderShortcutItem({
         style={styles.container}
       >
         <View style={styles.contentContainer}>
-          <SymbolView name={item.icon} size={30} tintColor="white" />
+          <IconView
+            name={[item.icon, item.androidIcon]}
+            color="white"
+            size={30}
+          />
           <CustomText style={styles.label}>{item.name}</CustomText>
         </View>
-
-        <SymbolView name="line.3.horizontal" tintColor="white" />
+        {Platform.OS === "ios" && (
+          <SymbolView name="line.3.horizontal" tintColor="white" />
+        )}
       </LinearGradient>
     </View>
   );
