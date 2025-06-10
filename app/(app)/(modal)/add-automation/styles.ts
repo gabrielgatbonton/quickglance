@@ -17,6 +17,9 @@ const styles = StyleSheet.create({
     paddingBottom: 14,
     rowGap: 15,
   },
+  shortcutsColumn: {
+    columnGap: 14
+  },
   columnWrapper: {
     columnGap: 10,
   },

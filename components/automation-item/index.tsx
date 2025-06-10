@@ -82,6 +82,6 @@ export default function AutomationItem({ item }: { item: Automation }) {
           ))}
         </BlurView>
       </ContextMenu>
-    </View>
+    </Pressable>
   );
 }

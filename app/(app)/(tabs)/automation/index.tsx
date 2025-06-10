@@ -16,8 +16,8 @@ import Animated, {
 } from "react-native-reanimated";
 import { useQuery } from "@tanstack/react-query";
 import { getAutomations } from "@/services/apiService";
-import CustomText from "@/components/custom-text";
 import IconView from "@/components/icon-view";
+import EmptyDashboard from "@/components/empty-dashboard";
 
 export default function Automation() {
   const navigation = useNavigation();
@@ -31,7 +31,7 @@ export default function Automation() {
   useScrollToTop(
     useRef({
       scrollToTop: () => scrollViewRef.current?.scrollTo({ y: -HEADER_HEIGHT }),
-    }),
+    })
   );
 
   useLayoutEffect(() => {
@@ -41,7 +41,11 @@ export default function Automation() {
           style={({ pressed }) => pressedOpacity({ pressed })}
           onPress={() => router.navigate("/(app)/(modal)/add-automation")}
         >
-          <IconView name={["plus.circle.fill", "add-circle"]} size={30} color={Colors.PRIMARY} />
+          <IconView
+            name={["plus.circle.fill", "add-circle"]}
+            size={30}
+            color={Colors.PRIMARY}
+          />
         </Pressable>
       ),
     });
@@ -76,10 +80,11 @@ export default function Automation() {
               <ActivityIndicator size="large" color={Colors.PRIMARY} />
             ) : (
               <>
-                <SymbolView name="gearshape.2" size={80} tintColor="gray" />
-                <CustomText style={styles.emptyText}>
-                  No automations available.
-                </CustomText>
+                <EmptyDashboard
+                  text="No automations available"
+                  iosIcon="gearshape.2"
+                  androidIcon="cog"
+                />
               </>
             )}
           </Animated.View>

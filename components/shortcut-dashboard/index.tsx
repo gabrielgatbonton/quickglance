@@ -3,7 +3,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import { ActivityIndicator, useWindowDimensions, View } from "react-native";
 import { usePagerView } from "react-native-pager-view";
 import Animated, {
-  BounceIn,
   FadeIn,
   FadeOut,
   FadingTransition,
@@ -15,9 +14,8 @@ import { useEffect, useMemo } from "react";
 import useShortcutRunnerStore from "@/stores/useShortcutRunnerStore";
 import PageControl from "../page-control";
 import ShortcutPage from "../shortcut-page";
-import CustomText from "../custom-text";
 import { Platform } from "react-native";
-import IconView from "../icon-view";
+import EmptyDashboard from "../empty-dashboard";
 
 const SHORTCUTS_PER_SCREEN = 6;
 const SHORTCUTS_PER_ROW = 2;
@@ -108,15 +106,11 @@ export default function ShortcutDashboard({
 
   if (shortcuts.length === 0) {
     return (
-      <Animated.View
-        entering={BounceIn.duration(300)}
-        style={[styles.emptyContainer, { height: shortcutsHeight }]}
-      >
-        <IconView name={["square.grid.2x2", "layers"]} size={80} color="gray" />
-        <CustomText style={styles.emptyText}>
-          No shortcuts available.
-        </CustomText>
-      </Animated.View>
+      <EmptyDashboard
+        iosIcon="square.grid.2x2"
+        androidIcon="layers"
+        text="No shortcuts available"
+      />
     );
   }
 

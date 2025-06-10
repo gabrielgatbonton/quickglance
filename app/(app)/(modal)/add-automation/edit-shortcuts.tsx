@@ -14,9 +14,10 @@ import useAddAutomationStore, {
   AddAutomationState,
 } from "@/stores/useAddAutomationStore";
 import { useShallow } from "zustand/react/shallow";
-import { SymbolView } from "expo-symbols";
 import pressedOpacity from "@/utils/pressedOpacity";
 import { orderKeysToArr } from "@/utils/shortcutConverter";
+import IconView from "@/components/icon-view";
+import EmptyDashboard from "@/components/empty-dashboard";
 
 export default function EditShortcuts() {
   const { condition, orderData, setOrderData } = useAddAutomationStore<
@@ -27,7 +28,7 @@ export default function EditShortcuts() {
       condition: state.condition,
       orderData: state.orderData,
       setOrderData: state.setOrderData,
-    })),
+    }))
   );
   const navigation = useNavigation();
   const queryClient = useQueryClient();
@@ -134,10 +135,9 @@ export default function EditShortcuts() {
           ]}
           onPress={() => setOrderData({})}
         >
-          <SymbolView
-            name="arrow.clockwise"
-            size={22}
-            tintColor={Colors.PRIMARY}
+          <IconView
+            name={["arrow.clockwise", "refresh"]}
+            color={Colors.PRIMARY}
           />
         </Pressable>
       </View>
@@ -153,6 +153,13 @@ export default function EditShortcuts() {
         )}
         contentContainerStyle={styles.shortcutsContainer}
         keyExtractor={(item) => item.id}
+        ListEmptyComponent={
+          <EmptyDashboard
+            iosIcon="square.grid.2x2"
+            androidIcon="layers"
+            text="No shortcuts available"
+          />
+        }
       />
     </View>
   );

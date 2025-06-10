@@ -12,6 +12,7 @@ import CustomLink from "@/components/custom-link";
 import { useQuery } from "@tanstack/react-query";
 import { getUserShortcuts } from "@/services/apiService";
 import { orderKeysToArr } from "@/utils/shortcutConverter";
+import EmptyDashboard from "@/components/empty-dashboard";
 
 export default function ReorderShortcuts() {
   const [shortcuts, setShortcuts] = useState<Shortcut[]>([]);
@@ -21,7 +22,7 @@ export default function ReorderShortcuts() {
   const { width } = useWindowDimensions();
   const navigation = useNavigation();
 
-  const snapOffsetX = width * 0.2;
+  const snapOffsetX = width * 0.5;
 
   const { data: userShortcuts } = useQuery({
     queryKey: ["shortcuts", "user"],
@@ -57,6 +58,16 @@ export default function ReorderShortcuts() {
     });
   }, [navigation]);
 
+  if (shortcuts.length === 0) {
+    return (
+      <EmptyDashboard
+        iosIcon="square.grid.2x2"
+        androidIcon="layers"
+        text="No shortcuts available"
+      />
+    );
+  }
+
   return (
     <View style={styles.container}>
       <Animated.ScrollView
@@ -73,7 +84,6 @@ export default function ReorderShortcuts() {
           }}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
-          columns={2}
           rowGap={10}
           columnGap={10}
           snapOffsetX={snapOffsetX}

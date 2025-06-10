@@ -3,7 +3,7 @@ import pressedOpacity from "@/utils/pressedOpacity";
 import { Pressable, StyleProp, TextStyle } from "react-native";
 import styles from "./styles";
 import CustomText from "../custom-text";
-import { SymbolView } from "expo-symbols";
+import IconView from "../icon-view";
 import { Colors } from "@/assets/colors";
 
 type PickerSheetItemProps = {

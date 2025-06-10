@@ -1,12 +1,11 @@
 import { FlatList } from "react-native";
 import StoreItem from "../store-item";
-import Animated, { BounceIn, FadeIn } from "react-native-reanimated";
+import Animated, { FadeIn } from "react-native-reanimated";
 import { STORE_KEYS } from "@/constants/storeKeys";
 import styles from "./styles";
 import ServiceItem from "../service-item";
 import { Service, Shortcut } from "@/constants/types";
-import CustomText from "../custom-text";
-import IconView from "../icon-view";
+import EmptyDashboard from "../empty-dashboard";
 
 type StoreContentProps = {
   storeKey: string;
@@ -31,19 +30,11 @@ export default function StoreContent({
           maxToRenderPerBatch={5}
           scrollEnabled={false}
           ListEmptyComponent={
-            <Animated.View
-              entering={BounceIn.duration(300)}
-              style={styles.emptyContainer}
-            >
-              <IconView
-                name={["square.on.square.dashed", "layers"]}
-                color="gray"
-                size={80}
-              />
-              <CustomText style={styles.emptyText}>
-                No shortcuts available.
-              </CustomText>
-            </Animated.View>
+            <EmptyDashboard
+              iosIcon="square.grid.2x2"
+              androidIcon="layers"
+              text="No shortcuts available"
+            />
           }
         />
       </Animated.View>
@@ -61,19 +52,11 @@ export default function StoreContent({
           numColumns={2}
           scrollEnabled={false}
           ListEmptyComponent={
-            <Animated.View
-              entering={BounceIn.duration(300)}
-              style={styles.emptyContainer}
-            >
-              <IconView
-                name={["building.2.crop.circle", "business"]}
-                size={80}
-                color="gray"
-              />
-              <CustomText style={styles.emptyText}>
-                No services available.
-              </CustomText>
-            </Animated.View>
+            <EmptyDashboard
+              iosIcon="square.grid.2x2"
+              androidIcon="layers"
+              text="No services available"
+            />
           }
         />
       </Animated.View>

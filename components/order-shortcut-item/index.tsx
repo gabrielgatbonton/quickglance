@@ -2,10 +2,10 @@ import { Shortcut } from "@/constants/types";
 import { LinearGradient } from "expo-linear-gradient";
 import { Pressable, useWindowDimensions, View } from "react-native";
 import styles from "./styles";
-import { SymbolView } from "expo-symbols";
 import CustomText from "../custom-text";
 import pressedOpacity from "@/utils/pressedOpacity";
 import Animated, { ZoomIn } from "react-native-reanimated";
+import IconView from "../icon-view";
 
 type OrderShortcutItemProps = {
   item: Shortcut;
@@ -19,7 +19,7 @@ export default function OrderShortcutItem({
   onShortcutPress,
 }: OrderShortcutItemProps) {
   const { height } = useWindowDimensions();
-  const itemHeight = height * 0.1;
+  const itemHeight = height * 0.14;
 
   return (
     <Pressable
@@ -34,7 +34,7 @@ export default function OrderShortcutItem({
         style={styles.container}
       >
         <View style={styles.contentContainer}>
-          <SymbolView name={item.icon} size={30} tintColor="white" />
+          <IconView name={[item.icon, item.androidIcon]} size={30} color="white" />
           <CustomText style={styles.label}>{item.name}</CustomText>
         </View>
 
