@@ -66,7 +66,7 @@ export default function SubmitAccount() {
   return (
     <View style={styles.container}>
       <View style={[globalStyles.modalLoading, styles.loadingContainer]}>
-        <ActivityIndicator color={Colors.PRIMARY} />
+        <ActivityIndicator color={Colors.PRIMARY} size="large" />
         <CustomText style={styles.loadingText}>
           Submitting account...
         </CustomText>

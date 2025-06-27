@@ -1,9 +1,12 @@
 import { Colors } from "@/assets/colors";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
+
+const isIOS = Platform.OS === "ios"
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#ffffff",
   },
   backContainer: {
     position: "absolute",
@@ -14,7 +17,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: "20%",
+    paddingTop: isIOS ? "20%" : "15%",
     paddingHorizontal: 40,
     rowGap: 10,
   },
@@ -42,8 +45,8 @@ const styles = StyleSheet.create({
   footerContainer: {
     height: "20%",
     width: "100%",
-    backgroundColor: Colors.TERTIARY,
     bottom: 0,
+    paddingTop: 20
   },
   buttonContainer: {
     marginHorizontal: 30,

@@ -58,7 +58,7 @@ export default function ShortcutInstaller() {
             }}
           >
             <IconView
-              name={["square.and.arrow.up", "eye"]}
+              name={["square.and.arrow.up", "share-social"]}
               color={Colors.PRIMARY}
               size={25}
             />

@@ -1,4 +1,6 @@
+import { useState } from "react";
 import AndroidTextInput from "../android-text-input";
+import { Colors } from "@/assets/colors";
 
 type FieldValues = {
   firstName: string;
@@ -22,6 +24,16 @@ export default function AndroidLogInForm({
   fieldValues,
   isSignIn,
 }: AndroidLogInFormProps) {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const onShowPassword = (
+    setValue: React.Dispatch<React.SetStateAction<boolean>>,
+    value: boolean
+  ) => {
+    setValue(!value);
+  };
+
   return (
     <>
       {!isSignIn && (
@@ -57,6 +69,10 @@ export default function AndroidLogInForm({
         handleUserInput={(value) => handleFieldValue({ password: value })}
         errorText={fieldErrors?.password}
         value={fieldValues.password}
+        icon={showPassword ? "eye" : "eye-off"}
+        iconFunction={() => onShowPassword(setShowPassword, showPassword)}
+        isSecure={showPassword ? false : true}
+        iconColor={Colors.PRIMARY}
       />
 
       {!isSignIn && (
@@ -67,6 +83,12 @@ export default function AndroidLogInForm({
           }
           errorText={fieldErrors?.password_confirmation}
           value={fieldValues.password_confirmation}
+          icon={showConfirmPassword ? "eye" : "eye-off"}
+          iconFunction={() =>
+            onShowPassword(setShowConfirmPassword, showConfirmPassword)
+          }
+          isSecure={showConfirmPassword ? false : true}
+          iconColor={Colors.PRIMARY}
         />
       )}
     </>

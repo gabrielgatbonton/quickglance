@@ -17,6 +17,8 @@ import CustomLink from "@/components/custom-link";
 import IconView from "@/components/icon-view";
 import AndroidLogInForm from "@/components/android-log-in-form";
 
+const isIOS = Platform.OS === "ios";
+
 export default function SignUp() {
   const { userInfo, setUserInfo, isSignIn, toggleSignIn, errors } =
     useSignUpStore<
@@ -35,8 +37,8 @@ export default function SignUp() {
   return (
     <View style={styles.container}>
       <KeyboardAwareScrollView>
-        <View style={[styles.headerContainer, { paddingTop: "20%" }]}>
-          {Platform.OS === "ios" && (
+        <View style={styles.headerContainer}>
+          {isIOS && (
             <IconView
               name={["person.crop.circle", undefined]}
               size={65}
@@ -51,7 +53,7 @@ export default function SignUp() {
         </View>
 
         <View style={styles.inputContainer}>
-          {Platform.OS === "ios" ? (
+          {isIOS ? (
             // IOS
             <>
               {!isSignIn && (

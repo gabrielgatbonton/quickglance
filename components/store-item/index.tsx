@@ -55,7 +55,11 @@ export default function StoreItem({ item }: { item: Shortcut }) {
             style={styles.contentContainer}
           >
             <View style={globalStyles.rowBetween}>
-            <IconView name={[item.icon, item.androidIcon]} color="white" size={33} />
+              <IconView
+                name={[item.icon, item.androidIcon]}
+                color="white"
+                size={33}
+              />
 
               {isInstalling ? (
                 <View style={globalStyles.transparentButton}>
@@ -81,12 +85,14 @@ export default function StoreItem({ item }: { item: Shortcut }) {
                           onPress: () => shortcutInstall(),
                         },
                         { text: "Cancel", style: "cancel" },
-                      ],
+                      ]
                     );
                   }}
                 >
-                  <IconView name={["square.and.arrow.down" , "checkmark-circle-outline"]} color="white" />
-
+                  <IconView
+                    name={["square.and.arrow.down", "checkmark-circle-outline"]}
+                    color="white"
+                  />
                 </Pressable>
               ) : (
                 <Pressable
@@ -96,8 +102,10 @@ export default function StoreItem({ item }: { item: Shortcut }) {
                   ]}
                   onPress={() => shortcutInstall()}
                 >
-                  <IconView name={["square.and.arrow.down" , "download-outline"]} color="white" />
-
+                  <IconView
+                    name={["square.and.arrow.down", "download-outline"]}
+                    color="white"
+                  />
                 </Pressable>
               )}
             </View>

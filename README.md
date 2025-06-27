@@ -48,16 +48,6 @@ EXPO_PUBLIC_OPENAI_API_KEY="ENTER_API_KEY_HERE"
 1. `npm install`
    - If using Bun: `bun install`
 2. `npx expo prebuild --clean`
-3. Add the text below in android/app/build.gradle under android.defaultConfig:
-
-```
-externalNativeBuild {
-            cmake {
-                arguments "-DCMAKE_MAKE_PROGRAM=C:\\Users\\Rhymeses\\AppData\\Local\\Android\\Sdk\\cmake\\3.22.1\\bin\\ninja.exe", "-DCMAKE_OBJECT_PATH_MAX=1024"
-            }
-        }
-```
-
 3. `npx expo run`
    - For iOS: `npx expo run:ios`
    - For Android: `npx expo run:android`

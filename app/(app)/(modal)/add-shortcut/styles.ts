@@ -65,10 +65,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   contentContainer: {
+    paddingTop: 70,
     columnGap: 15,
     rowGap: 15,
     paddingHorizontal: 15,
-    paddingBottom: 50,
   },
   columnWrapper: {
     columnGap: 10,
