@@ -16,6 +16,7 @@ import PageControl from "../page-control";
 import ShortcutPage from "../shortcut-page";
 import { Platform } from "react-native";
 import EmptyDashboard from "../empty-dashboard";
+import { Audio } from "expo-av";
 
 const SHORTCUTS_PER_SCREEN = 6;
 const SHORTCUTS_PER_ROW = 2;
@@ -86,10 +87,18 @@ export default function ShortcutDashboard({
     return focusedIndex < shortcuts.length ? shortcuts[focusedIndex] : null;
   }, [activePage, activeColumn, isStartedNavigation, nodDirection, shortcuts]);
 
+  const playSelectedIndicator = async () => {
+    const { sound } = await Audio.Sound.createAsync(
+      require("@/assets/sounds/selection_indicator.wav")
+    );
+    await sound.playAsync();
+  };
+
   useEffect(() => {
     // Check if the user has blinked more than 3 times
     if (blinkDuration! > 600 && !isShortcutRunning) {
       // Run the shortcut if it exists
+      playSelectedIndicator();
       if (focusedShortcut) {
         router.navigate(`/run-shortcut/${focusedShortcut.id}`);
       }

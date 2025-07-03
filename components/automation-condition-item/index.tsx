@@ -18,9 +18,7 @@ export default function AutomationConditionItem({
       style={({ pressed }) => [styles.container, pressedOpacity({ pressed })]}
       onPress={() => onConditionPress?.(item)}
     >
-      <View style={styles.emojiContainer}>
-        <CustomText style={styles.emoji}>{item.emoji}</CustomText>
-      </View>
+0 
       <View style={styles.contentContainer}>
         <CustomText style={styles.name}>{item.name}</CustomText>
         <CustomText style={styles.description}>{item.description}</CustomText>

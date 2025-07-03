@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   divider: {
-    marginTop: 15
+    marginVertical: 15
   }
 });
 

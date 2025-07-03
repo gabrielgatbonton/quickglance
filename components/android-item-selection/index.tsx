@@ -25,8 +25,9 @@ export default function AndroidItemSelection<T = any>({
     >
       {icon && (
         <IconView
-          name={["", icon as IoniconName]}
+          name={[, icon as IoniconName]}
           buttonStyle={styles.iconContainer}
+          color="black"
         />
       )}
       <CustomText>{String(item)}</CustomText>

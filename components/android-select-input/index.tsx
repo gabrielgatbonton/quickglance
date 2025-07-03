@@ -2,9 +2,11 @@ import { Colors } from "@/assets/colors";
 import { useState } from "react";
 import { FlatList, Pressable } from "react-native";
 import { TextInput } from "react-native-paper";
+import useSearch from "@/hooks/useSearch";
 import AndroidItemSelection from "../android-item-selection";
 import LineSeparator from "../line-separator";
 import AndroidModal from "../android-modal";
+import AndroidSearchBar from "../android-searchbar";
 
 type AndroidSelectInputProps<T> = {
   title: string;
@@ -14,7 +16,7 @@ type AndroidSelectInputProps<T> = {
   value: string;
 };
 
-export default function AndroidSelectInput<T>({
+export default function AndroidSelectInput<T extends string>({
   title,
   label,
   data,
@@ -22,6 +24,8 @@ export default function AndroidSelectInput<T>({
   value,
 }: AndroidSelectInputProps<T>) {
   const [opened, setOpened] = useState(false);
+
+  const { search, setSearchFn } = useSearch();
 
   const handleModal = (status: boolean) => setOpened(status);
 
@@ -32,8 +36,11 @@ export default function AndroidSelectInput<T>({
         isOpened={opened}
         handleCloseModal={() => handleModal(false)}
       >
+        <AndroidSearchBar onSearch={setSearchFn} />
         <FlatList
-          data={data}
+          data={data.filter((icon) =>
+            icon.toLowerCase().includes(search.toLowerCase())
+          )}
           renderItem={({ item }) => (
             <AndroidItemSelection
               item={item}
@@ -45,7 +52,7 @@ export default function AndroidSelectInput<T>({
             />
           )}
           keyExtractor={(item, index) => String(index)}
-          initialNumToRender={5}
+          initialNumToRender={3}
           ItemSeparatorComponent={() => <LineSeparator width="100%" />}
         />
       </AndroidModal>

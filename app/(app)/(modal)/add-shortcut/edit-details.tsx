@@ -116,8 +116,6 @@ export default function EditDetails() {
                 steps: actionsToSteps(actions),
               };
 
-              console.log(shortcut)
-
               mutate(shortcut);
             }}
             disabled={

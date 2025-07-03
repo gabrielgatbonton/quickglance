@@ -31,7 +31,7 @@ const WELCOME_DATA: WelcomeData[] = [
 export default function Welcome() {
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <View>
         <View style={styles.headerContainer}>
           <Image
             source={{ uri: "quickglance_logo" }}
@@ -50,7 +50,7 @@ export default function Welcome() {
           contentContainerStyle={styles.contentContainer}
           scrollEnabled={false}
         />
-      </ScrollView>
+      </View>
 
       <View style={styles.footerContainer}>
         <CustomButton

@@ -34,7 +34,7 @@ export default function AndroidModal<T>({
                   handleCloseModal();
                 }}
               >
-                <IconView name={["", "close"]} color={Colors.PRIMARY} />
+                <IconView name={[, "close"]} color={Colors.PRIMARY} />
               </Pressable>
             </View>
             <Divider style={styles.divider} />
