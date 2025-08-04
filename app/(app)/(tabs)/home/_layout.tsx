@@ -9,7 +9,7 @@ export default function HomeLayout() {
         name="index"
         options={{
           title: "QuickGlance",
-          headerLargeTitle: true,
+          headerLargeTitle: false,
           headerLargeTitleShadowVisible: false,
           headerLargeTitleStyle: { fontFamily: DEFAULT_FONT_FAMILY },
           headerTitleStyle: { fontFamily: DEFAULT_FONT_FAMILY },

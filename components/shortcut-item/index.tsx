@@ -22,6 +22,7 @@ import { router } from "expo-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteShortcut } from "@/services/apiService";
 import IconView from "../icon-view";
+import { Audio } from "expo-av";
 
 type ShortcutItemProps = {
   item: Shortcut;
@@ -70,7 +71,15 @@ export default function ShortcutItem({
     },
   });
 
+  const playSelectedIndicator = async () => {
+    const { sound } = await Audio.Sound.createAsync(
+      require("@/assets/sounds/selection_indicator.wav")
+    );
+    await sound.playAsync();
+  };
+
   const handlePress = () => {
+    playSelectedIndicator();
     router.navigate(`/run-shortcut/${item.id}`);
   };
 
@@ -94,7 +103,7 @@ export default function ShortcutItem({
           text: "Delete",
           onPress: () => mutate(),
         },
-      ],
+      ]
     );
   };
 
@@ -106,8 +115,8 @@ export default function ShortcutItem({
       >
         <ContextMenu
           actions={[
-            { title: "Edit", systemIcon: "pencil" },
-            { title: "Delete", systemIcon: "trash", destructive: true },
+            { title: "Edit", icon: "pencil" },
+            { title: "Delete", icon: "trash", destructive: true },
           ]}
           onPress={({ nativeEvent }) => {
             switch (nativeEvent.index) {
@@ -119,6 +128,7 @@ export default function ShortcutItem({
                 break;
             }
           }}
+          dropdownMenuMode={true}
         >
           <LinearGradient
             colors={[item.gradientStart, item.gradientEnd]}
@@ -146,16 +156,25 @@ export default function ShortcutItem({
             )}
 
             <View style={globalStyles.rowBetween}>
-              <IconView name={[item.icon, item.androidIcon]} color="white" size={28} />
+              <IconView
+                name={[item.icon, item.androidIcon]}
+                color="white"
+                size={28}
+              />
 
               <Pressable
                 style={({ pressed }) => [
                   globalStyles.transparentButton,
                   pressedOpacity({ pressed }),
                 ]}
-                onPress={handleEdit}
+                // onPress={handleEdit}
               >
-                <IconView name={["slider.vertical.3", "options"]} color="white" size={20} buttonStyle={styles.optionIcon} />
+                <IconView
+                  name={["slider.vertical.3", "options"]}
+                  color="white"
+                  size={20}
+                  buttonStyle={styles.optionIcon}
+                />
               </Pressable>
             </View>
 

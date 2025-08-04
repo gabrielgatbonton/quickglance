@@ -1,8 +1,7 @@
 import { Colors } from "@/assets/colors";
 import { DEFAULT_FONT_FAMILY } from "@/components/custom-text/styles";
 import { Platform, StyleSheet } from "react-native";
-
-const isIOS = Platform.OS === "ios" 
+import { isIOS } from "@/assets/isIOS";
 
 const styles = StyleSheet.create({
   container: {

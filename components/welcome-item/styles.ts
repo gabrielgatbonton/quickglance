@@ -1,7 +1,6 @@
 import { Colors } from "@/assets/colors";
-import { Platform, StyleSheet } from "react-native";
-
-const isIOS = Platform.OS === "ios"
+import { StyleSheet } from "react-native";
+import { isIOS } from "@/assets/isIOS";
 
 const styles = StyleSheet.create({
   container: {

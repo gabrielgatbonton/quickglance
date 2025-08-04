@@ -16,8 +16,7 @@ import CustomText from "@/components/custom-text";
 import CustomLink from "@/components/custom-link";
 import IconView from "@/components/icon-view";
 import AndroidLogInForm from "@/components/android-log-in-form";
-
-const isIOS = Platform.OS === "ios";
+import { isIOS } from "@/assets/isIOS";
 
 export default function SignUp() {
   const { userInfo, setUserInfo, isSignIn, toggleSignIn, errors } =

@@ -18,6 +18,7 @@ import pressedOpacity from "@/utils/pressedOpacity";
 import { orderKeysToArr } from "@/utils/shortcutConverter";
 import IconView from "@/components/icon-view";
 import EmptyDashboard from "@/components/empty-dashboard";
+import { isIOS } from "@/assets/isIOS";
 
 export default function EditShortcuts() {
   const { condition, orderData, setOrderData } = useAddAutomationStore<
@@ -98,7 +99,7 @@ export default function EditShortcuts() {
           <ActivityIndicator />
         ) : (
           <CustomLink
-            title="Done"
+            title={isIOS ? "Done" : "Save"}
             onPress={() => {
               console.log({ condition, orderData: orderKeysToArr(orderData) });
 

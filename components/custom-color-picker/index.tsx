@@ -19,6 +19,7 @@ import CustomButton from "../custom-button";
 import { useEffect } from "react";
 import { Colors } from "@/assets/colors";
 import IconView from "../icon-view";
+import { isIOS } from "@/assets/isIOS";
 
 type CustomColorPickerProps = {
   label: string;
@@ -40,8 +41,6 @@ const CUSTOM_SWATCHES = [
   "#7F8C8D", // Gray
   "#FF9500", // Amber
 ];
-
-const isIOS = Platform.OS === "ios";
 
 export default function CustomColorPicker({
   label,

@@ -22,8 +22,8 @@ import CustomDynamicInput from "@/components/custom-dynamic-input";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { saveShortcut, updateShortcut } from "@/services/apiService";
 import AndroidShortcutForm from "@/components/android-shortcut-form";
+import { isIOS } from "@/assets/isIOS";
 
-const isIOS = Platform.OS === "ios";
 
 const DETAILS_DATA: EditDetailData[] = [
   { key: "name", label: "Name", placeholder: "Enter Name", type: "text" },
