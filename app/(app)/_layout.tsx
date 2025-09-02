@@ -62,6 +62,10 @@ export default function RootLayout() {
         options={{ presentation: MODAL_PRESENTATION }}
       />
       <Stack.Screen
+        name="(modal)/run-automation"
+        options={{ presentation: MODAL_PRESENTATION }}
+      />
+      <Stack.Screen
         name="(modal)/install-shortcut"
         options={{ presentation: MODAL_PRESENTATION }}
       />
