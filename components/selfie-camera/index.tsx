@@ -43,7 +43,7 @@ export type SelfieCameraProps = {
   onHeadShake?: (data: HeadShakeData) => void;
 };
 
-const DEFAULT_SIZE = 120;
+const DEFAULT_SIZE = 110;
 
 export default function SelfieCamera({
   isActive = true,
