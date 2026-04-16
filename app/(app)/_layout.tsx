@@ -16,19 +16,19 @@ export default function RootLayout() {
     useShallow((state) => ({
       token: state.token,
       refreshAuth: state.refreshAuth,
-    }))
+    })),
   );
 
   // Restore token on app start
   useEffect(() => {
-    refreshAuth();
+    void refreshAuth();
   }, [refreshAuth]);
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(tabs)" />
       <Stack.Screen
-        name="(modal)/welcome"
+        name="(modal)/"
         options={{
           presentation: MODAL_PRESENTATION,
           gestureEnabled: Boolean(token),

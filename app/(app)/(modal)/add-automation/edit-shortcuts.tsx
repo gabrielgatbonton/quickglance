@@ -19,6 +19,8 @@ import { orderKeysToArr } from "@/utils/shortcutConverter";
 import IconView from "@/components/icon-view";
 import EmptyDashboard from "@/components/empty-dashboard";
 import { isIOS } from "@/assets/isIOS";
+import * as Notifications from "expo-notifications";
+import CustomHeader from "@/components/custom-header";
 
 export default function EditShortcuts() {
   const { condition, orderData, setOrderData } = useAddAutomationStore<
@@ -29,7 +31,7 @@ export default function EditShortcuts() {
       condition: state.condition,
       orderData: state.orderData,
       setOrderData: state.setOrderData,
-    }))
+    })),
   );
   const navigation = useNavigation();
   const queryClient = useQueryClient();
@@ -43,7 +45,13 @@ export default function EditShortcuts() {
     mutationKey: ["addAutomation"],
     mutationFn: saveAutomation,
     onSuccess: async (data) => {
-      console.log(data);
+      Notifications.scheduleNotificationAsync({
+        content: {
+          title: "Automation Created",
+          body: `Automation created for ${condition?.name.toLocaleLowerCase()}`,
+        },
+        trigger: null,
+      });
 
       await queryClient.invalidateQueries({
         queryKey: ["automations", "user"],
@@ -94,14 +102,17 @@ export default function EditShortcuts() {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () =>
-        isPending ? (
-          <ActivityIndicator />
-        ) : (
-          <CustomLink
-            title={isIOS ? "Done" : "Save"}
-            onPress={() => {
-              console.log({ condition, orderData: orderKeysToArr(orderData) });
+      headerBackVisible: false,
+      header: () => (
+        <CustomHeader
+          headerTitle="Automation's Shortcuts"
+          leftIcon={{
+            icons: ["", "arrow-back"],
+            iconFunction: () => router.back(),
+          }}
+          rightIcon={{
+            icons: ["", "checkmark-outline"],
+            iconFunction: () => {
 
               if (!condition) {
                 console.log("No condition selected");
@@ -113,12 +124,12 @@ export default function EditShortcuts() {
                 automationConditionId: condition.id,
                 shortcuts: orderKeysToArr(orderData),
               });
-            }}
-            color={Colors.PRIMARY}
-            disabled={Object.keys(orderData).length === 0}
-            bold
-          />
-        ),
+            },
+            disabled: Object.keys(orderData).length === 0,
+          }}
+          isModal
+        />
+      ),
     });
   }, [condition, isPending, mutate, navigation, orderData]);
 

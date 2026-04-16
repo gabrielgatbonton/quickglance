@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   tabContainer: {
-    marginTop: 3,
+    marginTop: -5,
     marginBottom: 18,
   },
   tabBar: {

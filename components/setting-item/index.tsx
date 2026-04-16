@@ -45,7 +45,11 @@ export default function SettingItem({ item }: { item: SettingData }) {
           thumbColor={Platform.OS === "android" ? Colors.PRIMARY : undefined}
         />
       ) : item.type === "list" ? (
-        <IconView name={["chevron.right", "chevron-forward"]} size={15} color="gray" />
+        <IconView
+          name={["chevron.right", "chevron-forward"]}
+          size={15}
+          color="gray"
+        />
       ) : null}
     </Pressable>
   );

@@ -7,9 +7,11 @@ import useAddAutomationStore from "@/stores/useAddAutomationStore";
 import { useQuery } from "@tanstack/react-query";
 import { getAutomationConditions } from "@/services/apiService";
 import AutomationConditionItem from "@/components/automation-condition-item";
+import { useState } from "react";
 
 export default function AddAutomation() {
   const setCondition = useAddAutomationStore((state) => state.setCondition);
+  const [activeCondition, setActiveCondition] = useState("");
 
   const { data: automationConditions } = useQuery({
     queryKey: ["automation", "conditions"],
@@ -37,8 +39,7 @@ export default function AddAutomation() {
     // Set the selected condition data in the store
     setCondition(item);
 
-    // Navigate to the edit shortcuts screen
-    router.navigate("/add-automation/edit-shortcuts");
+    setActiveCondition(item.name);
   };
 
   return (
@@ -58,6 +59,7 @@ export default function AddAutomation() {
             <AutomationConditionItem
               item={item}
               onConditionPress={onConditionPress}
+              activeCondition={activeCondition}
             />
           )}
         />

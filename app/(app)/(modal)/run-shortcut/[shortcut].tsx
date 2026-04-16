@@ -20,6 +20,7 @@ import {
   FlatList,
   ScrollView,
   StyleSheet,
+  Text,
   View,
 } from "react-native";
 import styles from "./styles";
@@ -35,6 +36,7 @@ import { Colors } from "@/assets/colors";
 import globalStyles from "@/assets/global-styles";
 import { runShortcut } from "@/actions/shortcutRunner";
 import { useShallow } from "zustand/react/shallow";
+import CustomHeader from "@/components/custom-header";
 
 export default function ShortcutRunner() {
   const [currentActions, setCurrentActions] = useState<RunningAction[]>([]);
@@ -164,10 +166,15 @@ export default function ShortcutRunner() {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerLeft: () => (
-        <CustomText style={styles.title}>
-          {currentShortcut?.name ?? "Loading..."}
-        </CustomText>
+      headerBackVisible: false,
+      header: () => (
+        <CustomHeader
+          headerTitle={currentShortcut?.name ?? "Loading..."}
+          rightIcon={{
+            icons: ["xmark.circle.fill", "close-circle"],
+            iconFunction: () => router.back(),
+          }}
+        />
       ),
     });
   }, [currentShortcut?.name, navigation]);
@@ -209,7 +216,7 @@ export default function ShortcutRunner() {
         />
       </ScrollView>
 
-      <View style={[StyleSheet.absoluteFillObject, { top: HEADER_BAR_HEIGHT }]}>
+      <View style={[StyleSheet.absoluteFillObject]}>
         <HintView
           icon="chevron.left.chevron.right"
           title="How to cancel"

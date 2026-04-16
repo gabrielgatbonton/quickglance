@@ -25,39 +25,49 @@ const useAuthStore = create<AuthStoreState & AuthStoreActions>((set) => ({
   isTokenLoaded: false,
   token: null,
   user: null,
-  refreshAuth: () => {
-    // Retrieve token from secure storage
-    const token = SecureStore.getItem(USER_TOKEN_KEY);
+  refreshAuth: async () => {
+    try {
+      // Retrieve token from secure storage
+      const token = await SecureStore.getItemAsync(USER_TOKEN_KEY);
 
-    if (token) {
-      console.log("Token found!", { token });
+      if (token) {
+        console.log("Token found!", { token });
 
-      // Update API headers with token
-      setAPIHeaderToken(token);
-      set({ token });
-    } else {
-      console.log("No token found!");
+        // Update API headers with token
+        setAPIHeaderToken(token);
+        set({ token });
+      } else {
+        console.log("No token found!");
 
-      // If no token, remove API header and reset state
+        // If no token, remove API header and reset state
+        removeAPIHeaderToken();
+        set({ token: null });
+      }
+    } catch (error) {
+      console.error("Failed to refresh auth token", error);
       removeAPIHeaderToken();
       set({ token: null });
+    } finally {
+      set({ isTokenLoaded: true });
     }
-
-    // Set token loaded state to true
-    set({ isTokenLoaded: true });
   },
   handleLogin: async (token, user) => {
-    // Store token securely
-    SecureStore.setItem(USER_TOKEN_KEY, token);
+    try {
+      // Store token securely
+      await SecureStore.setItemAsync(USER_TOKEN_KEY, token);
 
-    // Update API headers with new token
-    setAPIHeaderToken(token);
+      // Update API headers with new token
+      setAPIHeaderToken(token);
 
-    // Reset query cache to reflect new authentication state
-    await queryClient.resetQueries();
+      // Reset query cache to reflect new authentication state
+      await queryClient.resetQueries();
 
-    // Update store state
-    set({ token, user });
+      // Update store state
+      set({ token, user });
+    } catch (error) {
+      console.error("Failed to handle login", error);
+      throw error;
+    }
   },
   handleLogout: async () => {
     // Remove token from secure storage

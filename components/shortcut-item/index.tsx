@@ -78,8 +78,13 @@ export default function ShortcutItem({
     await sound.playAsync();
   };
 
-  const handlePress = () => {
-    playSelectedIndicator();
+  const handlePress = async () => {
+    try {
+      await playSelectedIndicator();
+    } catch (error) {
+      console.error("Shortcut selection sound failed", error);
+    }
+
     router.navigate(`/run-shortcut/${item.id}`);
   };
 

@@ -127,6 +127,7 @@ export type AutomationCondition = {
   description: string;
   emoji: string;
   type: string;
+  is_active: boolean
 };
 
 export type AutomationCategory = {

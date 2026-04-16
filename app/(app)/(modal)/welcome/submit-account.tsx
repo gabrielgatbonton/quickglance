@@ -59,7 +59,6 @@ export default function SubmitAccount() {
     if (isPending || isSuccess || isError) {
       return;
     }
-    console.log("Account submitted:", userInfo);
     mutate(userInfo);
   }, [isPending, isSuccess, isError, userInfo, isSignIn, mutate]);
 

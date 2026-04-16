@@ -12,7 +12,7 @@ import {
 } from "react-native-vision-camera";
 import {
   Face,
-  FaceDetectionOptions,
+  FrameFaceDetectionOptions,
   useFaceDetector,
 } from "react-native-vision-camera-face-detector";
 import { useSharedValue, Worklets } from "react-native-worklets-core";
@@ -72,7 +72,7 @@ export default function SelfieCamera({
   const lastTurnDirection = useSharedValue<TurnDirection | null>(null);
   const directionChanges = useSharedValue<TurnDirection[]>([]);
 
-  const faceDetectionOptions = useRef<FaceDetectionOptions>({
+  const faceDetectionOptions = useRef<FrameFaceDetectionOptions>({
     performanceMode: "accurate",
     classificationMode: "all",
   }).current;
@@ -80,11 +80,14 @@ export default function SelfieCamera({
   const blinkTimerRef = useRef<number>(null);
   const headShakeTimerRef = useRef<number>(null);
 
-  const { detectFaces } = useFaceDetector(faceDetectionOptions);
+  const faceDetector = useFaceDetector(faceDetectionOptions);
+  const detectFaces = faceDetector?.detectFaces;
   // const { detectEmotions } = useEmotionDetector();
   const { hasPermission, requestPermission } = useCameraPermission();
   const device = useCameraDevice("front");
   const format = useCameraFormat(device, [{ fps: 30 }]);
+  const shouldUseFrameProcessor =
+    isFrameProcessorEnabled && Boolean(detectFaces);
 
   useEffect(() => {
     // Request camera permission from user
@@ -96,7 +99,7 @@ export default function SelfieCamera({
           [
             { text: "Retry", onPress: () => requestPermission() },
             { text: "Cancel", style: "cancel" },
-          ]
+          ],
         );
       }
       setIsGranted(isGranted);
@@ -108,7 +111,7 @@ export default function SelfieCamera({
     if (!device && Device.isDevice) {
       Alert.alert(
         "Camera Not Found",
-        "We couldn't find the camera on your device. Please check your device settings."
+        "We couldn't find the camera on your device. Please check your device settings.",
       );
     }
   }, [device]);
@@ -159,7 +162,7 @@ export default function SelfieCamera({
 
       lastTurnDirection.value = direction;
     },
-    [directionChanges, lastTurnDirection, onHeadShake]
+    [directionChanges, lastTurnDirection, onHeadShake],
   );
 
   const handleFaceTurn = useCallback(
@@ -183,7 +186,7 @@ export default function SelfieCamera({
       onFaceTurn?.({ angle: turnAngle, direction });
       handleHeadShake(direction);
     },
-    [handleHeadShake, onFaceTurn, onHeadShake]
+    [handleHeadShake, onFaceTurn, onHeadShake],
   );
 
   const handleFaceNod = useCallback(
@@ -206,7 +209,7 @@ export default function SelfieCamera({
 
       onFaceNod({ angle: nodAngle, direction });
     },
-    [onFaceNod]
+    [onFaceNod],
   );
 
   const handleEyeBlink = useCallback(
@@ -272,7 +275,7 @@ export default function SelfieCamera({
         blinkDuration: blinkDuration.value,
       });
     },
-    [blinkCount, blinkDuration, blinkStartTime, onBlinkDetected]
+    [blinkCount, blinkDuration, blinkStartTime, onBlinkDetected],
   );
 
   const handleSmile = useCallback(
@@ -289,7 +292,7 @@ export default function SelfieCamera({
         emotion: isSmiling ? "happy" : "neutral",
       });
     },
-    [onEmotionDetected]
+    [onEmotionDetected],
   );
 
   const handleDetectedFace = Worklets.createRunOnJS((face: Face | null) => {
@@ -316,14 +319,14 @@ export default function SelfieCamera({
     (frame) => {
       "worklet";
 
-      if (!isFrameProcessorEnabled) {
+      if (!shouldUseFrameProcessor || !detectFaces) {
         return;
       }
 
       runAsync(frame, () => {
         "worklet";
         const faces = detectFaces(frame);
-        handleDetectedFace(faces[0]);
+        handleDetectedFace(faces?.[0] ?? null);
       });
 
       // runAtTargetFps(1, () => {
@@ -334,7 +337,7 @@ export default function SelfieCamera({
       //   handleDetectedEmotions(emotionData);
       // });
     },
-    [handleDetectedFace, isFrameProcessorEnabled]
+    [detectFaces, handleDetectedFace, isFrameProcessorEnabled],
   );
 
   useEffect(() => {
@@ -353,15 +356,15 @@ export default function SelfieCamera({
     };
   }, [blinkCount, blinkDuration, blinkStartTime, directionChanges]);
 
-  if (!hasPermission) {
+  if (!isVisible) {
+    return null;
+  }
+
+  if (!hasPermission || !format) {
     return <ActivityIndicator size="large" />;
   }
 
   if (!isGranted || !device) {
-    if (!isVisible) {
-      return null;
-    }
-
     return (
       <IconView
         name={["exclamationmark.triangle.fill", "warning"]}
@@ -378,16 +381,14 @@ export default function SelfieCamera({
         isActive={isActive}
         device={device}
         format={format}
-        frameProcessor={frameProcessor}
-        style={
-          isVisible && [
-            {
-              height: size,
-              width: size,
-            },
-            cameraProps?.style,
-          ]
-        }
+        frameProcessor={shouldUseFrameProcessor ? frameProcessor : undefined}
+        style={[
+          {
+            height: size,
+            width: size,
+          },
+          cameraProps?.style,
+        ]}
       />
     </View>
   );

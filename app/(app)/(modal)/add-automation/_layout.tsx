@@ -1,12 +1,19 @@
 import { Colors } from "@/assets/colors";
+import CustomHeader from "@/components/custom-header";
 import CustomLink from "@/components/custom-link";
 import { DEFAULT_FONT_FAMILY } from "@/components/custom-text/styles";
 import useAddAutomationStore from "@/stores/useAddAutomationStore";
 import { router, Stack } from "expo-router";
 import { useEffect } from "react";
+import { useShallow } from "zustand/react/shallow";
 
 export default function AddAutomationLayout() {
-  const resetAll = useAddAutomationStore((state) => state.resetAll);
+  const { resetAll, selectedCondition } = useAddAutomationStore(
+    useShallow((state) => ({
+      resetAll: state.resetAll,
+      selectedCondition: state.condition,
+    })),
+  );
 
   // Reset the store when the component unmounts
   useEffect(() => {
@@ -16,35 +23,28 @@ export default function AddAutomationLayout() {
   }, [resetAll]);
 
   return (
-    <Stack
-      screenOptions={{
-        headerTintColor: Colors.PRIMARY,
-        headerTitleStyle: { color: "black", fontFamily: DEFAULT_FONT_FAMILY },
-        headerBackTitleStyle: { fontFamily: DEFAULT_FONT_FAMILY },
-        headerTitleAlign: "center",
-      }}
-    >
+    <Stack>
       <Stack.Screen
         name="index"
         options={{
-          title: "Add Automation",
-          headerLeft: () => (
-            <CustomLink
-              title="Cancel"
-              onPress={() => router.back()}
-              color={Colors.PRIMARY}
+          header: () => (
+            <CustomHeader
+              headerTitle="Add Automation"
+              leftIcon={{
+                icons: ["chevron.right", "close-outline"],
+                iconFunction: () => router.back(),
+              }}
+              rightIcon={{
+                icons: ["arrow.right", "arrow-forward"],
+                iconFunction: () =>
+                  router.navigate("/add-automation/edit-shortcuts"),
+                disabled: !selectedCondition,
+              }}
             />
           ),
         }}
       />
-      <Stack.Screen
-        name="edit-shortcuts"
-        options={{
-          title: "Edit Shortcuts",
-          presentation: "card",
-          headerBackTitle: "Back",
-        }}
-      />
+      <Stack.Screen name="edit-shortcuts" options={{ headerShown: true, }} />
     </Stack>
   );
 }

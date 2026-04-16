@@ -15,6 +15,7 @@ import { getShortcut } from "@/services/apiService";
 import globalStyles from "@/assets/global-styles";
 import useInstallShortcut from "@/hooks/useInstallShortcut";
 import IconView from "@/components/icon-view";
+import CustomHeader from "@/components/custom-header";
 
 export default function ShortcutInstaller() {
   const { shortcut } = useLocalSearchParams<{ shortcut: string }>();
@@ -30,62 +31,46 @@ export default function ShortcutInstaller() {
     useInstallShortcut(currentShortcut);
 
   useLayoutEffect(() => {
-    if (currentShortcut) {
-      navigation.setOptions({
-        headerRight: () => (
-          <Pressable
-            style={({ pressed }) => pressedOpacity({ pressed })}
-            onPress={() => {
-              try {
-                const url = Linking.createURL(
-                  `install-shortcut/${currentShortcut.id}`
-                );
-                const title = currentShortcut.name;
-
-                Share.open({
-                  activityItemSources: [
-                    {
-                      placeholderItem: { type: "url", content: url },
-                      item: { default: { type: "url", content: url } },
-                      subject: { default: title },
-                      linkMetadata: { originalUrl: url, url, title },
-                    },
-                  ],
-                });
-              } catch (error: any) {
-                console.log({ error });
-              }
-            }}
-          >
-            <IconView
-              name={["square.and.arrow.up", "share-social"]}
-              color={Colors.PRIMARY}
-              size={25}
-            />
-          </Pressable>
-        ),
-      });
-    }
-  }, [currentShortcut, navigation]);
-
-  useLayoutEffect(() => {
     navigation.setOptions({
-      headerLeft: () => (
-        <>
-          <Pressable
-            onPress={() => router.back()}
-            style={({ pressed }) => pressedOpacity({ pressed })}
-          >
-            <IconView
-              name={[, "arrow-back"]}
-              color={Colors.SECONDARY}
-              size={25}
-            />
-          </Pressable>
-        </>
+      headerBackVisible: false,
+      header: () => (
+        <CustomHeader
+          headerTitle={"Install Shortcut"}
+          isModal
+          leftIcon={{
+            icons: ["", "arrow-back"],
+            iconFunction: () => router.back(),
+          }}
+          rightIcon={{
+            icons: ["square.and.arrow.up", "share-social"],
+            iconFunction:
+              currentShortcut &&
+              (() => {
+                try {
+                  const url = Linking.createURL(
+                    `install-shortcut/${currentShortcut.id}`,
+                  );
+                  const title = currentShortcut.name;
+
+                  Share.open({
+                    activityItemSources: [
+                      {
+                        placeholderItem: { type: "url", content: url },
+                        item: { default: { type: "url", content: url } },
+                        subject: { default: title },
+                        linkMetadata: { originalUrl: url, url, title },
+                      },
+                    ],
+                  });
+                } catch (error: any) {
+                  console.log({ error });
+                }
+              }),
+          }}
+        />
       ),
     });
-  }, [isInstalled, navigation]);
+  }, [isInstalled, currentShortcut, navigation]);
 
   if (!currentShortcut) {
     return (

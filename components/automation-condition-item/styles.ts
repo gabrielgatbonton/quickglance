@@ -27,11 +27,11 @@ const styles = StyleSheet.create({
     rowGap: 3,
   },
   name: {
-    fontSize: 16,
+    fontSize: 15,
   },
   description: {
-    color: Colors.SECONDARY,
-  },
+    fontSize: 12
+  }
 });
 
 export default styles;

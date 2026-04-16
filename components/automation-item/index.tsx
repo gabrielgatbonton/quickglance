@@ -51,7 +51,7 @@ export default function AutomationItem({ item }: { item: Automation }) {
   return (
     <Pressable style={({ pressed }) => pressedOpacity({ pressed })}>
       <View style={styles.nameContainer}>
-        <CustomText style={styles.name}>{item.name}</CustomText>
+        <CustomText style={styles.name}>{item.title}</CustomText>
         <IconView name={["chevron.right", "arrow-back"]} color="gray" />
       </View>
 

@@ -2,7 +2,7 @@ import StoreItem from "@/components/store-item";
 import { Alert, FlatList, Pressable, ScrollView } from "react-native";
 import styles from "./styles";
 import { useLayoutEffect } from "react";
-import { useLocalSearchParams, useNavigation } from "expo-router";
+import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import { Colors } from "@/assets/colors";
 import globalStyles from "@/assets/global-styles";
 import pressedOpacity from "@/utils/pressedOpacity";
@@ -11,7 +11,7 @@ import useSearch from "@/hooks/useSearch";
 import { useQuery } from "@tanstack/react-query";
 import { getService } from "@/services/apiService";
 import AndroidSearchBar from "@/components/android-searchbar";
-import IconView from "@/components/icon-view";
+import CustomHeader from "@/components/custom-header";
 
 export default function ServiceStore() {
   const { service } = useLocalSearchParams<{ service: string }>();
@@ -24,12 +24,19 @@ export default function ServiceStore() {
   });
 
   useLayoutEffect(() => {
-    if (currentService) {
-      navigation.setOptions({
-        headerRight: () => (
-          <Pressable
-            style={({ pressed }) => pressedOpacity({ pressed })}
-            onPress={() =>
+    navigation.setOptions({
+      header: () => (
+        <CustomHeader
+          headerTitle={currentService?.name ?? "Loading..."}
+          isModal
+          leftIcon={{
+            icons: ["", "arrow-back"],
+            iconFunction: () => router.back()
+          }}
+          rightIcon={{
+            icons: ["info.circle", "information-circle"],
+            iconFunction: () =>
+              currentService &&
               Alert.alert(currentService.name, currentService.description, [
                 { text: "OK", style: "cancel" },
                 {
@@ -38,21 +45,17 @@ export default function ServiceStore() {
                     WebBrowser.openBrowserAsync(currentService.websiteLink),
                   isPreferred: true,
                 },
-              ])
-            }
-          >
-            <IconView name={["info.circle", "information-circle"]} size={25} color={Colors.PRIMARY} />
-          </Pressable>
-        ),
-      });
-    }
-  }, [currentService, navigation]);
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      title: currentService?.name ?? "Loading...",
+              ]),
+          }}
+        />
+      ),
     });
-  }, [currentService?.name, navigation]);
+  }, [
+    currentService?.name,
+    currentService?.description,
+    currentService?.websiteLink,
+    navigation,
+  ]);
 
   return (
     <ScrollView
@@ -65,7 +68,7 @@ export default function ServiceStore() {
         data={currentService?.shortcuts.filter(
           (shortcut) =>
             shortcut.name.toLowerCase().includes(search.toLowerCase()) ||
-            shortcut.description.toLowerCase().includes(search.toLowerCase())
+            shortcut.description.toLowerCase().includes(search.toLowerCase()),
         )}
         renderItem={({ item }) => <StoreItem item={item} />}
         keyExtractor={(item) => item.id}

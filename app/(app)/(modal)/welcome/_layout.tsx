@@ -71,7 +71,11 @@ export default function WelcomeLayout() {
                 style={({ pressed }) => pressedOpacity({ pressed })}
                 onPress={() => router.back()}
               >
-                <IconView name={["chevron.backward", "arrow-back"]} size={25} color={Colors.SECONDARY} />
+                <IconView
+                  name={["chevron.backward", "arrow-back"]}
+                  size={25}
+                  color={Colors.SECONDARY}
+                />
               </Pressable>
             ),
           }}

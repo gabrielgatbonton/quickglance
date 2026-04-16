@@ -10,7 +10,6 @@ export default function RunShortcutLayout() {
       screenOptions={{
         headerTransparent: Platform.OS === "ios",
         headerBlurEffect: "prominent",
-        headerTitle: "",
       }}
     >
       <Stack.Screen

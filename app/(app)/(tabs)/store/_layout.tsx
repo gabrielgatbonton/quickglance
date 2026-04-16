@@ -1,4 +1,5 @@
-  import { Colors } from "@/assets/colors";
+import { Colors } from "@/assets/colors";
+import CustomHeader from "@/components/custom-header";
 import { DEFAULT_FONT_FAMILY } from "@/components/custom-text/styles";
 import { Stack } from "expo-router";
 import { Platform } from "react-native";
@@ -9,15 +10,9 @@ export default function StoreLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: "Shortcut Gallery",
-          headerLargeTitle: true,
-          headerLargeTitleShadowVisible: false,
-          headerLargeTitleStyle: { fontFamily: DEFAULT_FONT_FAMILY },
-          headerTitleStyle: { fontFamily: DEFAULT_FONT_FAMILY },
-          headerTintColor: "black",
+          header: () => <CustomHeader headerTitle="Shortcut Gallery" />,
           contentStyle: { backgroundColor: "white" },
           headerShadowVisible: Platform.OS === "ios",
-          headerTitleAlign: Platform.OS === "ios" ? "left" : "center",
         }}
       />
       <Stack.Screen
@@ -34,8 +29,9 @@ export default function StoreLayout() {
           headerBackTitleStyle: { fontFamily: DEFAULT_FONT_FAMILY },
           headerTransparent: Platform.OS === "ios",
           headerBlurEffect: "prominent",
+          contentStyle: { backgroundColor: "white" },
         }}
-      />
+      /> 
     </Stack>
   );
 }

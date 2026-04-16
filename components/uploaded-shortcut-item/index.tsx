@@ -11,7 +11,11 @@ export default function UploadedShortcutItem({ item }: { item: Shortcut }) {
       style={({ pressed }) => [styles.container, pressedBgColor({ pressed })]}
     >
       <CustomText>{item.name}</CustomText>
-      <IconView name={["chevron.right", "chevron-forward"]} color="gray" size={12} />
+      <IconView
+        name={["chevron.right", "chevron-forward"]}
+        color="gray"
+        size={12}
+      />
     </Pressable>
   );
 }

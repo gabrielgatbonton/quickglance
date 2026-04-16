@@ -19,7 +19,7 @@ export default function TabLayout() {
       isTokenLoaded: state.isTokenLoaded,
       token: state.token,
       user: state.user,
-    }))
+    })),
   );
 
   // Redirect to welcome screen if no token
@@ -31,70 +31,70 @@ export default function TabLayout() {
 
   return (
     <BottomSheetModalProvider>
-        {token && user && <Confetti isInfinite={false} />}
+      {token && user && <Confetti isInfinite={false} />}
 
-        <Tabs
-          screenOptions={{
-            headerShown: false,
-            tabBarActiveTintColor: Colors.PRIMARY,
-            tabBarInactiveTintColor: Colors.SECONDARY,
-            tabBarStyle: Platform.OS === "android" && {
-              height: ANDROID_TAB_BAR_HEIGHT,
-            },
+      <Tabs
+        screenOptions={{
+          headerShown: false,
+          tabBarActiveTintColor: Colors.PRIMARY,
+          tabBarInactiveTintColor: Colors.SECONDARY,
+          tabBarStyle: Platform.OS === "android" && {
+            height: ANDROID_TAB_BAR_HEIGHT,
+          },
+        }}
+      >
+        <Tabs.Screen name="index" options={{ href: null }} />
+        <Tabs.Screen
+          name="home"
+          options={{
+            title: "Home",
+            tabBarIcon: ({ color }) => (
+              <IconView name={["house.fill", "home"]} color={color} />
+            ),
           }}
-        >
-          <Tabs.Screen name="index" options={{ href: null }} />
-          <Tabs.Screen
-            name="home"
-            options={{
-              title: "Home",
-              tabBarIcon: ({ color }) => (
-                <IconView name={["house.fill", "home"]} color={color} />
-              ),
-            }}
-            redirect={!token}
-          />
-          <Tabs.Screen
-            name="store"
-            options={{
-              title: "Store",
-              tabBarIcon: ({ color }) => (
-                <IconView
-                  name={["sparkles.rectangle.stack.fill", "storefront"]}
-                  color={color}
-                />
-              ),
-            }}
-            redirect={!token}
-          />
-          <Tabs.Screen
-            name="add-shortcut-index"
-            options={{
-              tabBarButton: (props) => <AddShortcutButton {...props} />,
-            }}
-            redirect={!token}
-          />
-          <Tabs.Screen
-            name="automation"
-            options={{
-              title: "Automation",
-              tabBarIcon: ({ color }) => (
-                <IconView name={["timer", "timer"]} color={color} />
-              ),
-            }}
-            redirect={!token}
-          />
-          <Tabs.Screen
-            name="settings"
-            options={{
-              title: "Settings",
-              tabBarIcon: ({ color }) => (
-                <IconView name={["gear", "settings"]} color={color} />
-              ),
-            }}
-            redirect={!token}
-          />
-        </Tabs>
+          redirect={!token}
+        />
+        <Tabs.Screen
+          name="store"
+          options={{
+            title: "Store",
+            tabBarIcon: ({ color }) => (
+              <IconView
+                name={["sparkles.rectangle.stack.fill", "storefront"]}
+                color={color}
+              />
+            ),
+          }}
+          redirect={!token}
+        />
+        <Tabs.Screen
+          name="add-shortcut-index"
+          options={{
+            tabBarButton: (props) => <AddShortcutButton {...props} />,
+          }}
+          redirect={!token}
+        />
+        <Tabs.Screen
+          name="automation"
+          options={{
+            title: "Automation",
+            tabBarIcon: ({ color }) => (
+              <IconView name={["timer", "timer"]} color={color} />
+            ),
+          }}
+          redirect={!token}
+        />
+        <Tabs.Screen
+          name="settings"
+          options={{
+            title: "Settings",
+            tabBarIcon: ({ color }) => (
+              <IconView name={["gear", "settings"]} color={color} />
+            ),
+          }}
+          redirect={!token}
+        />
+      </Tabs>
     </BottomSheetModalProvider>
   );
 }

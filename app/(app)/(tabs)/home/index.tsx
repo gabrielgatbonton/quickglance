@@ -27,15 +27,17 @@ import { useQuery } from "@tanstack/react-query";
 import { getUser, getUserShortcuts } from "@/services/apiService";
 import EmotionPopover from "@/components/emotion-popover";
 import IconView from "@/components/icon-view";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Home() {
   const [currentShortcuts, setCurrentShortcuts] = useState<Shortcut[] | null>(
-    null
+    null,
   );
   const [isStarted, setIsStarted] = useState(false);
   const [isFrameProcessorEnabled, setIsFrameProcessorEnabled] = useState(true);
   const [turnDirection, setTurnDirection] = useState<TurnDirection>("center");
   const [nodDirection, setNodDirection] = useState<NodDirection>("center");
+  const [detectedDuration, setDetectedDuration] = useState(0);
   // const [blinkCount, setBlinkCount] = useState(0);
   const [blinkDuration, setBlinkDuration] = useState(0);
   const [emotion, setEmotion] = useState<Emotion | null>(null);
@@ -43,6 +45,8 @@ export default function Home() {
   const faceCenterTimerRef = useRef<number>(null);
   const faceDetectedTimerRef = useRef<number>(null);
   const frameProcessorTimerRef = useRef<number>(null);
+  const isSmilingRef = useRef<boolean>(false);
+  const intervalRef = useRef<number>(null);
 
   const isFocused = useIsFocused();
   const navigation = useNavigation();
@@ -71,17 +75,17 @@ export default function Home() {
 
       setCurrentShortcuts(
         userShortcuts.filter((shortcut) =>
-          shortcut.name.toLowerCase().includes(search.toLowerCase())
-        )
+          shortcut.name.toLowerCase().includes(search.toLowerCase()),
+        ),
       );
     }
   }, [search, userShortcuts]);
 
-  useEffect(() => {
-    if (user) {
-      console.log("Current user:", user);
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user) {
+  //     console.log("Current user:", user);
+  //   }
+  // }, [user]);
 
   const handleStart = (isStarted: boolean): void => {
     setIsStarted(isStarted);
@@ -229,9 +233,22 @@ export default function Home() {
           setBlinkDuration(blinkDuration);
         }}
         onEmotionDetected={({ emotion, results }) => {
-          // console.log("Emotion detected", emotion);
-          // console.log("Other emotions", results);
-          setEmotion(emotion);
+          if (emotion === "happy") {
+            if (detectedDuration % 3 === 0) {
+              setEmotion(emotion);
+              setDetectedDuration(0);
+              // router.replace("/(app)/")
+            }
+
+            setInterval(() => {
+              setDetectedDuration((prev) => prev + 1);
+            }, 1000);
+          } else if (emotion === "neutral") {
+            setEmotion(emotion);
+            setDetectedDuration(0);
+          }
+
+          // router.navigate("/(app)/(store)/emotion-alert")
         }}
         cameraProps={{
           onError: (error) => console.log(JSON.stringify(error)),

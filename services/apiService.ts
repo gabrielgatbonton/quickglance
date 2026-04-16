@@ -65,7 +65,7 @@ export const getUser = async (): Promise<User> => {
     if (error.response?.status === 401) {
       Alert.alert(
         "Session Expired",
-        "Your session has expired. Please log in again.",
+        "Your session has expired. Please log in again."
       );
     }
 
@@ -78,7 +78,7 @@ export const getUser = async (): Promise<User> => {
 };
 export const updateUser = async (
   id: string,
-  params: Partial<User> | UserPassword,
+  params: Partial<User> | UserPassword
 ): Promise<{ user: User; message: string }> => {
   try {
     const {
@@ -94,7 +94,7 @@ export const register = async (params: RegisterParams) => {
   try {
     const { data: registerData } = await QuickGlanceAPI.post(
       "/auth/register",
-      params,
+      params
     );
     return registerData;
   } catch (error: any) {
@@ -106,7 +106,7 @@ export const login = async (params: LoginParams) => {
   try {
     const { data: loginData } = await QuickGlanceAPI.post(
       "/auth/login",
-      params,
+      params
     );
     return loginData;
   } catch (error: any) {
@@ -222,9 +222,21 @@ export const getShortcut = async (id: string): Promise<Shortcut> => {
   try {
     const {
       data: { shortcut },
-    } = await QuickGlanceAPI.get(`/shortcut/public/${id}`);
+    } = await QuickGlanceAPI.get(`/shortcut/${id}`);
     return shortcut;
   } catch (error: any) {
+    if (error.response?.status === 404) {
+      try {
+        const {
+          data: { shortcut },
+        } = await QuickGlanceAPI.get(`/shortcut/public/${id}`);
+        return shortcut;
+      } catch (publicError: any) {
+        console.log("Error fetching public shortcut", publicError.response);
+        throw publicError;
+      }
+    }
+
     console.log("Error fetching shortcut", error.response);
     throw error;
   }
@@ -242,7 +254,7 @@ export const installShortcut = async (params: InstallShortcutParams) => {
 };
 export const updateShortcut = async (
   id: string,
-  params: SaveShortcutParams,
+  params: SaveShortcutParams
 ) => {
   try {
     const {
